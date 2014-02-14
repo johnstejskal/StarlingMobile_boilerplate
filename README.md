@@ -1,4 +1,4 @@
-StarlingMobile_boilerplate
-==========================
+SlidingCars
+===========
 
-Johns barebone framework for starling based mobile projects
+SlidingCars
