@@ -1,4 +1,4 @@
-package vo 
+package staticData 
 {
 	
 	import flash.media.Sound;

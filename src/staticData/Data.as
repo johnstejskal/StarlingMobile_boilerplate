@@ -1,4 +1,4 @@
-package vo 
+package staticData 
 {
 
 	/**
@@ -19,10 +19,13 @@ package vo
 	
 	
 	
-	public static var deviceResolutionX:int;
-	public static var deviceResolutionY:int;	
+	public static var deviceResX:int;
+	public static var deviceResY:int;	
 	public static var deviceScaleX:Number;
 	public static var deviceScaleY:Number;
+	
+	static public var baseResX:int;
+	static public var baseResY:int;
 	
 	
 	

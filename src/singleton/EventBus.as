@@ -30,6 +30,9 @@
 		public static var sigOnStartClicked:Signal;
 		public static var sigOnDeactivate:Signal;
 		
+		
+		public static var sigStarlingReady:Signal;
+		
 
 		public function defineSignal(signal:Signal, callback:Function, params:* = null):void
 		{

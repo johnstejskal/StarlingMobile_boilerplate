@@ -4,9 +4,10 @@ package view.components.screens
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import interfaces.iScreen;
 	import ManagerClasses.StateMachine;
 	import singleton.Core;
-	import vo.*;
+	import staticData.*;
 
 
 	/**
@@ -14,7 +15,7 @@ package view.components.screens
 	 * "Why walk when you can ride"
 	 */
 
-	public class LoadingScreen extends Sprite
+	public class LoadingScreen extends Sprite implements iScreen
 	{
 	 /* 
 	  * This is a native display component that appears during the loading of

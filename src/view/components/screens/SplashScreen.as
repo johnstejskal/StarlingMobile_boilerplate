@@ -3,6 +3,7 @@ package view.components.screens
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import interfaces.iScreen;
 	import singleton.Core;
 
 
@@ -11,7 +12,7 @@ package view.components.screens
 	 * @author John Stejskal
 	 * "Why walk when you can ride"
 	 */
-	public class SplashScreen extends Sprite
+	public class SplashScreen extends Sprite implements iScreen
 	{
 	
 	private var _core:Core;

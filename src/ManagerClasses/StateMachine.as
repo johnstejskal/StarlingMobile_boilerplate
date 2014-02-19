@@ -16,7 +16,7 @@
 
 	import view.components.screens.PlayScreen;
 	import view.components.screens.TitleScreen;
-	import vo.Constants;
+	import staticData.Constants;
 	
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -26,17 +26,24 @@
 	import singleton.Core;
 
 
-
-
 	/**
 	 * ...
 	 * @author John Stejskal
 	 * johnstejskal@gmail.com
-	 * 
+	 * "Why walk when you can ride"
 	 */
+	
+	 //---------------------------o
+	 // This state machine is in charge of listeneing to events from the EventBus
+	 // and dispatching state changes, 
+	 // the only components it should be aware of are the core screen states, 
+	 //
+	 // TODO Add a param into the state changer which allows for substates, in the sens it does not 
+	 // dispose of the previous state, case scenario: a pop-up game over panel on a gameplay screen
 	public class StateMachine 
 	{
 		
+		//STATES
 		public static const STATE_TITLE:String = "title";
 		public static const STATE_INTRO:String = "intro";		
 		public static const STATE_PLAY:String = "play";		
@@ -49,6 +56,8 @@
 
 		public static var currentGameState:String;
 		
+		
+		//Screen Components
 		public static var _oTitleScreen:TitleScreen;
 		public static var _oPlayScreen:PlayScreen;
 		public static var _oSplashScreen:SplashScreen;
@@ -56,9 +65,7 @@
 
 		public function StateMachine() 
 		{
-			/* This state machine should remail losely coupled to other manager classes
-			 * The only should only be aware of the EventBus and Core Singletons
-			 */
+
 			
 		}
 		
@@ -70,14 +77,14 @@
 			_oSplashScreen.y = 0;
 			Core.getInstance().main.addChild(_oSplashScreen);
 			
-			changeState(STATE_SETUP);					
+							
 		}
 		
 		
 		//this fires when the setup state manager reeives an iscompleted callbak from the playscreen
-		static public function setup_callBack():void
+		static public function starlingReady_callBack():void
 		{
-			changeState(STATE_TITLE);
+			changeState(STATE_PLAY);
 		}
 		
 	   /* 
@@ -91,9 +98,9 @@
 		*/
 		
 		
-		public static function changeState(state:String):void
+		protected static function changeState(state:String):void
 		{
-			trace("StateMachine requested changeState(" + state + ")");
+			trace("-- StateMachine requested changeState(" + state + ")");
 			
 			switch(state)
 			{
@@ -103,6 +110,7 @@
 				//-- Map Signals
 				//----------------------o
 				EventBus.getInstance().defineSignal(EventBus.sigOnDeactivate, changeState, STATE_DEACTIVATE)
+				EventBus.getInstance().defineSignal(EventBus.sigStarlingReady, starlingReady_callBack)
 					
 				
 				if (!Core.getInstance().starling.isStarted)
@@ -158,10 +166,12 @@
 				//------------------------------------------------------------------------------------o					
 				case STATE_SCORES:
 
-				break;					
+				break;	
+				
+	
 				
 			}
-			trace("StateMachine completed changeState(" + state + ")");
+			trace("-- StateMachine completed changeState(" + state + ")");
 		}
 		
 

@@ -10,7 +10,7 @@ package com.utils
 	import flash.events.MouseEvent;
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
-	import vo.DataVO;
+	import staticData.DataVO;
 	import com.adobe.images.JPGEncoder;
 	import com.adobe.images.PNGEncoder;
 

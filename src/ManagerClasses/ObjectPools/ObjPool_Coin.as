@@ -3,7 +3,7 @@ package ManagerClasses.ObjectPools
 
 	import view.components.starlingObjects.collectables.Coin;
 
-	import vo.DataVO;
+	import staticData.DataVO;
 	/**
 	 * ...
 	 * @author jihn

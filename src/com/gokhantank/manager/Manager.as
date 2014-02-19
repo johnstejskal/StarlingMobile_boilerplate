@@ -2,7 +2,7 @@ package com.gokhantank.manager
 {
 	
 	import com.gokhantank.net.NetLoader;
-	import vo.ConfigVo;
+	import staticData.ConfigVo;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

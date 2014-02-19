@@ -1,7 +1,6 @@
-package view.components.gameobjects 
+package view.components.gameobjects.superClass 
 {
 
-	import com.johnstejskal.ArrayUtil;
 	import ManagerClasses.AssetsManager;
 	import singleton.Core;
 	import starling.core.Starling;
@@ -11,33 +10,26 @@ package view.components.gameobjects
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.utils.deg2rad;
-	import vo.Data;
+	import staticData.Data;
+	import staticData.SpriteSheets;
+	
 	/**
 	 * ...
 	 * @author John Stejskal
-	 * www.johnstejskal.com
 	 * johnstejskal@gmail.com
+	 * "Why walk when you can ride"
 	 */
-	public class Coin extends Sprite
+	public class GameObject extends Sprite
 	{
-
-		
+		private var _core:Core;
 		private var _collisionArea:Image;
 		
-		//images
-		private var _imgCoin:Image;
-		private var _quFill:Quad;
-		private var _core:Core;
-		
-		//mc's
-		
 
-		
-		
+
 		//-----------------------------o
 		//-- Constructor
 		//-----------------------------o
-		public function Coin() 
+		public function GameObject() 
 		{
 			trace(this + "Constructed");
 			_core = Core.getInstance();
@@ -45,36 +37,42 @@ package view.components.gameobjects
 			if (stage) init(null);
 			else addEventListener(Event.ADDED_TO_STAGE, init);
 			
-			/*_quFill = new Quad(DataVO.STAGE_WIDTH, _imgSkyL.height, 0xffffff);
-			_quFill.alpha = .5;
-			addChild(_quFill);
-			_quFill.visible = false;*/
-			
-			_imgCoin = new Image(AssetsManager.getAtlas(AssetsManager.SPRITE_ATLAS_ACTION_ASSETS).getTexture("TA_coin0000"));
-			_imgCoin.x = -_imgCoin.width / 2;
-			_imgCoin.y = -_imgCoin.height / 2;
-			//_imgCoin.scaleX = _imgCoin.scaleY = .5;
-			this.addChild(_imgCoin);
-			_imgCoin.visible = true;
-
 		}
-		
+		//-----------------------------o
+		//-- init
+		//-----------------------------o		
 		private function init(e:Event):void 
 		{
 			trace(this + "inited");
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			//this.addEventListener(Event.ENTER_FRAME, onUpdate)
+			
+			this.addEventListener(Event.ENTER_FRAME, onUpdate)
 			
 		}
-		
+		//-----------------------------o
+		//-- Event Handler
+		//-----------------------------o
 		private function onUpdate(e:Event):void 
 		{
 			
 		}
 		
+		//-----------------------------o
+		//-- trash/dispose/anihliate
+		//-----------------------------o		
 		public function trash():void
 		{
+			trace(this+" trash()")
 			
+		}
+		
+		
+		//-----------------------------o
+		//-- Getters | Setters
+		//-----------------------------o			
+		public function get collisionArea():Image 
+		{
+			return _collisionArea;
 		}
 		
 		

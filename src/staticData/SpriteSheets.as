@@ -1,4 +1,4 @@
-package vo 
+package staticData 
 {
 
 
@@ -29,7 +29,14 @@ package vo
 
 
 
-													 
+		//-------------------------------------------o
+		//-------------------------o Action Assets
+		//-------------------------------------------o
+		public static const SPRITE_ATLAS_ACTION_ASSETS:String = "textureAtlasActionAssets";
+		public static const TA_PATH_ACTION_ASSETS:String = "runtimeAssets/spriteSheets/SpriteSheet_actionAssets.png"; //used for external loading
+			
+		[Embed(source = "../../bin/runtimeAssets/spriteSheets/SpriteSheet_actionAssets.xml", mimeType="application/octet-stream")]
+		public static var textureAtlasActionAssetsXML:Class; 												 
 
 
 													

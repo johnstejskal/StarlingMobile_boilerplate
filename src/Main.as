@@ -7,6 +7,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.display3D.Context3D;
 	import flash.geom.Rectangle;
+	import staticData.settings.PublicSettings;
 	
 	import org.gestouch.core.Gestouch;
 	import org.gestouch.extensions.starling.StarlingDisplayListAdapter;
@@ -29,7 +30,7 @@ package
 
 	import view.*
 	
-	import vo.Constants;
+	import staticData.Constants;
 	
 
 	
@@ -74,13 +75,22 @@ package
 			_starling.stage.stageHeight = stage.stageHeight;
 			
 			
+			//-------------------------------------------------o
+			//-- Setup Gestouch for Starling Based Gesture Support
+			if (Constants.SUPPORT_GESTURES)
+			{
 			Gestouch.inputAdapter ||= new NativeInputAdapter(stage);
 			Gestouch.addDisplayListAdapter(starling.display.DisplayObject, new StarlingDisplayListAdapter());
 			Gestouch.addTouchHitTester(new StarlingTouchHitTester(_starling), -1);
+			}
 			
+			if (PublicSettings.SHOW_STARLING_STATS)
+			{
 			_starling.showStats = true;
 			_starling.showStatsAt(HAlign.RIGHT, VAlign.TOP);
+			}
 
+			
 			_starling.addEventListener(ResizeEvent.RESIZE, onResize);
 			_core.starling = _starling;
 			

@@ -1,4 +1,4 @@
-package vo 
+package staticData.settings 
 {
 
 	import flash.display.MovieClip;
@@ -14,7 +14,7 @@ package vo
 	  * for game specific constants like level maps, go to Constants.as 
 	  */
 	 
-	public class Settings 
+	public class PublicSettings 
 	{
 
 	static public const DEVICE_RELEASE:Boolean = false;
@@ -30,6 +30,7 @@ package vo
 	//debug flags
 	static public const SHOW_COLLISION_BOX:Boolean = false;
 	static public const SHOW_DEBUG_PANEL:Boolean = false;
+	static public const SHOW_STARLING_STATS:Boolean = true;
 										
 
 	}

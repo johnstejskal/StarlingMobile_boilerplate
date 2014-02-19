@@ -11,7 +11,7 @@ package ManagerClasses
 	import flash.media.SoundTransform;
 	import singleton.Core;
 	import view.components.ComponentTemplate;
-	import vo.DataVO;
+	import staticData.DataVO;
 
 	/**
 	 * ...

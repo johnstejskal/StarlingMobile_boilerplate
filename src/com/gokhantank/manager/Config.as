@@ -5,10 +5,10 @@ package com.gokhantank.manager
 	import flash.net.SharedObject;
 	import flash.net.URLLoader;
 	import org.flashdevelop.utils.FlashConnect;
-	import vo.CharVo;
-	import vo.ConfigVo;
-	import vo.DataVo;
-	import vo.WineVo;
+	import staticData.CharVo;
+	import staticData.ConfigVo;
+	import staticData.DataVo;
+	import staticData.WineVo;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

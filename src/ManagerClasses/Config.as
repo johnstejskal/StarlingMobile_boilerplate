@@ -10,14 +10,17 @@ package ManagerClasses
 	import flash.events.KeyboardEvent;
 	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
+	import flash.ui.Multitouch;
+	import flash.ui.MultitouchInputMode;
 	import singleton.Core;
 	import starling.animation.Juggler;
 	import starling.display.Image;
 	import starling.textures.Texture;
-	import vo.Constants;
-	import vo.Data;
-	import vo.Settings;
-	import vo.SpriteSheets;
+	import staticData.Constants;
+	import staticData.Data;
+	import staticData.settings.DeviceSettings;
+	import staticData.settings.PublicSettings;
+	import staticData.SpriteSheets;
 
 
 	/**
@@ -55,10 +58,34 @@ package ManagerClasses
 			trace(this + "setup()");
 			_core.animationJuggler = new Juggler();
 			
+			if (PublicSettings.DEVICE_RELEASE)
+			{
+				NativeApplication.nativeApplication.systemIdleMode = DeviceSettings.SYSTEM_IDLE_MODE;
+				Multitouch.inputMode = DeviceSettings.TOUCH_INPUT_MODE;
+				
+				Data.deviceResX = _stage.fullScreenWidth;
+				Data.deviceResY = _stage.fullScreenHeight;
+			}
+			else 
+			{
+				Data.deviceResX = _stage.stageWidth;
+				Data.deviceResY = _stage.stageHeight;
+			}
+			
+			Data.baseResX = _stage.width;
+			Data.baseResY = _stage.height;				
 
-
+			Data.deviceScaleX = Data.deviceResX / Data.baseResX;
+			Data.deviceScaleY = Data.deviceResY / Data.baseResY;
 
 		}	
+		
+		
+		
+		
+		
+		
+		
 	
 
 	}

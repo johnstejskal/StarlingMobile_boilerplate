@@ -24,6 +24,7 @@
     <option allowSourcePathOverlap="False" />
     <option benchmark="False" />
     <option es="False" />
+    <option inline="False" />
     <option locale="" />
     <option loadConfig="" />
     <option optimize="True" />
@@ -90,6 +91,7 @@
     <hidden path="src\view\components\FL_Scene2.as" />
     <hidden path="src\view\components\FL_Scene3.as" />
     <hidden path="src\view\components\FL_Scene1.as" />
+    <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />
@@ -99,6 +101,7 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Unknown" />
+    <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
   <storage>

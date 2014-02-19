@@ -1,4 +1,4 @@
-package view.components
+package view.components.ui.nativeDisplay
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;

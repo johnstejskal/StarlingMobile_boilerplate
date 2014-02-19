@@ -14,6 +14,7 @@ package view.components.screens
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
+	import interfaces.iScreen;
 	import ManagerClasses.AssetsManager;
 	import ManagerClasses.ObjectPools.ObjPool_BloodPuddle;
 	import ManagerClasses.ObjectPools.ObjPool_BloodSplat;
@@ -24,6 +25,7 @@ package view.components.screens
 	import org.gestouch.events.GestureEvent;
 	import org.gestouch.gestures.SwipeGesture;
 	import org.osflash.signals.Signal;
+	import singleton.EventBus;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -40,11 +42,10 @@ package view.components.screens
 	import starling.utils.Color;
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
-	import view.components.gameobjects.Car;
-	import view.components.gameobjects.Coin;
-	import view.components.gameobjects.MapTile;
-	import vo.Data;
-	import vo.SpriteSheets;
+	import view.components.gameobjects.Player;
+
+	import staticData.Data;
+	import staticData.SpriteSheets;
 
 	import view.components.ui.DevConsole;
 
@@ -56,15 +57,16 @@ package view.components.screens
 
 	import singleton.Core;
 
-	import vo.Constants;
+	import staticData.Constants;
 
 
 	
 	/**
 	 * ...
 	 * @author john stejskal
+	 * "Why walk when you can ride"
 	 */
-	public class PlayScreen extends Sprite
+	public class PlayScreen extends Sprite implements iScreen
 	{
 		
 		private var _core:Core;
@@ -81,9 +83,11 @@ package view.components.screens
 		private var _stateMachine:StateMachine;
 		
 		
+		//Assets
+		private var _oPlayer:Player;
+		
+		
 
-		
-		
 		//----------------------------------------o
 		//------ Constructor
 		//----------------------------------------o
@@ -96,8 +100,8 @@ package view.components.screens
 			
 			StateMachine._oPlayScreen = this;
 
-			if (stage) StateMachine.setup_callBack();
-			else addEventListener(Event.ADDED_TO_STAGE, function(e:Event = null):void{StateMachine.setup_callBack();});
+			if (stage) EventBus.sigStarlingReady.dispatch();
+			else addEventListener(Event.ADDED_TO_STAGE, function(e:Event = null):void{StateMachine.starlingReady_callBack();});
 		}
 		
 		//------------------------------------------------------------------------------o
@@ -107,7 +111,7 @@ package view.components.screens
 		{
 			trace("levelToLoad :" + levelToLoad)
 			
-			
+			AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_ACTION_ASSETS, SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS,  this.loaded);
 			//------------Load State Assets ---------------//
 			switch(levelToLoad)
 			{
@@ -162,11 +166,16 @@ package view.components.screens
 			_layerOverlay = new Sprite();
 			this.addChild(_layerOverlay);
 
+			_oPlayer = new Player();
+			_oPlayer.x = Data.deviceResX/2
+			_oPlayer.y = Data.deviceResY/2
+			_layerAction.addChild(_oPlayer);
 			
 			//fillObjectPool(DataVO["LEVEL_" + DataVO.currentGameLevel + "_WAVE_" + DataVO.currentWave]);
 			
-			
-			//----------------AddEventListeners--------------------o
+			//------------------------------------------o
+			//--------  AddEventListeners --------------o
+			//------------------------------------------o
 			this.addEventListener(TouchEvent.TOUCH, onTouch)
 			
 			
@@ -237,7 +246,10 @@ package view.components.screens
 		
 
 		
-
+		public function trash():void
+		{
+			
+		}
 
 		//-------------------------------------------------------------------------o
 		//------ Getters and Setters 

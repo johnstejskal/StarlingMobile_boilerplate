@@ -12,7 +12,7 @@ package com.johnstejskal {
     import com.greensock.plugins.ThrowPropsPlugin;
 	import flash.events.TouchEvent;	
     import flash.geom.Rectangle;
-	import vo.DataVO;
+	import staticData.DataVO;
 	
      
     public class ThrowProps extends MovieClip {

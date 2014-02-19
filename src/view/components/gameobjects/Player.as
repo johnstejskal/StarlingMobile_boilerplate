@@ -20,14 +20,14 @@ package view.components.gameobjects
 	 * johnstejskal@gmail.com
 	 * "Why walk when you can ride"
 	 */
-	public class BlankComponent extends GameObject
+	public class Player extends GameObject
 	{
 		private var _core:Core;
 		
 		private var _collisionArea:Image;
 		
 		//images
-		private var _imgSomeImage:Image;
+		private var _imgPlayer:Image;
 		private var _quFill:Quad;
 		
 		//mc's
@@ -37,7 +37,7 @@ package view.components.gameobjects
 		//-----------------------------o
 		//-- Constructor
 		//-----------------------------o
-		public function BlankComponent() 
+		public function Player() 
 		{
 			trace(this + "Constructed");
 			_core = Core.getInstance();
@@ -57,11 +57,11 @@ package view.components.gameobjects
 			addChild(_quFill);
 			_quFill.visible = false;*/
 			
-			/*_imgSomeImage = new Image(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS).getTexture("TA_carRed0000"));
-			_imgSomeImage.x = -_imgSomeImage.width / 2;
-			_imgSomeImage.y = -_imgSomeImage.height / 2;
-			this.addChild(_imgSomeImage);
-			_imgSomeImage.visible = true;*/
+			_imgPlayer = new Image(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS).getTexture("TA_player0000"));
+			_imgPlayer.x = -_imgPlayer.width / 2;
+			_imgPlayer.y = -_imgPlayer.height / 2;
+			this.addChild(_imgPlayer);
+			_imgPlayer.visible = true;
 			
 			
 			/*_smcSomeMoveClip = new MovieClip(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS).getTextures("TA_blinker"), 12);
@@ -81,7 +81,7 @@ package view.components.gameobjects
 			
 		}
 		
-		public function trash():void
+		public override function trash():void
 		{
 			trace(this+" trash()")
 			

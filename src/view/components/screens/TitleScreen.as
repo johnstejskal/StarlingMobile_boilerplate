@@ -8,6 +8,7 @@ package view.components.screens
 	import com.greensock.TweenLite;
 	import com.johnstejskal.maths.Maths;
 	import flash.sampler.NewObjectSample;
+	import interfaces.iScreen;
 	import ManagerClasses.AssetsManager;
 	import ManagerClasses.StateMachine;
 	import singleton.Core;
@@ -21,10 +22,10 @@ package view.components.screens
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import vo.SpriteSheets;
+	import staticData.SpriteSheets;
 
 
-	import vo.Constants;
+	import staticData.Constants;
 
 
 	
@@ -33,7 +34,7 @@ package view.components.screens
 	 * "Why walk when you can ride"
 	 */
 	
-	public class TitleScreen extends Sprite
+	public class TitleScreen extends Sprite implements iScreen
 	{
 		private var _core:Core;
 		private var _imgBG:Image;

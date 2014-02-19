@@ -59,7 +59,7 @@ package ManagerClasses
 			//-------------------------------o				
 			public static function getTexture(name:String):Texture
 			{
-				
+				trace(AssetsManager + " getTexture(" + name + ")");
 				if (_gametextures[name] == undefined || _gametextures[name] == null)
 				{
 					var bitmap:Bitmap = new SPRITE_SHEET_CLASS[name]();
