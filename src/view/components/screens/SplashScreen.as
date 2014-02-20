@@ -41,7 +41,6 @@ package view.components.screens
 		public function trash():void 
 		{
 			trace(this + "trash()");
-			
 			this.parent.removeChild(this);
 		}		
 		

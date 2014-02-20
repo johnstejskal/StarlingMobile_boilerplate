@@ -24,7 +24,7 @@ package staticData.settings
 	static public const MUTE_SOUND:Boolean = false;
 
 	static public const DEBUG_MODE:Boolean = false;
-	static public const DISABLE_TOUCH:Boolean = false;
+
 	
 
 	//debug flags

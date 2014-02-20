@@ -23,6 +23,7 @@ package view.components.gameobjects
 	public class Player extends GameObject
 	{
 		private var _core:Core;
+		private var _scaleWithDevice:Boolean;
 		
 		private var _collisionArea:Image;
 		
@@ -37,10 +38,11 @@ package view.components.gameobjects
 		//-----------------------------o
 		//-- Constructor
 		//-----------------------------o
-		public function Player() 
+		public function Player(scaleWithDevice:Boolean = true) 
 		{
 			trace(this + "Constructed");
 			_core = Core.getInstance();
+			_scaleWithDevice = scaleWithDevice;
 			
 			if (stage) init(null);
 			else addEventListener(Event.ADDED_TO_STAGE, init);
@@ -51,6 +53,8 @@ package view.components.gameobjects
 		{
 			trace(this + "inited");
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
+			this.scaleX = this.scaleY = Data.deviceScaleX; 
 			
 			/*_quFill = new Quad(DataVO.STAGE_WIDTH, _imgSkyL.height, 0xffffff);
 			_quFill.alpha = .5;
@@ -73,6 +77,9 @@ package view.components.gameobjects
 			addChild(_smcSomeMoveClip);*/	
 			
 			this.addEventListener(Event.ENTER_FRAME, onUpdate)
+			
+			
+			
 			
 		}
 		

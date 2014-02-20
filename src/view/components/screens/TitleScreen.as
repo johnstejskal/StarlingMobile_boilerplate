@@ -7,6 +7,7 @@ package view.components.screens
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenLite;
 	import com.johnstejskal.maths.Maths;
+	import com.johnstejskal.StarlingUtil;
 	import flash.sampler.NewObjectSample;
 	import interfaces.iScreen;
 	import ManagerClasses.AssetsManager;
@@ -22,6 +23,7 @@ package view.components.screens
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import staticData.Data;
 	import staticData.SpriteSheets;
 
 
@@ -38,6 +40,8 @@ package view.components.screens
 	{
 		private var _core:Core;
 		private var _imgBG:Image;
+		private var _imgTitleLogo:Image;
+		private var _imgButton:Image;
 
 
 		//----------------------------------------o
@@ -63,9 +67,7 @@ package view.components.screens
 			 * Load State Specific Assets
 			 */
 			AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.SPRITE_ATLAS_GAME_BG,  this.loaded);
-			
-			//Assets.loadTextureFromFile(Assets.TA_PATH_TITLESCREEN, Assets.SPRITE_ATLAS_TITLESCREEN, this.loaded );
-			//Assets.loadTextureFromFile(Assets.TA_PATH_TITLE_TEXT, Assets.SPRITE_ATLAS_TITLE_TEXT, this.loaded );
+			AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_TITLE_SCREEN, SpriteSheets.SPRITE_ATLAS_TITLE_SCREEN, this.loaded );
 			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
@@ -76,10 +78,25 @@ package view.components.screens
 		private function loaded():void 
 		{
 			trace(this + "loaded()");
+			
 			_imgBG = new Image(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_GAME_BG).getTexture("TA_bg_10000"));
+			
 			this.addChild(_imgBG);
 			
+			_imgTitleLogo = new Image(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_TITLE_SCREEN).getTexture("TA_titleScreenLogo0000"));
+			StarlingUtil.setRegPoint(_imgTitleLogo, StarlingUtil.CENTER);
+			StarlingUtil.setScreenPos(_imgTitleLogo, StarlingUtil.CENTER)
+			StarlingUtil.setScale(_imgTitleLogo, Data.deviceScaleX)
 			
+			this.addChild(_imgTitleLogo);	
+			
+			
+			_imgButton = new Image(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_TITLE_SCREEN).getTexture("TA_button10000"));
+			StarlingUtil.setRegPoint(_imgButton, StarlingUtil.TOP_LEFT);
+			StarlingUtil.setScale(_imgButton, Data.deviceScaleX)
+
+			this.addChild(_imgButton);	
+					
 			//addListeners
 			this.addEventListener(TouchEvent.TOUCH, onTouch)
 		}
@@ -92,7 +109,7 @@ package view.components.screens
 			var touch:Touch = e.getTouch(stage);
             if(touch)
             {
-				trace(this + "onTouch(" + touch.phase + ")");
+				//trace(this + "onTouch(" + touch.phase + ")");
 				
                 if(touch.phase == TouchPhase.BEGAN)
                 {
@@ -129,8 +146,8 @@ package view.components.screens
 		//----------------------------------------o	
 		public function trash():void
 		{
-			removeEventListener(Event.ENTER_FRAME, onUpdate);
-			
+			//removeEventListener(Event.ENTER_FRAME, onUpdate);
+			this.removeEventListeners();
 			//dispose texture maps
 			//Assets.disposeTexture(Assets.SPRITE_ATLAS_TITLESCREEN);
 			this.removeFromParent();

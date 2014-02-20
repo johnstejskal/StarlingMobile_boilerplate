@@ -60,7 +60,9 @@ package ManagerClasses
 			
 			if (PublicSettings.DEVICE_RELEASE)
 			{
-				NativeApplication.nativeApplication.systemIdleMode = DeviceSettings.SYSTEM_IDLE_MODE;
+				if(DeviceSettings.KEEP_DEVICE_AWAKE)
+				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
+				
 				Multitouch.inputMode = DeviceSettings.TOUCH_INPUT_MODE;
 				
 				Data.deviceResX = _stage.fullScreenWidth;
@@ -72,11 +74,15 @@ package ManagerClasses
 				Data.deviceResY = _stage.stageHeight;
 			}
 			
-			Data.baseResX = _stage.width;
-			Data.baseResY = _stage.height;				
+			Data.baseResX = Constants.BASE_RES_X;
+			Data.baseResY = Constants.BASE_RES_Y;			
 
 			Data.deviceScaleX = Data.deviceResX / Data.baseResX;
 			Data.deviceScaleY = Data.deviceResY / Data.baseResY;
+			
+			trace("Data.deviceResX :" + Data.deviceResX);
+			trace("Data.baseResX:" + Data.baseResX);
+			trace("Data.deviceScaleX :" + Data.deviceScaleX);
 
 		}	
 		

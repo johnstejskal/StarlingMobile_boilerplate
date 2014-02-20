@@ -39,7 +39,14 @@ package staticData
 		public static var textureAtlasActionAssetsXML:Class; 												 
 
 
-													
+		//-------------------------------------------o
+		//-------------------------o title screen
+		//-------------------------------------------o
+		public static const SPRITE_ATLAS_TITLE_SCREEN:String = "textureAtlasTitleScreen";
+		public static const TA_PATH_TITLE_SCREEN:String = "runtimeAssets/spriteSheets/SpriteSheet_titleScreen.png"; //used for external loading
+			
+		[Embed(source = "../../bin/runtimeAssets/spriteSheets/SpriteSheet_titleScreen.xml", mimeType="application/octet-stream")]
+		public static var textureAtlasTitleScreenXML:Class; 													
 
 													
 

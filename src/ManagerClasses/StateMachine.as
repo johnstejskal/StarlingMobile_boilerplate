@@ -11,6 +11,7 @@
 	import org.osflash.signals.Signal;
 	import singleton.EventBus;
 	import starling.core.Starling;
+	import view.StarlingStage;
 
 	import view.components.screens.SplashScreen;
 
@@ -56,11 +57,13 @@
 
 		public static var currentGameState:String;
 		
+		public static var oStarlingStage:StarlingStage;
 		
 		//Screen Components
 		public static var _oTitleScreen:TitleScreen;
 		public static var _oPlayScreen:PlayScreen;
 		public static var _oSplashScreen:SplashScreen;
+		
 		public static var _levelToLoad:String = "level1";
 
 		public function StateMachine() 
@@ -72,19 +75,36 @@
 		public static function init():void
 		{
 			trace(StateMachine + "init()");
-			_oSplashScreen = new SplashScreen();
-			_oSplashScreen.x = 0;
-			_oSplashScreen.y = 0;
-			Core.getInstance().main.addChild(_oSplashScreen);
+			//_oSplashScreen = new SplashScreen();
+			//_oSplashScreen.x = 0;
+			//_oSplashScreen.y = 0;
+			//Core.getInstance().main.addChild(_oSplashScreen);
 			
 							
 		}
 		
 		
-		//this fires when the setup state manager reeives an iscompleted callbak from the playscreen
-		static public function starlingReady_callBack():void
+		
+		
+		//call this before any state changes to bind 
+		static public function setup():void
 		{
-			changeState(STATE_PLAY);
+			//----------------------o
+			//-- Map Signals
+			//----------------------o
+			EventBus.getInstance().defineSignal(EventBus.sigOnDeactivate, evtOnDeactivate, null)
+			EventBus.getInstance().defineSignal(EventBus.sigStarlingStageReady, evtStarlingStageReady, null)
+		}
+		
+		static private function evtOnDeactivate():void 
+		{
+			changeState(STATE_DEACTIVATE);
+		}
+		
+		//this fires when the setup state manager reeives an iscompleted callbak from the StarlingStage
+		static public function evtStarlingStageReady():void
+		{
+			changeState(STATE_TITLE);
 		}
 		
 	   /* 
@@ -105,29 +125,17 @@
 			switch(state)
 			{
 				//------------------------------------------------------------------------------------o
-				case STATE_SETUP:
-				//----------------------o
-				//-- Map Signals
-				//----------------------o
-				EventBus.getInstance().defineSignal(EventBus.sigOnDeactivate, changeState, STATE_DEACTIVATE)
-				EventBus.getInstance().defineSignal(EventBus.sigStarlingReady, starlingReady_callBack)
-					
-				
-				if (!Core.getInstance().starling.isStarted)
-				Core.getInstance().starling.start();
-					break;	
-					
-				//------------------------------------------------------------------------------------o
-				
 				case STATE_INTRO:
 					currentGameState = STATE_INTRO;
 				break;	
 				
 				//------------------------------------------------------------------------------------o
 			    case STATE_TITLE:
-				
+				StateMachine.setup();
 					_oTitleScreen = new TitleScreen();
 					_oTitleScreen.x = _oTitleScreen.y = 0;
+					oStarlingStage.addChild(_oTitleScreen);
+					
 					currentGameState = STATE_TITLE;
 					EventBus.getInstance().defineSignal(EventBus.sigOnStartClicked, changeState, String)
 					
@@ -141,6 +149,8 @@
 
 					currentGameState = STATE_PLAY;	
 					
+					_oPlayScreen = new PlayScreen();
+					
 					if (_oTitleScreen)
 					_oTitleScreen.trash();	
 					
@@ -150,7 +160,10 @@
 					if (!Core.getInstance().starling.isStarted)
 					Core.getInstance().starling.start();
 					
-					//_oPlayScreen = new PlayScreen();
+					oStarlingStage.addChild(_oPlayScreen);
+					
+					
+					//_oStarlingStage = new PlayScreen();
 					_oPlayScreen.init(_levelToLoad);
 				break;
 				//------------------------------------------------------------------------------------o

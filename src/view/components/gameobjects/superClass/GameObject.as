@@ -63,7 +63,7 @@ package view.components.gameobjects.superClass
 		public function trash():void
 		{
 			trace(this+" trash()")
-			
+			this.removeEventListeners();
 		}
 		
 		

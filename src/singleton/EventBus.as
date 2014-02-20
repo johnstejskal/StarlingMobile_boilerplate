@@ -31,12 +31,12 @@
 		public static var sigOnDeactivate:Signal;
 		
 		
-		public static var sigStarlingReady:Signal;
+		public static var sigStarlingStageReady:Signal;
 		
 
-		public function defineSignal(signal:Signal, callback:Function, params:* = null):void
+		public function defineSignal(signal:Signal, callback:Function, type:Class = null):void
 		{
-			signal = new Signal(params);
+			signal = new Signal(type);
 			signal.add(callback)
 			_arrSignals.push(signal);
 		}

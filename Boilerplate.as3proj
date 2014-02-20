@@ -6,7 +6,7 @@
     <movie input="" />
     <movie path="bin\main.swf" />
     <movie fps="60" />
-    <movie width="1024" />
+    <movie width="800" />
     <movie height="768" />
     <movie version="3" />
     <movie minorVersion="7" />

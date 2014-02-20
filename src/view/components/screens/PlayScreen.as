@@ -42,6 +42,8 @@ package view.components.screens
 	import starling.utils.Color;
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
+	import staticData.settings.DeviceSettings;
+	import staticData.settings.PublicSettings;
 	import view.components.gameobjects.Player;
 
 	import staticData.Data;
@@ -100,8 +102,6 @@ package view.components.screens
 			
 			StateMachine._oPlayScreen = this;
 
-			if (stage) EventBus.sigStarlingReady.dispatch();
-			else addEventListener(Event.ADDED_TO_STAGE, function(e:Event = null):void{StateMachine.starlingReady_callBack();});
 		}
 		
 		//------------------------------------------------------------------------------o
@@ -168,7 +168,9 @@ package view.components.screens
 
 			_oPlayer = new Player();
 			_oPlayer.x = Data.deviceResX/2
-			_oPlayer.y = Data.deviceResY/2
+			_oPlayer.y = Data.deviceResY / 2
+			
+			
 			_layerAction.addChild(_oPlayer);
 			
 			//fillObjectPool(DataVO["LEVEL_" + DataVO.currentGameLevel + "_WAVE_" + DataVO.currentWave]);
@@ -176,6 +178,7 @@ package view.components.screens
 			//------------------------------------------o
 			//--------  AddEventListeners --------------o
 			//------------------------------------------o
+			if(DeviceSettings.ENABLE_TOUCH)
 			this.addEventListener(TouchEvent.TOUCH, onTouch)
 			
 			
@@ -207,7 +210,7 @@ package view.components.screens
 			var touch:Touch = e.getTouch(stage);
 			if(touch)
 			{
-				trace(this + "onTouch(" + touch.phase + ")");
+				//trace(this + "onTouch(" + touch.phase + ")");
 				
 				if(touch.phase == TouchPhase.BEGAN)
 				{
@@ -245,9 +248,12 @@ package view.components.screens
 		
 		
 
-		
+		//------------------------------------o
+		//-- Trash/Dispose/Kill/Anihliate
+		//------------------------------------o		
 		public function trash():void
 		{
+		  this.removeEventListeners();
 			
 		}
 

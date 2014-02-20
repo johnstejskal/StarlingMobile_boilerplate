@@ -62,11 +62,12 @@ package
 			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
+			
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_BORDER;
-	
+	       
 			Starling.multitouchEnabled = true;
-			_starling = new Starling(PlayScreen, stage);
+			_starling = new Starling(StarlingStage, stage);
 			_starling.simulateMultitouch = true;
 			_starling.antiAliasing = 1;
 			_starling.enableErrorChecking = false;
