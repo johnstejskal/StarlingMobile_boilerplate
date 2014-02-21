@@ -20,6 +20,7 @@ package staticData.settings
 	static public const TOUCH_INPUT_MODE:String = MultitouchInputMode.TOUCH_POINT;
 	static public const KEEP_DEVICE_AWAKE:Boolean = true;
 	static public const ENABLE_TOUCH:Boolean = true;
+	static public const ENABLE_GESTURES:Boolean = false;
 
 
 	}

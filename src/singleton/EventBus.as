@@ -16,7 +16,8 @@
 		
 		private static var instance: EventBus;
 		private static var _privateNumber:Number = Math.random();
-		private static var _arrSignals:Array;
+		
+		private  var _arrSignals:Array = [];
 		
 		
 
@@ -25,25 +26,25 @@
 		//----------------------------------------o		
 		
 		
-		public static var sig_timeOver:Signal;
-		public static var sig_playerDied:Signal;
-		public static var sigOnStartClicked:Signal;
-		public static var sigOnDeactivate:Signal;
-		
-		
-		public static var sigStarlingStageReady:Signal;
+		public var sig_timeOver:Signal;
+		public var sig_playerDied:Signal;
+		public var sigOnStartClicked:Signal;
+		public var sigOnDeactivate:Signal;
+		public var sigStarlingStageReady:Signal;
 		
 
-		public function defineSignal(signal:Signal, callback:Function, type:Class = null):void
+		public function defineSignal(signal:Signal, callback:Function):void
 		{
-			signal = new Signal(type);
-			signal.add(callback)
-			_arrSignals.push(signal);
+			//signal = new Signal();
+			//signal.add(callback)
+			//_arrSignals.push(signal);
+			//trace(EventBus+"New Signal Defined:"+signal)
+			//trace(EventBus+"sigOnStartClicked:"+sigOnStartClicked)
 		}
 	
 		
 
-		public static function removeAllSignals():void
+		public  function removeAllSignals():void
 		{
 			while (_arrSignals.length > 1)
 			{

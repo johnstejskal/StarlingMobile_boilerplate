@@ -21,6 +21,7 @@ package ManagerClasses
 	import staticData.settings.DeviceSettings;
 	import staticData.settings.PublicSettings;
 	import staticData.SpriteSheets;
+	import view.components.ui.nativeDisplay.DebugPanel;
 
 
 	/**
@@ -48,6 +49,9 @@ package ManagerClasses
 			
 			//SET SPRITE SHEET CLASS LOCATION WITHIN AssetsManager
 			AssetsManager.SPRITE_SHEET_CLASS = SpriteSheets;
+			
+
+			
 			setup();
 		}
 		
@@ -84,6 +88,10 @@ package ManagerClasses
 			trace("Data.baseResX:" + Data.baseResX);
 			trace("Data.deviceScaleX :" + Data.deviceScaleX);
 
+			
+			
+			_core.oDebugPanel = new DebugPanel(150, 100, DebugPanel.BOTTOM_LEFT);
+			_stage.addChild(_core.oDebugPanel);
 		}	
 		
 		

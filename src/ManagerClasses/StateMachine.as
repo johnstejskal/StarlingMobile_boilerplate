@@ -6,6 +6,7 @@
 	import com.johnstejskal.FaceBook;
 	import flash.display.Loader;
 	import flash.external.ExternalInterface;
+	import flash.security.SignatureStatus;
 	import ManagerClasses.CustomEvents.ScreenReadyEvent;
 	import ManagerClasses.CustomEvents.StateCleanUpEvent;
 	import org.osflash.signals.Signal;
@@ -83,17 +84,20 @@
 							
 		}
 		
-		
-		
-		
+
 		//call this before any state changes to bind 
 		static public function setup():void
 		{
 			//----------------------o
 			//-- Map Signals
 			//----------------------o
-			EventBus.getInstance().defineSignal(EventBus.sigOnDeactivate, evtOnDeactivate, null)
-			EventBus.getInstance().defineSignal(EventBus.sigStarlingStageReady, evtStarlingStageReady, null)
+			
+			EventBus.getInstance().sigOnDeactivate = new Signal();
+			EventBus.getInstance().sigOnDeactivate.add(evtOnDeactivate);
+			
+			EventBus.getInstance().sigStarlingStageReady = new Signal();
+			EventBus.getInstance().sigStarlingStageReady.addOnce(evtStarlingStageReady);
+			
 		}
 		
 		static private function evtOnDeactivate():void 
@@ -106,7 +110,13 @@
 		{
 			changeState(STATE_TITLE);
 		}
-		
+		static private function evtOnStartClicked():void 
+		{
+			trace(StateMachine + "evtOnStartClicked()")
+			
+			//EventBus.getInstance().sigOnStartClicked.removeAll();
+			changeState(STATE_PLAY);
+		}
 	   /* 
 		*------------------------------------------o
 		*
@@ -131,16 +141,16 @@
 				
 				//------------------------------------------------------------------------------------o
 			    case STATE_TITLE:
-				StateMachine.setup();
+					StateMachine.setup();
 					_oTitleScreen = new TitleScreen();
 					_oTitleScreen.x = _oTitleScreen.y = 0;
 					oStarlingStage.addChild(_oTitleScreen);
 					
 					currentGameState = STATE_TITLE;
-					EventBus.getInstance().defineSignal(EventBus.sigOnStartClicked, changeState, String)
 					
-					//EventBus.getInstance().sigOnStartClicked = new Signal(String);
-					//EventBus.getInstance().sigOnStartClicked.add(onSignal_startGame) 
+					EventBus.getInstance().sigOnStartClicked = new Signal();
+					EventBus.getInstance().sigOnStartClicked.addOnce(evtOnStartClicked)
+				
 					
 				break;
 
@@ -186,6 +196,8 @@
 			}
 			trace("-- StateMachine completed changeState(" + state + ")");
 		}
+		
+
 		
 
 		

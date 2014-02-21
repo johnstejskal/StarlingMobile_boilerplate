@@ -12,6 +12,8 @@ package view.components.screens
 	import interfaces.iScreen;
 	import ManagerClasses.AssetsManager;
 	import ManagerClasses.StateMachine;
+	import org.gestouch.events.GestureEvent;
+	import org.gestouch.gestures.SwipeGesture;
 	import singleton.Core;
 	import singleton.EventBus;
 	import starling.core.Starling;
@@ -24,6 +26,7 @@ package view.components.screens
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import staticData.Data;
+	import staticData.settings.DeviceSettings;
 	import staticData.SpriteSheets;
 
 
@@ -96,14 +99,28 @@ package view.components.screens
 			StarlingUtil.setScale(_imgButton, Data.deviceScaleX)
 
 			this.addChild(_imgButton);	
-					
+				
+			
 			//addListeners
+			if (DeviceSettings.ENABLE_TOUCH)
 			this.addEventListener(TouchEvent.TOUCH, onTouch)
+			
+			if (DeviceSettings.ENABLE_GESTURES)
+			{
+			var swipe:SwipeGesture = new SwipeGesture(this);
+			swipe.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onSwipeRec);
+			}
+			
+			
+			_core.oDebugPanel.setTrace("Cool dude");
 		}
 		
 		//----------------------------------------------------------------------o
 		//------ Event Handlers 
 		//----------------------------------------------------------------------o			
+		//----------------------------------------------------------------------o
+		//------ Touch Handlers 
+		//----------------------------------------------------------------------o	
 		private function onTouch(e:TouchEvent):void 
 		{
 			var touch:Touch = e.getTouch(stage);
@@ -112,8 +129,13 @@ package view.components.screens
 				//trace(this + "onTouch(" + touch.phase + ")");
 				
                 if(touch.phase == TouchPhase.BEGAN)
-                {
-					EventBus.sigOnStartClicked.dispatch(StateMachine.STATE_PLAY);
+                {				
+					if (e.target == _imgButton)
+					{
+					EventBus.getInstance().sigOnStartClicked.dispatch();
+					trash();
+					}
+					
                 }
  
                 else if(touch.phase == TouchPhase.ENDED)
@@ -128,8 +150,42 @@ package view.components.screens
             }
 		}
 		
+		
+		//----------------------------------------------------------------------o
+		//------ Gesture Swipe Handlers 
+		//----------------------------------------------------------------------o			
+		private function onSwipeRec(e:GestureEvent):void
+		{
+			var swipeGesture:SwipeGesture = e.target as SwipeGesture;
+			
+			trace("GESTURE RECOGNIZED");
+			//----- RIGHT SWIPE
+			if (swipeGesture.offsetX > 6)
+			{
+				trace(this +	"onSwipeRec().right");
+			}
+			//----- LEFT SWIPE
+			else if (swipeGesture.offsetX < -6)
+			{
+				trace(this +	"onSwipeRec().left");
+			}
+			//----- UP SWIPE
+			else if (swipeGesture.offsetY < -6)
+			{
+				trace(this +	"onSwipeRec().up");				
+			}
+			//----- DOWN SWIPE
+			else if (swipeGesture.offsetY > 6) 
+			{
+				trace(this +	"onSwipeRec().down");
+			}
+			
+		}	
+		
+		
+		
 		//----------------------------------------o
-		//------ Entewr frame loop
+		//------ Enter frame loop
 		//----------------------------------------o		
 		private function onUpdate(e:Event):void 
 		{
@@ -146,6 +202,7 @@ package view.components.screens
 		//----------------------------------------o	
 		public function trash():void
 		{
+			trace(this + "trash()");
 			//removeEventListener(Event.ENTER_FRAME, onUpdate);
 			this.removeEventListeners();
 			//dispose texture maps

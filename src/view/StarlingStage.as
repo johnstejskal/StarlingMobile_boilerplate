@@ -33,7 +33,7 @@ package view
 			
 			
 			
-			if (stage) EventBus.sigStarlingStageReady.dispatch();
+			if (stage) EventBus.getInstance().sigStarlingStageReady.dispatch();
 			else addEventListener(Event.ADDED_TO_STAGE, function(e:Event = null):void{StateMachine.evtStarlingStageReady()});
 		}
 		

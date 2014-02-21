@@ -152,6 +152,9 @@ package com.johnstejskal
 				
 			}
 		}
+		
+		
+		
 		//--------------------------------------------o
 		// Changes the scale of an object,
 		// used for matching device scale ratios
@@ -163,6 +166,15 @@ package com.johnstejskal
 			obj.scaleX = obj.scaleY = scale
 		}
 		
+		static public function shakeMC(degree:Number, time:Number):void 
+		{
+			//obj.scaleX = obj.scaleY = scale
+		}
+		
+		static public function shakeScreen(degree:Number, time:Number):void 
+		{
+			//obj.scaleX = obj.scaleY = scale
+		}		
 	}
 
 }
