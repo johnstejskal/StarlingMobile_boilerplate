@@ -21,6 +21,7 @@ package staticData.settings
 	static public const KEEP_DEVICE_AWAKE:Boolean = true;
 	static public const ENABLE_TOUCH:Boolean = true;
 	static public const ENABLE_GESTURES:Boolean = false;
+	static public const ENABLE_ACCELEROMETER:Boolean = true;
 
 
 	}

@@ -64,8 +64,8 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			stage.align = StageAlign.TOP_LEFT;
-			stage.scaleMode = StageScaleMode.SHOW_ALL;
-			//stage.scaleMode = StageScaleMode.NO_BORDER;
+			//stage.scaleMode = StageScaleMode.SHOW_ALL;
+			stage.scaleMode = StageScaleMode.NO_BORDER;
 			
 			Starling.multitouchEnabled = true;
 			Starling.handleLostContext = true;

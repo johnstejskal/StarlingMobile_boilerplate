@@ -11,8 +11,10 @@ package view.components.screens
 	import com.johnstejskal.StringFunctions;
 	import flash.display.Bitmap;
 	import flash.display.Stage;
+	import flash.events.AccelerometerEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
+	import flash.sensors.Accelerometer;
 	import flash.utils.Timer;
 	import interfaces.iScreen;
 	import ManagerClasses.AssetsManager;
@@ -87,8 +89,10 @@ package view.components.screens
 		
 		//Assets
 		private var _oPlayer:Player;
+		private var _accelerometer:Accelerometer;
 		
-		
+		private var veloX:Number = 0;
+        private var veloY:Number = 0;		
 
 		//----------------------------------------o
 		//------ Constructor
@@ -173,6 +177,16 @@ package view.components.screens
 			
 			_layerAction.addChild(_oPlayer);
 			
+			
+			if (Accelerometer.isSupported && DeviceSettings.ENABLE_ACCELEROMETER)
+			{
+			_accelerometer = new Accelerometer();
+			_accelerometer.setRequestedUpdateInterval(50);
+			_accelerometer.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
+			}
+			
+
+			
 			//fillObjectPool(DataVO["LEVEL_" + DataVO.currentGameLevel + "_WAVE_" + DataVO.currentWave]);
 			
 			//------------------------------------------o
@@ -229,7 +243,25 @@ package view.components.screens
 			}
  
 		}
-		
+		//------------------------------------o
+		//-- Accelerometer event
+		//------------------------------------o
+		private	function onAccUpdate(e:AccelerometerEvent):void
+		{
+			//trace(e.accelerationY)
+			_oPlayer.x -= (e.accelerationX*20);
+			//_oPlayer.y += (e.accelerationY * 10);
+			
+			
+			if (_oPlayer.x < 0)
+			_oPlayer.x = 0;
+			if (_oPlayer.x > Data.deviceResX)
+			_oPlayer.x = Data.deviceResX;
+			
+
+
+		} 	
+			
 		//------------------------------------o
 		//-- Enter Frame - Main Game Loop
 		//------------------------------------o
