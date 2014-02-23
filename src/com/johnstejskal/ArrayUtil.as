@@ -1,11 +1,11 @@
 package com.johnstejskal 
 {
 
-
-	
 	/**
 	 * ...
-	 * @author john
+	 * @author john Stejskal	
+	 * www.johnstejskal.com
+	 * "Why walk when you can ride"
 	 */
 	public class ArrayUtil
 	{
@@ -15,11 +15,9 @@ package com.johnstejskal
 			
 		}
 		
-		
 		//----------------------------------------------o
 		//--- last Character of String
 		//----------------------------------------------o
-		
 		public static function getLastCharInString($s:String):String
 		{
 		return $s.substr($s.length-1,$s.length);
@@ -42,17 +40,15 @@ package com.johnstejskal
 		//----------------------------------------------o		
 		public static function removeItemFromArray(thearray:Array, theItem:*):void
 		{
-			//trace("##################  Your array is - "+thearray);
 			for (var i:int = 0; i < thearray .length; i++)
 			{
 				if (thearray[i] == theItem) {
 					
 					thearray.splice(i,1);
-					//i-=1;
 				}
+			}
 		}
-			trace("############## Your array is now - "+thearray);
-		}
+		
 		//----------------------------------------------o
 		//--- Remove an item from Vector
 		//----------------------------------------------o		
@@ -71,21 +67,9 @@ package com.johnstejskal
 		}*/
 		
 		//----------------------------------------------o
-		//--- Shuffle Array
+		//--- Shuffle Array 
+		//--  modified original
 		//----------------------------------------------o			
-		/*public static function shuffleArray(array:Array):Array
-		{
-			var newArray:Array = new Array();
-			while (array.length > 0)
-			{
-			newArray.push(array.splice(Math.floor(Math.random()*array.length), 1));
-			}
-			return newArray;
-		}*/
-		
-		/**----------------------------------------
-		 * Shuffles an array (modifies original)
-		 */
 		static public function shuffleArray( a:Array ):void {			
 			var len:uint = a.length;
 			var n:uint;
@@ -99,9 +83,10 @@ package com.johnstejskal
 			}		
 		}	
 		
-		/**----------------------------------------
-		 * Shuffles an array returns a new arraw
-		 */
+		//----------------------------------------------o
+		//--- Shuffle Array 
+		//--  returns new array
+		//----------------------------------------------o	
 		static public function shuffleArray2( arr:Array ):void {			
 			var a:Array = arr;
 		

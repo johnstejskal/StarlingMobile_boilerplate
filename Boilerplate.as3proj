@@ -8,8 +8,8 @@
     <movie fps="60" />
     <movie width="480" />
     <movie height="800" />
-    <movie version="0" />
-    <movie minorVersion="0" />
+    <movie version="3" />
+    <movie minorVersion="7" />
     <movie platform="AIR Mobile" />
     <movie background="#333333" />
   </output>

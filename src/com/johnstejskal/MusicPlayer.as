@@ -46,9 +46,7 @@
 		public function loadMusic(path:String):void {
 			trace(this+".loadMusic");
 			_playing = false;
-			trace("1");
 			kill();
-			trace("2");
 			var urlRequest:URLRequest = new URLRequest(path);
 			music = new Sound();
 			music.addEventListener(Event.COMPLETE, musicReady);
@@ -112,20 +110,17 @@
 		//---o KILL
 		//==========================================================O
 		public function kill():void {
-			trace("3");
-			//stop();
-			trace("4");
+
 			if(soundChannel !=null){ 
-				trace("7");
+			
 				
 				soundChannel.removeEventListener(Event.SOUND_COMPLETE, loopMusic);
 				soundChannel.stop();
 				//delete soundChannel;
 				soundChannel = null;
-				trace("8");
+				
 			}
 			if (music) {
-				trace("5");
 				
 				music.removeEventListener(Event.COMPLETE, musicReady);
 				try
@@ -139,7 +134,7 @@
 				}
 				//delete music;
 				music = null;
-				trace("6");
+				
 			}
 			
 			

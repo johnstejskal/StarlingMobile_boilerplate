@@ -65,7 +65,8 @@ package
 			
 			stage.align = StageAlign.TOP_LEFT;
 			//stage.scaleMode = StageScaleMode.SHOW_ALL;
-			stage.scaleMode = StageScaleMode.NO_BORDER;
+			//stage.scaleMode = StageScaleMode.NO_BORDER;
+			stage.scaleMode = StageScaleMode.NO_SCALE; //this one tested and working on android
 			
 			Starling.multitouchEnabled = true;
 			Starling.handleLostContext = true;
@@ -79,12 +80,12 @@ package
 			
 			//-------------------------------------------------o
 			//-- Setup Gestouch for Starling Based Gesture Support
-			if (DeviceSettings.ENABLE_GESTURES)
+/*			if (DeviceSettings.ENABLE_GESTURES)
 			{
 				Gestouch.inputAdapter ||= new NativeInputAdapter(stage);
 				Gestouch.addDisplayListAdapter(starling.display.DisplayObject, new StarlingDisplayListAdapter());
 				Gestouch.addTouchHitTester(new StarlingTouchHitTester(_starling), -1);
-			}
+			}*/
 			
 			if (PublicSettings.SHOW_STARLING_STATS)
 			{

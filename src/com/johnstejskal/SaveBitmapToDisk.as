@@ -1,4 +1,4 @@
-package com.utils 
+package com.johnstejskal 
 {
 
 	import com.adobe.images.BitString;
@@ -35,11 +35,7 @@ package com.utils
 		{
 			_core = Core.getInstance();
 			
-		
-			
 		}
-		
-
 
 		//----------------------------------------o
 		//------ Private Methods 
@@ -54,10 +50,6 @@ package com.utils
 		// www.permadi.com
 		// (C) F. Permadi
 		//////////////////////////////////////
-
-
-
-
 
 		public function saveBitmapTargetToDisk(_target:*, fileName:String, _width:int, _height:int , quality:int ):void
 		{	

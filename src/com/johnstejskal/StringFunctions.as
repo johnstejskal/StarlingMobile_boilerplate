@@ -5,7 +5,9 @@ package com.johnstejskal
 	
 	/**
 	 * ...
-	 * @author john
+	 * @author john Stejskal	
+	 * www.johnstejskal.com
+	 * "Why walk when you can ride"
 	 */
 	public class StringFunctions 
 	{
@@ -19,12 +21,13 @@ package com.johnstejskal
 		//----------------------------------------------o
 		//--- last Character of String
 		//----------------------------------------------o
-		
 		public static function getLastCharInString($s:String):String
 		{
 		return $s.substr($s.length-1,$s.length);
 		}
-		
+		//----------------------------------------------o
+		//--- First Character of String
+		//----------------------------------------------o		
 		public static function getFirstCharInString($s:String):String
 		{
 		return $s.substr(0, 1);

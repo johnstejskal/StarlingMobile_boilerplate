@@ -6,7 +6,6 @@ package view.components.screens
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenLite;
-	import com.johnstejskal.maths.Maths;
 	import com.johnstejskal.StarlingUtil;
 	import flash.sampler.NewObjectSample;
 	import interfaces.iScreen;
@@ -105,11 +104,6 @@ package view.components.screens
 			if (DeviceSettings.ENABLE_TOUCH)
 			this.addEventListener(TouchEvent.TOUCH, onTouch)
 			
-			if (DeviceSettings.ENABLE_GESTURES)
-			{
-			var swipe:SwipeGesture = new SwipeGesture(this);
-			swipe.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onSwipeRec);
-			}
 			
 			
 			_core.oDebugPanel.setTrace("Cool dude");
@@ -150,37 +144,6 @@ package view.components.screens
             }
 		}
 		
-		
-		//----------------------------------------------------------------------o
-		//------ Gesture Swipe Handlers 
-		//----------------------------------------------------------------------o			
-		private function onSwipeRec(e:GestureEvent):void
-		{
-			var swipeGesture:SwipeGesture = e.target as SwipeGesture;
-			
-			trace("GESTURE RECOGNIZED");
-			//----- RIGHT SWIPE
-			if (swipeGesture.offsetX > 6)
-			{
-				trace(this +	"onSwipeRec().right");
-			}
-			//----- LEFT SWIPE
-			else if (swipeGesture.offsetX < -6)
-			{
-				trace(this +	"onSwipeRec().left");
-			}
-			//----- UP SWIPE
-			else if (swipeGesture.offsetY < -6)
-			{
-				trace(this +	"onSwipeRec().up");				
-			}
-			//----- DOWN SWIPE
-			else if (swipeGesture.offsetY > 6) 
-			{
-				trace(this +	"onSwipeRec().down");
-			}
-			
-		}	
 		
 		
 		

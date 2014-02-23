@@ -9,7 +9,7 @@ package com.senocular.utils {
 	/**
 	 * The KeyObject class recreates functionality of
 	 * Key.isDown of ActionScript 1 and 2
-	 *
+	 *  by senocular
 	 * Usage:
 	 * var key:KeyObject = new KeyObject(stage);
 	 * if (key.isDown(key.LEFT)) { ... }

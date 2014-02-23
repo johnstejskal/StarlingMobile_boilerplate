@@ -6,8 +6,8 @@ package view.components.screens
 	import com.greensock.TweenLite;
 	import com.johnstejskal.ArrayUtil;
 	import com.johnstejskal.Delegate;
-	import com.johnstejskal.maths.Mathematics;
-	import com.johnstejskal.maths.Maths;
+	import com.johnstejskal.Maths;
+
 	import com.johnstejskal.StringFunctions;
 	import flash.display.Bitmap;
 	import flash.display.Stage;
@@ -47,6 +47,8 @@ package view.components.screens
 	import staticData.settings.DeviceSettings;
 	import staticData.settings.PublicSettings;
 	import view.components.gameobjects.Player;
+	import view.components.TileGrid;
+	import view.components.ui.nativeDisplay.DebugPanel;
 
 	import staticData.Data;
 	import staticData.SpriteSheets;
@@ -181,13 +183,18 @@ package view.components.screens
 			if (Accelerometer.isSupported && DeviceSettings.ENABLE_ACCELEROMETER)
 			{
 			_accelerometer = new Accelerometer();
-			_accelerometer.setRequestedUpdateInterval(50);
+			_accelerometer.setRequestedUpdateInterval(10);
 			_accelerometer.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
 			}
 			
-
+			/* 
+			 * optional Tile Based grid
+			 */
+/*			var tileGrid:TileGrid = new TileGrid();
+			tileGrid.generateGrid(0, 0, 80, 80, TileGrid.LEVEL_MAP)
+			this.addChild(tileGrid);*/
 			
-			//fillObjectPool(DataVO["LEVEL_" + DataVO.currentGameLevel + "_WAVE_" + DataVO.currentWave]);
+
 			
 			//------------------------------------------o
 			//--------  AddEventListeners --------------o
@@ -249,9 +256,26 @@ package view.components.screens
 		private	function onAccUpdate(e:AccelerometerEvent):void
 		{
 			//trace(e.accelerationY)
-			_oPlayer.x -= (e.accelerationX*20);
+			
+			if (e.accelerationX < .02 && e.accelerationX > -0.02)
+			return;
+			
+			//if (e.accelerationX > .2 || e.accelerationX < -0.2)
+			//return;	
+			
+			var perc:Number; 
+			var accX:Number = e.accelerationX;
+			
+			perc = Maths.fastAbs(accX) * 0.2
+			
+			//if (accX < 0)
+			
+			
+			
+			_oPlayer.x -= (e.accelerationX*40);
 			//_oPlayer.y += (e.accelerationY * 10);
 			
+			//trace("perc:"+perc)
 			
 			if (_oPlayer.x < 0)
 			_oPlayer.x = 0;
@@ -259,6 +283,9 @@ package view.components.screens
 			_oPlayer.x = Data.deviceResX;
 			
 
+			_core.oDebugPanel.setTrace(String(perc))
+			
+			
 
 		} 	
 			
