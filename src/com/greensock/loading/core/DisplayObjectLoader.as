@@ -1,6 +1,6 @@
 /**
- * VERSION: 1.898
- * DATE: 2012-01-19
+ * VERSION: 1.935
+ * DATE: 2013-03-18
  * AS3
  * UPDATES AND DOCS AT: http://www.greensock.com/loadermax/
  **/
@@ -27,9 +27,8 @@ package com.greensock.loading.core {
 /**
  * Serves as the base class for SWFLoader and ImageLoader. There is no reason to use this class on its own. 
  * Please refer to the documentation for the other classes.
- * <br /><br />
  * 
- * <b>Copyright 2012, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <p><strong>Copyright 2014, GreenSock. All rights reserved.</strong> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for <a href="http://www.greensock.com/club/">Club GreenSock</a> members, the software agreement that was issued with the membership.</p>
  * 
  * @author Jack Doyle, jack@greensock.com
  */	
@@ -172,6 +171,7 @@ package com.greensock.loading.core {
 				_loader.contentLoaderInfo.removeEventListener("ioError", _failHandler);
 				_loader.contentLoaderInfo.removeEventListener("securityError", _securityErrorHandler);
 				_loader.contentLoaderInfo.removeEventListener("httpStatus", _httpStatusHandler);
+				_loader.contentLoaderInfo.removeEventListener("httpResponseStatus", _httpStatusHandler);
 				_loader.contentLoaderInfo.removeEventListener(Event.INIT, _initHandler);
 				if (_loader.hasOwnProperty("uncaughtErrorEvents")) { //not available when published to FP9, so we reference things this way to avoid compiler errors
 					Object(_loader).uncaughtErrorEvents.removeEventListener("uncaughtError", _errorHandler);
@@ -205,6 +205,7 @@ package com.greensock.loading.core {
 			_loader.contentLoaderInfo.addEventListener("ioError", _failHandler, false, 0, true);
 			_loader.contentLoaderInfo.addEventListener("securityError", _securityErrorHandler, false, 0, true);
 			_loader.contentLoaderInfo.addEventListener("httpStatus", _httpStatusHandler, false, 0, true);
+			_loader.contentLoaderInfo.addEventListener("httpResponseStatus", _httpStatusHandler, false, 0, true);
 			_loader.contentLoaderInfo.addEventListener(Event.INIT, _initHandler, false, 0, true);
 			if (_loader.hasOwnProperty("uncaughtErrorEvents")) { //not available when published to FP9, so we reference things this way to avoid compiler errors
 				Object(_loader).uncaughtErrorEvents.addEventListener("uncaughtError", _errorHandler, false, 0, true);

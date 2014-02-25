@@ -1,6 +1,6 @@
 /**
- * VERSION: 1.895
- * DATE: 2011-11-27
+ * VERSION: 1.896
+ * DATE: 2012-01-06
  * AS3
  * UPDATES AND DOCS AT: http://www.greensock.com/loadermax/
  **/
@@ -25,23 +25,23 @@ package com.greensock.loading.display {
  * you can add a FlexContentDisplay to the display list or populate an array with as many as you want and then if 
  * you ever need to unload() the content or reload it or figure out its url, etc., you can reference your 
  * FlexContentDisplay's <code>loader</code> property like <code>myContent.loader.url</code> or 
- * <code>(myContent.loader as SWFLoader).getClass("com.greensock.TweenLite");</code>. For
- * <br /><br />
+ * <code>(myContent.loader as SWFLoader).getClass("com.greensock.TweenLite");</code>.
  * 
- * <strong>IMPORTANT</strong>: In order for the LoaderMax loaders to use FlexContentDisplay instead of 
+ * 
+ * <p><strong>IMPORTANT</strong>: In order for the LoaderMax loaders to use FlexContentDisplay instead of 
  * the regular ContentDisplay class, you must set the <code>LoaderMax.contentDisplayClass</code> property 
- * to FlexContentDisplay once like:
- * @example Example AS3 code:<listing version="3.0">
+ * to FlexContentDisplay once like:</p>
+ * <listing version="3.0">
  import com.greensock.loading.~~;
  import com.greensock.loading.display.~~;
  
  LoaderMax.contentDisplayClass = FlexContentDisplay;
  </listing>
  * 
- * After that, all ImageLoaders, SWFLoaders, and VideoLoaders will return FlexContentDisplay objects 
- * as their <code>content</code> instead of regular ContentDisplay objects. <br /><br />
+ * <p>After that, all ImageLoaders, SWFLoaders, and VideoLoaders will return FlexContentDisplay objects 
+ * as their <code>content</code> instead of regular ContentDisplay objects. </p>
  * 
- * <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <p><strong>Copyright 2009-2014, GreenSock. All rights reserved.</strong> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for <a href="http://www.greensock.com/club/">Club GreenSock</a> members, the software agreement that was issued with the membership.</p>
  * 
  * @author Jack Doyle, jack@greensock.com
  */	
@@ -149,6 +149,13 @@ package com.greensock.loading.display {
 				} else {
 					nativeBounds = mc.getBounds(mc);
 				}
+				if (nativeBounds is LoaderInfo && _loader != null && _loader.progress < 1) {
+					try {
+						contentWidth = nativeBounds.width; //if not enough of the file has loaded, this can throw a runtime error saying that the "width" isn't known yet.
+					} catch (error:Error) {
+						nativeBounds = mc.getBounds(mc);
+					}
+				}
 				contentWidth = nativeBounds.width * Math.abs(m.a) + nativeBounds.height * Math.abs(m.b);
 				contentHeight = nativeBounds.width * Math.abs(m.c) + nativeBounds.height * Math.abs(m.d);
 			}
@@ -239,9 +246,9 @@ package com.greensock.loading.display {
 		 * The width to which the <code>rawContent</code> should be fit according to the FlexContentDisplay's <code>scaleMode</code>
 		 * (this width is figured before rotation, scaleX, and scaleY). When a "width" property is defined in the loader's <code>vars</code>
 		 * property/parameter, it is automatically applied to this <code>fitWidth</code> property. For example, the following code will
-		 * set the loader's FlexContentDisplay <code>fitWidth</code> to 100:<code><br /><br />
+		 * set the loader's FlexContentDisplay <code>fitWidth</code> to 100:<p><code>
 		 * 
-		 * var loader:ImageLoader = new ImageLoader("photo.jpg", {width:100, height:80, container:this});</code>
+		 * var loader:ImageLoader = new ImageLoader("photo.jpg", {width:100, height:80, container:this});</code></p>
 		 * 
 		 * @see #fitHeight
 		 * @see #scaleMode
@@ -258,9 +265,9 @@ package com.greensock.loading.display {
 		 * The height to which the <code>rawContent</code> should be fit according to the FlexContentDisplay's <code>scaleMode</code>
 		 * (this height is figured before rotation, scaleX, and scaleY). When a "height" property is defined in the loader's <code>vars</code>
 		 * property/parameter, it is automatically applied to this <code>fitHeight</code> property. For example, the following code will
-		 * set the loader's FlexContentDisplay <code>fitHeight</code> to 80:<code><br /><br />
+		 * set the loader's FlexContentDisplay <code>fitHeight</code> to 80:<p><code>
 		 * 
-		 * var loader:ImageLoader = new ImageLoader("photo.jpg", {width:100, height:80, container:this});</code>
+		 * var loader:ImageLoader = new ImageLoader("photo.jpg", {width:100, height:80, container:this});</code></p>
 		 * 
 		 * @see #fitWidth
 		 * @see #scaleMode

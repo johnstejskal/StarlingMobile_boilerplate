@@ -1,6 +1,6 @@
 /**
- * VERSION: 1.901
- * DATE: 2012-04-26
+ * VERSION: 1.938
+ * DATE: 2013-07-16
  * AS3
  * UPDATES AND DOCS AT: http://www.greensock.com/loadermax/
  **/
@@ -36,19 +36,19 @@ package com.greensock.loading {
  * before (or while) the video loads. Use the VideoLoader's <code>content</code> property to get the ContentDisplay 
  * Sprite, or use the <code>rawContent</code> property to get the <code>Video</code> object that is used inside the 
  * ContentDisplay to display the video. If a <code>container</code> is defined in the <code>vars</code> object, 
- * the ContentDisplay will immediately be added to that container).<br /><br />
+ * the ContentDisplay will immediately be added to that container).
  * 
- * You don't need to worry about creating a NetConnection, a Video object, attaching the NetStream, or any 
+ * <p>You don't need to worry about creating a NetConnection, a Video object, attaching the NetStream, or any 
  * of the typical hassles. VideoLoader can even scale the video into the area you specify using scaleModes 
  * like <code>"stretch", "proportionalInside", "proportionalOutside",</code> and more. A VideoLoader will 
  * dispatch useful events like <code>VIDEO_COMPLETE, VIDEO_PAUSE, VIDEO_PLAY, VIDEO_BUFFER_FULL, 
  * VIDEO_BUFFER_EMPTY, NET_STATUS, VIDEO_CUE_POINT</code>, and <code>PLAY_PROGRESS</code> in addition 
  * to the typical loader events, making it easy to hook up your own control interface. It packs a 
- * surprising amount of functionality into a very small amount of kb.<br /><br />
+ * surprising amount of functionality into a very small amount of kb.</p>
  * 
- * <strong>OPTIONAL VARS PROPERTIES</strong><br />
- * The following special properties can be passed into the VideoLoader constructor via its <code>vars</code> 
- * parameter which can be either a generic object or a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> object:<br />
+ * <p><strong>OPTIONAL VARS PROPERTIES</strong></p>
+ * <p>The following special properties can be passed into the VideoLoader constructor via its <code>vars</code> 
+ * parameter which can be either a generic object or a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> object:</p>
  * <ul>
  * 		<li><strong> name : String</strong> - A name that is used to identify the VideoLoader instance. This name can be fed to the <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> methods or traced at any time. Each loader's name should be unique. If you don't define one, a unique name will be created automatically, like "loader21".</li>
  * 		<li><strong> bufferTime : Number</strong> - The amount of time (in seconds) that should be buffered before the video can begin playing (set <code>autoPlay</code> to <code>false</code> to pause the video initially).</li>
@@ -106,7 +106,7 @@ package com.greensock.loading {
  * 		<li><strong> allowMalformedURL : Boolean</strong> - Normally, the URL will be parsed and any variables in the query string (like "?name=test&amp;state=il&amp;gender=m") will be placed into a URLVariables object which is added to the URLRequest. This avoids a few bugs in Flash, but if you need to keep the entire URL intact (no parsing into URLVariables), set <code>allowMalformedURL:true</code>. For example, if your URL has duplicate variables in the query string like <code>http://www.greensock.com/?c=S&amp;c=SE&amp;c=SW</code>, it is technically considered a malformed URL and a URLVariables object can't properly contain all the duplicates, so in this case you'd want to set <code>allowMalformedURL</code> to <code>true</code>.</li>
  * 		<li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError, onInit). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> - it is essentially destroyed but its content is not unloaded (you must call <code>unload()</code> or <code>dispose(true)</code> to unload its content). The default <code>autoDispose</code> value is <code>false</code>.
  * 		
- * 		<br /><br />----EVENT HANDLER SHORTCUTS----</li>
+ * 		<p>----EVENT HANDLER SHORTCUTS----</p></li>
  * 		<li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
  * 		<li><strong> onInit : Function</strong> - A handler function for <code>Event.INIT</code> events which will be called when the video's metaData has been received and the video is placed into the <code>ContentDisplay</code>. The <code>INIT</code> event can be dispatched more than once if the NetStream receives metaData more than once (which occasionally happens, particularly with F4V files - the first time often doesn't include the cuePoints). Make sure your <code>onInit</code> function accepts a single parameter of type <code>Event</code> (flash.events.Event).</li>
  * 		<li><strong> onProgress : Function</strong> - A handler function for <code>LoaderEvent.PROGRESS</code> events which are dispatched whenever the <code>bytesLoaded</code> changes. Make sure your onProgress function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>). You can use the LoaderEvent's <code>target.progress</code> to get the loader's progress value or use its <code>target.bytesLoaded</code> and <code>target.bytesTotal</code>.</li>
@@ -115,33 +115,33 @@ package com.greensock.loading {
  * 		<li><strong> onError : Function</strong> - A handler function for <code>LoaderEvent.ERROR</code> events which are dispatched whenever the loader experiences an error (typically an IO_ERROR). An error doesn't necessarily mean the loader failed, however - to listen for when a loader fails, use the <code>onFail</code> special property. Make sure your onError function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
  * 		<li><strong> onFail : Function</strong> - A handler function for <code>LoaderEvent.FAIL</code> events which are dispatched whenever the loader fails and its <code>status</code> changes to <code>LoaderStatus.FAILED</code>. Make sure your onFail function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
  * 		<li><strong> onIOError : Function</strong> - A handler function for <code>LoaderEvent.IO_ERROR</code> events which will also call the onError handler, so you can use that as more of a catch-all whereas <code>onIOError</code> is specifically for LoaderEvent.IO_ERROR events. Make sure your onIOError function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
- * </ul><br />
+ * </ul>
  * 
- * <strong>Note:</strong> Using a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> instance 
+ * <p><strong>Note:</strong> Using a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> instance 
  * instead of a generic object to define your <code>vars</code> is a bit more verbose but provides 
- * code hinting and improved debugging because it enforces strict data typing. Use whichever one you prefer.<br /><br />
+ * code hinting and improved debugging because it enforces strict data typing. Use whichever one you prefer.</p>
  * 
- * <strong>Note:</strong> To avoid garbage collection issues in the Flash player, the <code>netStream</code> 
+ * <p><strong>Note:</strong> To avoid garbage collection issues in the Flash player, the <code>netStream</code> 
  * object that VideoLoader employs must get recreated internally anytime the VideoLoader is unloaded or its loading 
  * is cancelled, so if you need to directly access the <code>netStream</code>, it is best to do so <strong>after</strong>
  * the <code>COMPLETE</code> event has been dispatched. Otherwise, if you store a reference to the VideoLoader's 
  * <code>netStream</code> before or during a load and it gets cancelled or unloaded for some reason, it won't reference 
- * the one that was used to load the video.<br /><br />
+ * the one that was used to load the video.</p>
  * 
- * <strong>Note:</strong> There is a bug/inconsistency in Adobe's NetStream class that causes relative URLs 
+ * <p><strong>Note:</strong> There is a bug/inconsistency in Adobe's NetStream class that causes relative URLs 
  * to use the swf's location as the base path instead of the HTML page's location like all other loaders. Therefore,
  * it would be wise to use the "base" attribute of the &lt;OBJECT&gt; and &lt;EMBED&gt; tags in the HTML to 
  * make sure all relative paths are consistent. See <a href="http://kb2.adobe.com/cps/041/tn_04157.html" target="_blank">http://kb2.adobe.com/cps/041/tn_04157.html</a>
- * for details.<br /><br />
+ * for details.</p>
  * 
- * <strong>Note:</strong> In order to minimize memory usage, VideoLoader doesn't attach the NetStream to its Video
+ * <p><strong>Note:</strong> In order to minimize memory usage, VideoLoader doesn't attach the NetStream to its Video
  * object (the <code>rawContent</code>) until it is added to the display list. Therefore, if your VideoLoader's content
  * isn't somewhere on the stage, the NetStream's visual content won't be fully decoded into memory (that's a good thing). 
  * The only time this could be of consequence is if you are trying to do a BitmapData.draw() of the VideoLoader's content 
  * or rawContent when it isn't on the stage. In that case, you'd just need to attach the NetStream manually before doing 
- * your BitmapData.draw() like <code>myVideoLoader.rawContent.attachNetStream(myVideoLoader.netStream)</code>. <br /><br />
+ * your BitmapData.draw() like <code>myVideoLoader.rawContent.attachNetStream(myVideoLoader.netStream)</code>. </p>
  * 
- * @example Example AS3 code:<listing version="3.0">
+ * Example AS3 code:<listing version="3.0">
  import com.greensock.loading.~~;
  import com.greensock.loading.display.~~;
  import com.greensock.~~;
@@ -187,7 +187,7 @@ function errorHandler(event:LoaderEvent):void {
 }
  </listing>
  * 
- * <b>Copyright 2010-2012, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <p><strong>Copyright 2010-2014, GreenSock. All rights reserved.</strong> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for <a href="http://www.greensock.com/club/">Club GreenSock</a> members, the software agreement that was issued with the membership.</p>
  * 
  * @see com.greensock.loading.data.VideoLoaderVars
  * 
@@ -262,6 +262,8 @@ function errorHandler(event:LoaderEvent):void {
 		protected var _autoDetachNetStream:Boolean;
 		/** @private the first VIDEO_PLAY event shouldn't be dispatched until the NetStream's NetStatusEvent fires with the code NetStream.Play.Start gets dispatched, so we track it with this Boolean variable. Otherwise, if you create a VideoLoader with autoPlay:false and then immediately load() and playVideo(), it would dispatch the VIDEO_PLAY event twice, once for the playVideo() and once when the NetStatusEvent is received. **/
 		protected var _playStarted:Boolean;
+		/** @private set to true as soon as the video finishes, and then is set back to false 1 ENTER_FRAME later - we use this to work around a bug in the Flash Player that causes a flicker when a seek() is called on a NetStream that just finished. **/
+		protected var _finalFrame:Boolean;
 		
 		/** The metaData that was received from the video (contains information about its width, height, frame rate, etc.). See Adobe's docs for information about a NetStream's onMetaData callback. **/
 		public var metaData:Object;
@@ -272,10 +274,10 @@ function errorHandler(event:LoaderEvent):void {
 		 * Constructor
 		 * 
 		 * @param urlOrRequest The url (<code>String</code>) or <code>URLRequest</code> from which the loader should get its content.
-		 * @param vars An object containing optional configuration details. For example: <code>new VideoLoader("video/video.flv", {name:"myVideo", onComplete:completeHandler, onProgress:progressHandler})</code>.<br /><br />
+		 * @param vars An object containing optional configuration details. For example: <code>new VideoLoader("video/video.flv", {name:"myVideo", onComplete:completeHandler, onProgress:progressHandler})</code>.
 		 * 
-		 * The following special properties can be passed into the constructor via the <code>vars</code> parameter
-		 * which can be either a generic object or a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> object:<br />
+		 * <p>The following special properties can be passed into the constructor via the <code>vars</code> parameter
+		 * which can be either a generic object or a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> object:</p>
 		 * <ul>
 		 * 		<li><strong> name : String</strong> - A name that is used to identify the VideoLoader instance. This name can be fed to the <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> methods or traced at any time. Each loader's name should be unique. If you don't define one, a unique name will be created automatically, like "loader21".</li>
 		 * 		<li><strong> bufferTime : Number</strong> - The amount of time (in seconds) that should be buffered before the video can begin playing (set <code>autoPlay</code> to <code>false</code> to pause the video initially).</li>
@@ -333,7 +335,7 @@ function errorHandler(event:LoaderEvent):void {
 		 * 		<li><strong> allowMalformedURL : Boolean</strong> - Normally, the URL will be parsed and any variables in the query string (like "?name=test&amp;state=il&amp;gender=m") will be placed into a URLVariables object which is added to the URLRequest. This avoids a few bugs in Flash, but if you need to keep the entire URL intact (no parsing into URLVariables), set <code>allowMalformedURL:true</code>. For example, if your URL has duplicate variables in the query string like <code>http://www.greensock.com/?c=S&amp;c=SE&amp;c=SW</code>, it is technically considered a malformed URL and a URLVariables object can't properly contain all the duplicates, so in this case you'd want to set <code>allowMalformedURL</code> to <code>true</code>.</li>
 		 * 		<li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError, onInit). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> - it is essentially destroyed but its content is not unloaded (you must call <code>unload()</code> or <code>dispose(true)</code> to unload its content). The default <code>autoDispose</code> value is <code>false</code>.
 		 * 		
-		 * 		<br /><br />----EVENT HANDLER SHORTCUTS----</li>
+		 * 		<p>----EVENT HANDLER SHORTCUTS----</p></li>
 		 * 		<li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
 		 * 		<li><strong> onInit : Function</strong> - A handler function for <code>Event.INIT</code> events which will be called when the video's metaData has been received and the video is placed into the <code>ContentDisplay</code>. The <code>INIT</code> event can be dispatched more than once if the NetStream receives metaData more than once (which occasionally happens, particularly with F4V files - the first time often doesn't include the cuePoints). Make sure your <code>onInit</code> function accepts a single parameter of type <code>Event</code> (flash.events.Event).</li>
 		 * 		<li><strong> onProgress : Function</strong> - A handler function for <code>LoaderEvent.PROGRESS</code> events which are dispatched whenever the <code>bytesLoaded</code> changes. Make sure your onProgress function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>). You can use the LoaderEvent's <code>target.progress</code> to get the loader's progress value or use its <code>target.bytesLoaded</code> and <code>target.bytesTotal</code>.</li>
@@ -410,7 +412,7 @@ function errorHandler(event:LoaderEvent):void {
 			
 			_ns = (this.vars.netStream is NetStream) ? this.vars.netStream : new NetStream(_nc);
 			_ns.checkPolicyFile = Boolean(this.vars.checkPolicyFile == true);
-			_ns.client = {onMetaData:_metaDataHandler, onCuePoint:_cuePointHandler};
+			_ns.client = {onMetaData:_metaDataHandler};
 			
 			_ns.addEventListener(NetStatusEvent.NET_STATUS, _statusHandler, false, 0, true);
 			_ns.addEventListener("ioError", _failHandler, false, 0, true);
@@ -462,6 +464,7 @@ function errorHandler(event:LoaderEvent):void {
 			_sprite.removeEventListener(Event.ENTER_FRAME, _loadingProgressCheck);
 			_sprite.removeEventListener(Event.ENTER_FRAME, _playProgressHandler);
 			_sprite.removeEventListener(Event.ENTER_FRAME, _detachNS);
+			_sprite.removeEventListener(Event.ENTER_FRAME, _finalFrameFinished);
 			_ns.removeEventListener(Event.RENDER, _renderHandler);
 			_renderTimer.stop();
 			_forceTime = NaN;
@@ -549,15 +552,17 @@ function errorHandler(event:LoaderEvent):void {
 		/**
 		 * Adds an ActionScript cue point. Cue points are only triggered when the video is playing and passes
 		 * the cue point's position in the video (in the forwards direction - they are not triggered when you skip
-		 * to a previous time in the video with <code>gotoVideoTime()</code>). <br /><br />
+		 * to a previous time in the video with <code>gotoVideoTime()</code>). 
 		 * 
-		 * For example, to add a cue point named "coolPart" at the 5-second point of the video, do:<br /><br /><code>
+		 * <p>For example, to add a cue point named "coolPart" at the 5-second point of the video, do:</p>
 		 * 
-		 * myVideoLoader.addASCuePoint(5, "coolPart", {message:"This is a cool part.", id:5}); <br />
-		 * myVideoLoader.addEventListener(VideoLoader.VIDEO_CUE_POINT, cuePointHandler); <br />
-		 * function cuePointHandler(event:LoaderEvent):void { <br />
-		 *     trace("hit cue point " + event.data.name + ", message: " + event.data.parameters.message); <br />
-		 * }</code>
+		 * <listing version="3.0">
+myVideoLoader.addASCuePoint(5, "coolPart", {message:"This is a cool part.", id:5}); 
+myVideoLoader.addEventListener(VideoLoader.VIDEO_CUE_POINT, cuePointHandler); 
+function cuePointHandler(event:LoaderEvent):void { 
+	trace("hit cue point " + event.data.name + ", message: " + event.data.parameters.message); 
+}
+</listing>
 		 * 
 		 * @param time The time (in seconds) at which the cue point should be placed in the video. 
 		 * @param name The name of the cue point. It is acceptable to have multiple cue points with the same name.
@@ -652,9 +657,9 @@ function errorHandler(event:LoaderEvent):void {
 		 * video itself when it was encoded or a cue point that was added via <code>addASCuePoint()</code>). 
 		 * If the video hasn't downloaded enough to get to the cue point or if there is no keyframe at that 
 		 * point in the video, it will get as close as possible. For example, to jump to a cue point
-		 * named "highlight1" and play from there:<br /><br /><code>
+		 * named "highlight1" and play from there:<p><code>
 		 * 
-		 * loader.gotoVideoCuePoint("highlight1", true);<br /><br /></code>
+		 * loader.gotoVideoCuePoint("highlight1", true);</code></p>
 		 * 
 		 * @param name The name of the cue point
 		 * @param forcePlay If <code>true</code>, the video will resume playback immediately after seeking to the new position.
@@ -698,15 +703,37 @@ function errorHandler(event:LoaderEvent):void {
 			this.videoPaused = false;
 		}
 		
+		/**
+		 * Sets or gets the current repeat count (how many times the video has repeated, as determined
+		 * by the <code>"repeat"</code> special property that was passed into the constructor). If you pass 
+		 * a value to the function, it acts as a setter, and if you omit the parameter, it acts as a getter
+		 * and returns the current value. For example, if the video was set to repeat 5 times and it is currently
+		 * in the middle of its 3rd time playing, <code>repeatCount()</code> will return 2 because it has already 
+		 * finished playing twice completely. 
+		 * 
+		 * @param value the value that should be assigned to the current repeat count (or if you omit this parameter, the current repeat count will be returned)
+		 * @return If the <code>value</code> parameter is omitted, it will return the current repeat count (how many times it has completely played and looped back to the beginning). If the function is used as a setter, the VideoLoader instance itself is returned in order to make chaining easier. 
+		 */
+		public function repeatCount(value:int=0):* {
+			if (!arguments.length) {
+				return _repeatCount;
+			}
+			if (value < int(this.vars.repeat)) {
+				_videoComplete = false;
+			}
+			_repeatCount = value;
+			return this;
+		}
+		
 		/** 
 		 * Attempts to jump to a certain time in the video. If the video hasn't downloaded enough to get to
 		 * the new time or if there is no keyframe at that time value, it will get as close as possible.
-		 * For example, to jump to exactly 3-seconds into the video and play from there:<br /><br /><code>
+		 * For example, to jump to exactly 3-seconds into the video and play from there:<p><code>
 		 * 
-		 * loader.gotoVideoTime(3, true);<br /><br /></code>
+		 * loader.gotoVideoTime(3, true);</code></p>
 		 * 
-		 * The VideoLoader's <code>videoTime</code> will immediately reflect the new time, but <code>PLAY_PROGRESS</code> 
-		 * event won't be dispatched until the NetStream's <code>time</code> renders at that spot (which can take a frame or so).<br /><br />
+		 * <p>The VideoLoader's <code>videoTime</code> will immediately reflect the new time, but <code>PLAY_PROGRESS</code> 
+		 * event won't be dispatched until the NetStream's <code>time</code> renders at that spot (which can take a frame or so).</p>
 		 * 
 		 * @param time The time (in seconds, offset from the very beginning) at which to place the virtual playhead on the video.
 		 * @param forcePlay If <code>true</code>, the video will resume playback immediately after seeking to the new position.
@@ -723,7 +750,7 @@ function errorHandler(event:LoaderEvent):void {
 				time = _duration;
 			}
 			var changed:Boolean = (time != this.videoTime);
-			if (_initted && _renderedOnce && changed) { //don't seek() until metaData has been received otherwise it can prevent it from ever being received. Also, if the NetStream hasn't rendered once and we seek(), it often completely loses its audio!
+			if (_initted && _renderedOnce && changed && !_finalFrame) { //don't seek() until metaData has been received otherwise it can prevent it from ever being received. Also, if the NetStream hasn't rendered once and we seek(), it often completely loses its audio!
 				_seek(time);
 			} else {
 				_setForceTime(time);
@@ -835,6 +862,15 @@ function errorHandler(event:LoaderEvent):void {
 			if (this.metaData == null || this.metaData.cuePoints == null) { //sometimes videos will trigger the onMetaData multiple times (especially F4V files) and occassionally the last call doesn't contain cue point data!
 				this.metaData = info;
 			}
+			//due to buggy behavior in Flash's NetStream that sometimes causes cue point events to be triggered multiple times and/or at the wrong time, we convert embedded cue points into ActionScript cue points so that we can make everything consistent. 
+			if (this.metaData.cuePoints) {
+				var a:Array = this.metaData.cuePoints,
+					i:int = a.length;
+				while (--i > -1) {
+					this.removeASCuePoint(a[i].name); //in case it was already added. There's buggy behavior in Flash's NetStream that causes it to sometimes receive its metaData twice!
+					this.addASCuePoint(a[i].time, a[i].name);
+				}
+			}
 			_duration = info.duration;
 			if ("width" in info) {
 				_video.width = Number(info.width); 
@@ -849,13 +885,6 @@ function errorHandler(event:LoaderEvent):void {
 				(_sprite as Object).rawContent = _video; //on rare occasions, _metaDataHandler() is called twice by the NeStream (particularly for F4V files) and the 2nd call contains more data than the first, so just in case the width/height changed, we set the rawContent of the ContentDisplay to make sure things render according to the correct size.
 			}
 			dispatchEvent(new LoaderEvent(LoaderEvent.INIT, this, "", info));
-		}
-		
-		/** @private **/
-		protected function _cuePointHandler(info:Object):void {
-			if (!_videoPaused) { //in case there's a cue point very early on and autoPlay was set to false - remember, to work around bugs in NetStream, we cannot pause() it until we receive metaData and the first frame renders.
-				dispatchEvent(new LoaderEvent(VIDEO_CUE_POINT, this, "", info));
-			}
 		}
 		
 		/** @private **/
@@ -896,10 +925,12 @@ function errorHandler(event:LoaderEvent):void {
 				if (_videoPaused) {
 					return; //Can happen when we seek() to a time in the video between the last keyframe and the end of the video file - NetStream.Play.Stop gets received even though the NetStream was paused.
 				}
+				_finalFrame = true;
+				_sprite.addEventListener(Event.ENTER_FRAME, _finalFrameFinished, false, 100, true);
 				if (this.vars.repeat == -1 || uint(this.vars.repeat) > _repeatCount) {
 					_repeatCount++;
 					dispatchEvent(new LoaderEvent(VIDEO_COMPLETE, this));
-					gotoVideoTime(0, true, true);
+					gotoVideoTime(0, !_videoPaused, true);
 				} else {
 					_videoComplete = true;
 					this.videoPaused = true;
@@ -917,12 +948,19 @@ function errorHandler(event:LoaderEvent):void {
 				_seek(event.info.details);
 			} else if (code == "NetStream.Buffer.Empty" && !_videoComplete) {
 				var videoRemaining:Number = this.duration - this.videoTime;
-				var loadRemaining:Number = (1 / this.progress) * this.loadTime;
-				var revisedBufferTime:Number = videoRemaining * (1 - (videoRemaining / loadRemaining)) * 0.9; //90% of the estimated time because typically you'd want the video to start playing again sooner and the 10% might be made up while it's playing anyway.
-				if (revisedBufferTime < _ns.bufferTime) {
+				var prevBufferMode:Boolean = _bufferMode;
+				_bufferMode = false; //make sure bufferMode is false so that when we check progress, it gives us the data we need.
+				_cacheIsDirty = true;
+				var prog:Number = this.progress;
+				_bufferMode = prevBufferMode;
+				_cacheIsDirty = true;
+				if (prog == 1) {
 					//sometimes NetStream dispatches a "NetStream.Buffer.Empty" NetStatusEvent right before it finishes playing in which case we can deduce that the buffer isn't really empty.
 					return;
-				} else if (this.autoAdjustBuffer && loadRemaining > videoRemaining) {
+				}
+				var loadRemaining:Number = (1 / prog) * this.loadTime;
+				var revisedBufferTime:Number = videoRemaining * (1 - (videoRemaining / loadRemaining)) * 0.9; //90% of the estimated time because typically you'd want the video to start playing again sooner and the 10% might be made up while it's playing anyway.
+				if (this.autoAdjustBuffer && loadRemaining > videoRemaining) {
 					_ns.bufferTime = revisedBufferTime;
 				}
 				_bufferFull = false;
@@ -933,6 +971,15 @@ function errorHandler(event:LoaderEvent):void {
 					   code == "NetStream.Play.FileStructureInvalid" || 
 					   code == "The MP4 doesn't contain any supported tracks") {
 				_failHandler(new LoaderEvent(LoaderEvent.ERROR, this, code));
+			}
+		}
+		
+		/** @private **/
+		protected function _finalFrameFinished(event:Event):void {
+			_sprite.removeEventListener(Event.ENTER_FRAME, _finalFrameFinished);
+			_finalFrame = false;
+			if (!isNaN(_forceTime)) {
+				_seek(_forceTime);
 			}
 		}
 		
@@ -1053,7 +1100,7 @@ function errorHandler(event:LoaderEvent):void {
 		/** @private **/
 		protected function _renderHandler(event:Event):void {
 			_renderedOnce = true;
-			if (!_videoPaused || _initted) { //if the video hasn't initted yet and it's paused, keep reporting the _forceTime and let the _renderTimer keep calling until the condition is no longer met. 
+			if (!_videoPaused || _initted) if (!_finalFrame) { //if the video hasn't initted yet and it's paused, keep reporting the _forceTime and let the _renderTimer keep calling until the condition is no longer met. 
 				_forceTime = NaN;
 				_renderTimer.stop();
 				_ns.removeEventListener(Event.RENDER, _renderHandler);
@@ -1195,6 +1242,14 @@ function errorHandler(event:LoaderEvent):void {
 			_ns.soundTransform = _sound;
 		}
 		
+		/** The soundTransform of the NetStream associated with the VideoLoader (this gets refreshed when the VideoLoader is unloaded or reloaded). **/
+		public function get soundTransform():SoundTransform {
+			return _sound;
+		}
+		public function set soundTransform(value:SoundTransform):void {
+			_ns.soundTransform = _sound = value;
+		}
+		
 		/** The time (in seconds) at which the virtual playhead is positioned on the video. For example, if the virtual playhead is currently at the 3-second position (3 seconds from the beginning), this value would be 3. **/
 		public function get videoTime():Number {
 			if (_forceTime || _forceTime == 0) {
@@ -1224,9 +1279,9 @@ function errorHandler(event:LoaderEvent):void {
 		 * 		<li>Its <code>COMPLETE</code> event will be dispatched as soon as the buffer is full, so if the VideoLoader is nested in a LoaderMax, the LoaderMax will move on to the next loader in its queue at that point. However, the VideoLoader's NetStream will continue to load in the background, using up bandwidth.</li>
 		 * </ul>
 		 * 
-		 * This can be very convenient if, for example, you want to display loading progress based on the video's buffer
+		 * <p>This can be very convenient if, for example, you want to display loading progress based on the video's buffer
 		 * or if you want to load a series of loaders in a LoaderMax and have it fire its <code>COMPLETE</code> event
-		 * when the buffer is full (as opposed to waiting for the entire video to load). 
+		 * when the buffer is full (as opposed to waiting for the entire video to load). </p>
 		 **/
 		public function get bufferMode():Boolean {
 			return _bufferMode;

@@ -1,6 +1,6 @@
 /**
- * VERSION: 0.6
- * DATE: 2012-01-20
+ * VERSION: 0.61
+ * DATE: 2012-10-23
  * AS3
  * UPDATES AND DOCS AT: http://www.greensock.com
  **/
@@ -20,7 +20,7 @@ package com.greensock {
 	
 	import mx.core.UIComponent;
 /**
- * A FlexBlitMask is basically a rectangular UIComponent that acts as a high-performance mask for a DisplayObject
+ * [AS3 only] A FlexBlitMask is basically a rectangular UIComponent that acts as a high-performance mask for a DisplayObject
  * by caching a bitmap version of it and blitting only the pixels that should be visible at any given time,
  * although its <code>bitmapMode</code> can be turned off to restore interactivity in the DisplayObject 
  * whenever you want. It is a Flex-friendly version of BlitMask. When scrolling very large images or text 
@@ -82,7 +82,7 @@ package com.greensock {
  * 			be better off just turning off bitmapMode during that animation sequence.</li>
  * </ul><br /><br />
  * 
- * <b>Copyright 2011-2012, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
+ * <b>Copyright 2014-2014, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for <a href="http://www.greensock.com/club/">Club GreenSock</a> members, the software agreement that was issued with the membership.
  * 
  * @author Jack Doyle, jack@greensock.com
  **/
@@ -106,7 +106,7 @@ package com.greensock {
 		/** @private **/
 		protected static var _colorTransform:ColorTransform = new ColorTransform();
 		/** @private **/
-		protected static var _mouseEvents:Array = [MouseEvent.CLICK, MouseEvent.DOUBLE_CLICK, MouseEvent.MOUSE_DOWN, MouseEvent.MOUSE_MOVE, MouseEvent.MOUSE_OUT, MouseEvent.MOUSE_OVER, MouseEvent.MOUSE_UP, MouseEvent.MOUSE_WHEEL, MouseEvent.ROLL_OUT, MouseEvent.ROLL_OVER];
+		protected static var _mouseEvents:Array = [MouseEvent.CLICK, MouseEvent.DOUBLE_CLICK, MouseEvent.MOUSE_DOWN, MouseEvent.MOUSE_MOVE, MouseEvent.MOUSE_OUT, MouseEvent.MOUSE_OVER, MouseEvent.MOUSE_UP, MouseEvent.MOUSE_WHEEL, MouseEvent.ROLL_OUT, MouseEvent.ROLL_OVER, "gesturePressAndTap", "gesturePan", "gestureRotate", "gestureSwipe", "gestureZoom", "gestureTwoFingerTap", "touchBegin", "touchEnd", "touchMove", "touchOut", "touchOver", "touchRollOut", "touchRollOver", "touchTap"];
 		
 		/** @private **/
 		protected var _target:DisplayObject;

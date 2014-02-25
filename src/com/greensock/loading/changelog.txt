@@ -1,5 +1,30 @@
 CHANGE LOG : GREENSOCK LOADERMAX SYSTEM
 ----------------------------------------
+2013-02-21
+----------------------------------------
+XMLLoader			1.932
+LoaderItem			1.932
+LoaderMax			1.932
+	- Added ability for XMLLoader to recognize "allowMalformedURL" in XML nodes
+	- To avoid errors when attempting to load local files, if allowMalformedURL isn't true and there are parameters in the query string, the URLRequest's method will be forced to "POST" (again, ONLY when the swf is running locally, not on the network)
+
+2013-01-08
+----------------------------------------
+XMLLoader			1.931
+LoaderMax			1.931
+	- Fixed issue that could cause redundant childComplete events to get fired from XMLLoader if you defined load="true" inside BOTH a <LoaderMax> node and its child node.
+
+2012-09-05
+----------------------------------------
+VideoLoader			1.93
+	- Worked around issue in Flash Player 11.x that caused a flicker of the video when gotoVideoTime() was called inside a VIDEO_COMPLETE event handler (and when the VideoLoader repeats). This was a bug in the Flash Player itself, and the solution was to wait 1 frame after when the Netstream stops before doing a seek(). VideoLoader automatically handles this internally now. 
+
+2012-08-09
+----------------------------------------
+VideoLoader			1.921
+LoaderItem			1.921
+	- Fixed issue that could prevent the BUFFER_EMPTY event from being dispatched if bufferMode is true
+	- Implemented logic that causes a loader's "auditedSize" property to get reset when its "url" is changed.
 
 2012-04-26
 ----------------------------------------
