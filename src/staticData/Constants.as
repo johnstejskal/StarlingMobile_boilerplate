@@ -1,7 +1,8 @@
 package staticData 
 {
 
-
+	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 	/**
 	 * @author John Stejskal
 	 * "Why walk when you can ride"
@@ -22,18 +23,7 @@ package staticData
 
 	
 	
-	
-	
-	//------------------------------------------------------o
-	//---  MAPPING
-	//------------------------------------------------------o
-	public static const LEVEL_1_MAP:Array = []
-	
-
-													 
-
-
-													
+						
 
 													
 
