@@ -12,6 +12,8 @@
 	import org.osflash.signals.Signal;
 	import singleton.EventBus;
 	import starling.core.Starling;
+	import starling.display.Sprite;
+	import staticData.SpriteSheets;
 	import view.StarlingStage;
 
 	import view.components.screens.SplashScreen;
@@ -27,13 +29,13 @@
 
 	import singleton.Core;
 
-
+	//===============================================o
 	/**
-	 * ...
 	 * @author John Stejskal
 	 * johnstejskal@gmail.com
 	 * "Why walk when you can ride"
 	 */
+	//===============================================o
 	
 	 //---------------------------o
 	 // This state machine is in charge of listeneing to events from the EventBus
@@ -45,7 +47,7 @@
 	public class StateMachine 
 	{
 		
-		//STATES
+		//Screen STATES
 		public static const STATE_TITLE:String = "title";
 		public static const STATE_INTRO:String = "intro";		
 		public static const STATE_PLAY:String = "play";		
@@ -54,9 +56,14 @@
 		public static const STATE_SCORES:String = "scores"
 		public static const STATE_SETUP:String = "setup"
 		
+		
+		//Device States
 		public static const STATE_DEACTIVATE:String = "deactivate"		
 
-		public static var currentGameState:String;
+		//
+		public static var currentState:String;
+		public static var prevState:String;
+		static private var currentStateObject:Sprite;
 		
 		public static var oStarlingStage:StarlingStage;
 		
@@ -65,7 +72,10 @@
 		public static var _oPlayScreen:PlayScreen;
 		public static var _oSplashScreen:SplashScreen;
 		
-		public static var _levelToLoad:String = "level1";
+
+		static private var core:Core;
+		static private var _currStateAssets:Array;
+
 
 		public function StateMachine() 
 		{
@@ -73,108 +83,120 @@
 			
 		}
 		
-		public static function init():void
-		{
-			trace(StateMachine + "init()");
-			//_oSplashScreen = new SplashScreen();
-			//_oSplashScreen.x = 0;
-			//_oSplashScreen.y = 0;
-			//Core.getInstance().main.addChild(_oSplashScreen);
-			
-							
-		}
-		
 
-		//call this before any state changes to bind 
+		
+		//===============================================o
+		//--- Setup
+		//===============================================o
 		static public function setup():void
 		{
-			//----------------------o
-			//-- Map Signals
-			//----------------------o
 			
+			core = Core.getInstance();
+			core.controlBus = new ControlBus(oStarlingStage);
+			
+			_currStateAssets = new Array();
+			//----------------------o
+			//-- Device And Core Signals
+			//----------------------o
 			EventBus.getInstance().sigOnDeactivate = new Signal();
 			EventBus.getInstance().sigOnDeactivate.add(evtOnDeactivate);
 			
 			EventBus.getInstance().sigStarlingStageReady = new Signal();
 			EventBus.getInstance().sigStarlingStageReady.addOnce(evtStarlingStageReady);
 			
+			EventBus.getInstance().sigScreenChangeRequested = new Signal(String);
+			EventBus.getInstance().sigScreenChangeRequested.add(evtScreenChangeRequested);
+			
+			//setup is complete, set screenState
+			changeScreenState(STATE_TITLE);
+			
 		}
 		
+		//=======================================================================================o
+		//=======================================================================================o
+		//-- Custom Signal Event Callbacks
+		//=======================================================================================o
+		//=======================================================================================o
+		
+		//==========================================================o
+		//-- Custom Event :  Screen Change request
+		//==========================================================o
+		static public function evtScreenChangeRequested(newState:String):void
+		{
+			trace(StateMachine + "evtStateChangeRequested()" + newState)
+			changeScreenState(newState);
+		}		
+		//===============================================o
+		//-- Device has been deactivated
+		//===============================================o		
 		static private function evtOnDeactivate():void 
 		{
 			changeState(STATE_DEACTIVATE);
 		}
 		
-		//this fires when the setup state manager reeives an iscompleted callbak from the StarlingStage
+		//===============================================o
+		//-- Startling Stage is ready
+		//===============================================o
 		static public function evtStarlingStageReady():void
 		{
-			changeState(STATE_TITLE);
-		}
-		static private function evtOnStartClicked():void 
-		{
-			trace(StateMachine + "evtOnStartClicked()")
+			setup();
 			
-			//EventBus.getInstance().sigOnStartClicked.removeAll();
-			changeState(STATE_PLAY);
 		}
-	   /* 
-		*------------------------------------------o
-		*
-		*    ***Finite State Machine Switch***
-		* As3 Signals are used for dispatching 
-		* state altering events 
-		* 
-		*------------------------------------------o
-		*/
+		
+		//=======================================================================================o
 		
 		
-		protected static function changeState(state:String):void
+		
+		//===============================================o
+		//--- Change Screen State
+		//===============================================o
+		protected static function changeScreenState(newState:String):void
 		{
-			trace("-- StateMachine requested changeState(" + state + ")");
+			trace(StateMachine+" changeScreenState(" + newState + ")");
+			if (newState == currentState)
+			return;
 			
-			switch(state)
+			if (currentState != null)
+			prevState = currentState;
+			
+			
+			if (currentScreenObject != null)
+			{
+			currentScreenObject.trash();
+			currentScreenObject = null;
+			}
+			
+			while (_currStateAssets.length > 0)
+			{
+			AssetsManager.disposeTexture(_currStateAssets.pop())
+			}
+			
+
+			switch(newState)
 			{
 				//------------------------------------------------------------------------------------o
 				case STATE_INTRO:
-					currentGameState = STATE_INTRO;
+					currentState = STATE_INTRO;
 				break;	
 				
 				//------------------------------------------------------------------------------------o
 			    case STATE_TITLE:
-					StateMachine.setup();
 					_oTitleScreen = new TitleScreen();
-					_oTitleScreen.x = _oTitleScreen.y = 0;
-					oStarlingStage.addChild(_oTitleScreen);
+					currentState = STATE_TITLE;
+					currentStateObject = _oTitleScreen;
 					
-					currentGameState = STATE_TITLE;
-					
-					EventBus.getInstance().sigOnStartClicked = new Signal();
-					EventBus.getInstance().sigOnStartClicked.addOnce(evtOnStartClicked)
-				
-					
+					_currStateAssets.push(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.TA_PATH_TITLE_SCREEN);
+					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.SPRITE_ATLAS_GAME_BG,  this.loaded);
+					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_TITLE_SCREEN, SpriteSheets.SPRITE_ATLAS_TITLE_SCREEN, this.loaded );
 				break;
 
 				//------------------------------------------------------------------------------------o
 				case STATE_PLAY:
-
-					currentGameState = STATE_PLAY;	
+					_oPlayScreen = new TitleScreen();
+					currentState = STATE_PLAY;
+					currentStateObject = _oPlayScreen;
 					
-					_oPlayScreen = new PlayScreen();
-					
-					if (_oTitleScreen)
-					_oTitleScreen.trash();	
-					
-					if (_oSplashScreen)
-					_oSplashScreen.trash();
-					
-					if (!Core.getInstance().starling.isStarted)
-					Core.getInstance().starling.start();
-					
-					oStarlingStage.addChild(_oPlayScreen);
-					
-					
-					//_oStarlingStage = new PlayScreen();
-					_oPlayScreen.init(_levelToLoad);
+					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.SPRITE_ATLAS_GAME_BG,  stateLoaded);
 				break;
 				//------------------------------------------------------------------------------------o
 				case STATE_GAME_OVER:
@@ -191,14 +213,32 @@
 
 				break;	
 				
+				default:
+				//no state found, revert to default home
+				changeState(STATE_TITLE)
+				break;					
 	
 				
 			}
-			trace("-- StateMachine completed changeState(" + state + ")");
+			
 		}
 		
+		//==========================================================o
+		//- State Loaded Callback From AssetStateMachine
+		//==========================================================o
+		static public function stateLoaded():void 
+		{
+			trace(StateMachine + "stateLoaded():" + currentAppState + " has loaded");
+			
+			if (currentScreenObject)
+			{
+				currentScreenObject["loaded"]();
+				oStarlingStage.addChildAt(currentScreenObject, 0);
 
-		
+				if (!currentScreenObject.manualRemoveDim)
+				_core.controlBus.appUIController.removeFillOverlay();
+			}
+		}		
 
 		
 

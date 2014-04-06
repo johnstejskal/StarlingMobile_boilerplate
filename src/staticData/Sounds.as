@@ -9,7 +9,6 @@ package staticData
 	public class Sounds 
 	{
 		
-		//public static var COOL_MALLET_SOUND_1:Sound = new SND_coolMallet1();
 
 		
 		

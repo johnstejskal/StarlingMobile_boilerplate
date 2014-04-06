@@ -25,32 +25,11 @@
 		//------ Declare Events 
 		//----------------------------------------o		
 		
-		
-		public var sig_timeOver:Signal;
-		public var sig_playerDied:Signal;
-		public var sigOnStartClicked:Signal;
 		public var sigOnDeactivate:Signal;
 		public var sigStarlingStageReady:Signal;
+		public var sigScreenChangeRequested:Signal;
 		
 
-		public function defineSignal(signal:Signal, callback:Function):void
-		{
-			//signal = new Signal();
-			//signal.add(callback)
-			//_arrSignals.push(signal);
-			//trace(EventBus+"New Signal Defined:"+signal)
-			//trace(EventBus+"sigOnStartClicked:"+sigOnStartClicked)
-		}
-	
-		
-
-		public  function removeAllSignals():void
-		{
-			while (_arrSignals.length > 1)
-			{
-				Signal(_arrSignals[0]).removeAll();
-			}
-		}
 
 		
 		//----------------------------------------o

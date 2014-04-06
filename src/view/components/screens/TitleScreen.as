@@ -32,11 +32,12 @@ package view.components.screens
 	import staticData.Constants;
 
 
-	
+	//===============================================o
 	/**
 	 * @author John Stejskal
 	 * "Why walk when you can ride"
 	 */
+	//===============================================o
 	
 	public class TitleScreen extends Sprite implements iScreen
 	{
@@ -58,22 +59,6 @@ package view.components.screens
 
 		}
 
-		//----------------------------------------------------------------------o
-		//------ Private API 
-		//----------------------------------------------------------------------o		
-		private function init(e:Event = null):void 
-		{
-			trace(this + " inited");
-			
-			/*
-			 * Load State Specific Assets
-			 */
-			AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.SPRITE_ATLAS_GAME_BG,  this.loaded);
-			AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_TITLE_SCREEN, SpriteSheets.SPRITE_ATLAS_TITLE_SCREEN, this.loaded );
-			
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			
-		}
 		//----------------------------------------o
 		//------ Assets loaded callback 
 		//----------------------------------------o
@@ -99,19 +84,13 @@ package view.components.screens
 
 			this.addChild(_imgButton);	
 				
-			
 			//addListeners
 			if (DeviceSettings.ENABLE_TOUCH)
 			this.addEventListener(TouchEvent.TOUCH, onTouch)
-			
-			
-			
-			_core.oDebugPanel.setTrace("Cool dude");
+
 		}
 		
-		//----------------------------------------------------------------------o
-		//------ Event Handlers 
-		//----------------------------------------------------------------------o			
+		
 		//----------------------------------------------------------------------o
 		//------ Touch Handlers 
 		//----------------------------------------------------------------------o	
@@ -126,8 +105,7 @@ package view.components.screens
                 {				
 					if (e.target == _imgButton)
 					{
-					EventBus.getInstance().sigOnStartClicked.dispatch();
-					trash();
+					EventBus.getInstance().sigScreenChangeRequested.dispatch(StateMachine.STATE_PLAY);
 					}
 					
                 }
@@ -166,7 +144,6 @@ package view.components.screens
 		public function trash():void
 		{
 			trace(this + "trash()");
-			//removeEventListener(Event.ENTER_FRAME, onUpdate);
 			this.removeEventListeners();
 			//dispose texture maps
 			//Assets.disposeTexture(Assets.SPRITE_ATLAS_TITLESCREEN);

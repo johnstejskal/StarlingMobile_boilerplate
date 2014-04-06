@@ -99,7 +99,7 @@ package staticData.settings
 					  else if (resolutionY == 480)
 					  {
 						retObj.device = 'iphone';  // low def iphone  (3g, 3gs, iPod Touch)
-					  {
+					  }
 					  else if (resolutionY == 1024)
 					  {
 						retObj.device = 'ipad';  // ipad ( 1 & 2)

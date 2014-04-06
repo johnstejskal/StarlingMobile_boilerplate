@@ -20,30 +20,23 @@ package view
 	{
 		
 
-		//----------------------------------------o
+		//========================================o
 		//------ Constructor
-		//----------------------------------------o
+		//========================================o
 		public function StarlingStage():void 
 		{
 			trace(this + " StarlingStage()");
 
-
 			StateMachine.oStarlingStage = this;
 
-			
-			
-			
 			if (stage) EventBus.getInstance().sigStarlingStageReady.dispatch();
 			else addEventListener(Event.ADDED_TO_STAGE, function(e:Event = null):void{StateMachine.evtStarlingStageReady()});
 		}
 		
 
-		//------------------------------------------------------------------------------o
-		//------ Event Handlers 
-		//------------------------------------------------------------------------------o	
-		//------------------------------------o
+		//========================================o
 		//-- Screen Touch events
-		//------------------------------------o
+		//========================================o
 		private function onTouch(e:TouchEvent):void
 		{
 			var touch:Touch = e.getTouch(stage);
@@ -69,18 +62,18 @@ package view
  
 		}
 		
-		//------------------------------------o
+		//========================================o
 		//-- Enter Frame - Main Game Loop
-		//------------------------------------o
+		//========================================o
 		private function update_gameLoop(e:Event):void 
 		{
 
 		}
 
 
-		//------------------------------------o
+		//========================================o
 		//-- Trash/Dispose/Kill/Anihliate
-		//------------------------------------o		
+		//========================================o	
 		public function trash():void
 		{
 		  this.removeEventListeners();
