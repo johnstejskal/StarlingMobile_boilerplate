@@ -73,10 +73,18 @@ package ManagerClasses
 			//-------------------------------o	
 			public static function disposeTexture(name:String) : void
 			{
+				if (_gametextures[name] == undefined || _gametextures[name] == null)
+				{
+					trace("Error: The Atlas you are attempting to dispose does not exist")
+					return;
+				}
+				
 				Dictionary(_gametextures)[name].dispose();
+				delete _gametextures[name];
 				_gametextures[name] = null;
+				
 				trace("disposed :" + _gametextures[name]);
-				return;
+				
 			}		
 			
 			
@@ -113,6 +121,33 @@ package ManagerClasses
 					}
 	
 				}	
+			}
+			
+			//-------------------------------o
+			//-- dispose all textures
+			//-------------------------------o
+			public static function disposeAll():void
+			{
+				for (var key:* in _gametextures)
+				{
+				disposeTexture(key);
+				delete _gametextures[key];
+				key = null;
+				}
+
+				trace(AssetsManager+"disposeAll() All Textures have been disposed");
+			}
+			
+			//----------------------------------------------o
+			//--- count dictionary keys
+			//----------------------------------------------o	
+			public static function countKeys(myDictionary:flash.utils.Dictionary):int 
+			{
+				var n:int = 0;
+				for (var key:* in myDictionary) {
+					n++;
+				}
+				return n;
 			}
 			
 		

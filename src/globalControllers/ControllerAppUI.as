@@ -11,8 +11,9 @@ package globalControllers
 	 */
 	public class ControllerAppUI 
 	{
-		var _popup:Popup;
-		var _stage:StarlingStage;
+		private var _quDimScreen:Quad;
+		private var _popup:Popup;
+		private var _stage:StarlingStage;
 		
 		public function ControllerAppUI(stage:StarlingStage) 
 		{
@@ -44,6 +45,12 @@ package globalControllers
 
 			
 		}	
+		
+		public function removeFillOverlay():void 
+		{
+			if (_quDimScreen)
+			_quDimScreen.removeFromParent();
+		}
 		
 		
 	}

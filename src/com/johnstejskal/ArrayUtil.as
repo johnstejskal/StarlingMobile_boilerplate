@@ -1,5 +1,6 @@
 package com.johnstejskal 
 {
+	import flash.utils.Dictionary;
 
 	/**
 	 * ...
@@ -105,7 +106,8 @@ package com.johnstejskal
 		//----------------------------------------------o
 		//--- Search array item by name
 		//----------------------------------------------o		
-		public static function getIndexByName(array:Array, search:String):int {
+		public static function getIndexByName(array:Array, search:String):int
+		{
 		
 		for (var i:int = 0; i < array.length; i++) {
 			if (array[i].name == search) {
@@ -113,6 +115,18 @@ package com.johnstejskal
 			}
 		}
 		return -1;
+		}
+		
+		//----------------------------------------------o
+		//--- count dictionary keys
+		//----------------------------------------------o	
+		public static function countKeys(myDictionary:flash.utils.Dictionary):int 
+		{
+			var n:int = 0;
+			for (var key:* in myDictionary) {
+				n++;
+			}
+			return n;
 		}
 		
 	}

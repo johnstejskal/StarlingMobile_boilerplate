@@ -17,7 +17,9 @@ package staticData.settings
 	public class PublicSettings 
 	{
 
-	static public const DEVICE_RELEASE:Boolean = false;
+	static public var DEVICE_RELEASE:Boolean = false;
+	static public const DEBUG_RELEASE:Boolean = true;
+	
 	static public const ANALYTICS:Boolean = false;
 	
 	static public const MUTE_MUSIC:Boolean = false;
@@ -31,6 +33,8 @@ package staticData.settings
 	static public const SHOW_COLLISION_BOX:Boolean = false;
 	static public const SHOW_DEBUG_PANEL:Boolean = false;
 	static public const SHOW_STARLING_STATS:Boolean = true;
+	static public const ENABLE_GOD_MODE:Boolean = false;
+	
 										
 
 	}

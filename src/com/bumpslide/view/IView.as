@@ -1,1 +1,0 @@
-﻿package com.bumpslide.view {	import flash.events.IEventDispatcher;			/**	 * Transitional View	 * 	 * @author David Knape	 */	public interface IView extends IEventDispatcher {				function transitionIn():void;		function transitionOut():void;		function get viewState():String;	}}

@@ -1,12 +1,12 @@
 package staticData 
 {
 
-
+	//============================================o
 	/**
 	 * @author John Stejskal
 	 * "Why walk when you can ride"
 	 */
-	
+	//============================================o
 	 
 	 /*
 	  * Store all the Sprite sheet referencing info here to be passed into the AssetManager
@@ -18,9 +18,9 @@ package staticData
 
 		//Texture Atlas/ Sprite Sheet
 		
-		//-------------------------------------------o
+		//============================================o
 		//-------------------------o Game Background 
-		//-------------------------------------------o
+		//============================================o
 		public static const SPRITE_ATLAS_GAME_BG:String = "textureAtlasGameBG";
 		public static const TA_PATH_GAME_BG:String = "runtimeAssets/spriteSheets/SpriteSheet_gameBG.png"; //used for external loading
 			
@@ -29,9 +29,9 @@ package staticData
 
 
 
-		//-------------------------------------------o
+		//============================================o
 		//-------------------------o Action Assets
-		//-------------------------------------------o
+		//============================================o
 		public static const SPRITE_ATLAS_ACTION_ASSETS:String = "textureAtlasActionAssets";
 		public static const TA_PATH_ACTION_ASSETS:String = "runtimeAssets/spriteSheets/SpriteSheet_actionAssets.png"; //used for external loading
 			
@@ -39,9 +39,9 @@ package staticData
 		public static var textureAtlasActionAssetsXML:Class; 												 
 
 
-		//-------------------------------------------o
+		//============================================o
 		//-------------------------o title screen
-		//-------------------------------------------o
+		//============================================o
 		public static const SPRITE_ATLAS_TITLE_SCREEN:String = "textureAtlasTitleScreen";
 		public static const TA_PATH_TITLE_SCREEN:String = "runtimeAssets/spriteSheets/SpriteSheet_titleScreen.png"; //used for external loading
 			

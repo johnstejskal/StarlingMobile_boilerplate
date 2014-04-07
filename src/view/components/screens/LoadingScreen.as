@@ -18,18 +18,18 @@ package view.components.screens
 	public class LoadingScreen extends Sprite implements iScreen
 	{
 	 /* 
-	  * This is a native display component that appears during the loading of
-	  * runtime asset data, ie between levels
+	  * This is a native display top level component that appears during the loading of
+	  * starling runtime asset data, ie between levels
 	  */
 		private var _core:Core;
 		private var _bg:Shape;
 		
-		//----------------------------------------o
+		
+		//=========================================o
 		//------ Constructor 
-		//----------------------------------------o
+		//=========================================o
 		public function LoadingScreen():void 
 		{
-			
 			_core = Core.getInstance();
 			
 			if (stage) init();
@@ -39,31 +39,32 @@ package view.components.screens
 			
 		}
 		
-		//----------------------------------------o
-		//------ Private functions 
-		//----------------------------------------o		
+		//=========================================o
+		//------ Init 
+		//=========================================o	
 		private function init(e:Event = null):void 
 		{
 			trace(this + " inited");
-
 			_bg = new Shape; // initializing the variable named rectangle
 			_bg.graphics.beginFill(0xFF0000); 
-			_bg.graphics.drawRect(0, 0, Data.STAGE_WIDTH, Data.STAGE_HEIGHT);
+			_bg.graphics.drawRect(0, 0, Data.deviceResX, Data.deviceResY);
 			_bg.graphics.endFill();
 			addChild(_bg); 
-			
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 		}
 		
-		//----o Clean Up function
+		//=========================================o
+		//------ On Remove 
+		//=========================================o
 		private function onRemove(e:Event):void 
 		{
 			
 		}
 
-		//----------------------------------------o
-		//------ Public functions 
-		//----------------------------------------o		
+		//=========================================o
+		//------ kill/dispose/destroy 
+		//=========================================o
 		public function trash():void
 		{
 			trace(this + "trash()");

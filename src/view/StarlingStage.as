@@ -1,9 +1,11 @@
 package view
 {
+
 	import interfaces.iScreen;
 	import ManagerClasses.StateMachine;
 	import singleton.EventBus;
 	import starling.display.Sprite;
+
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;

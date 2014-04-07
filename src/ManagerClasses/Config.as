@@ -1,5 +1,6 @@
 package ManagerClasses 
 {
+	import air.net.URLMonitor;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Bitmap;
@@ -9,7 +10,9 @@ package ManagerClasses
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.ProgressEvent;
+	import flash.events.StatusEvent;
 	import flash.net.URLRequest;
+	import flash.system.Capabilities;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
 	import singleton.Core;
@@ -27,6 +30,8 @@ package ManagerClasses
 	/**
 	 * ...
 	 * @author john stejskal
+	 * www.johnstejskal.com
+	 * johnstejskal@gmail.com
 	 * "Why walk when you can ride"
 	 */
 	
@@ -34,12 +39,11 @@ package ManagerClasses
 	{
 		private var _core:Core;
 		private var _stage:Stage;
-		private var loader:Loader;
 
 
-		//----------------------------------------o
+		//========================================o
 		//------ Constructor
-		//----------------------------------------o				
+		//========================================o			
 		public function Config() 
 		{
 			trace(this + "constructed");
@@ -50,22 +54,28 @@ package ManagerClasses
 			//SET SPRITE SHEET CLASS LOCATION WITHIN AssetsManager
 			AssetsManager.SPRITE_SHEET_CLASS = SpriteSheets;
 			
-
-			
 			setup();
 		}
 		
 		
-		
+		//========================================o
+		//------ Setup
+		//-- establish device settings
+		//========================================o		
 		private function setup():void
 		{
 			trace(this + "setup()");
+			//setup global animation juggler
 			_core.animationJuggler = new Juggler();
+
+			
+			if (PublicSettings.DEBUG_RELEASE)
+			PublicSettings.DEVICE_RELEASE = true;
 			
 			if (PublicSettings.DEVICE_RELEASE)
 			{
-				if(DeviceSettings.KEEP_DEVICE_AWAKE)
-				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
+				//if(DeviceSettings.KEEP_DEVICE_AWAKE)
+				//NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
 				
 				Multitouch.inputMode = DeviceSettings.TOUCH_INPUT_MODE;
 				
@@ -78,24 +88,27 @@ package ManagerClasses
 				Data.deviceResY = _stage.stageHeight;
 			}
 			
+			if (PublicSettings.DEBUG_RELEASE)
+			{
+				Data.deviceResX = _stage.stageWidth;
+				Data.deviceResY = _stage.stageHeight;
+			}
+			
 			Data.baseResX = Constants.BASE_RES_X;
 			Data.baseResY = Constants.BASE_RES_Y;			
 
 			Data.deviceScaleX = Data.deviceResX / Data.baseResX;
 			Data.deviceScaleY = Data.deviceResY / Data.baseResY;
 			
-			trace("Data.deviceResX :" + Data.deviceResX);
-			trace("Data.baseResX:" + Data.baseResX);
-			trace("Data.deviceScaleX :" + Data.deviceScaleX);
+			
+			trace(Config+" device size established baseX:"+Constants.BASE_RES_X +" baseY:"+Constants.BASE_RES_Y +" DeviceResX:"+Data.deviceResX+" DeviceResY:"+Data.deviceResY)
 
-			
-			
-			_core.oDebugPanel = new DebugPanel(150, 100, DebugPanel.BOTTOM_LEFT);
-			_stage.addChild(_core.oDebugPanel);
 		}	
 		
 		
+	
 		
+
 		
 		
 		

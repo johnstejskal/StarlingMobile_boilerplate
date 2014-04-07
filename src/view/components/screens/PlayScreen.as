@@ -18,12 +18,7 @@ package view.components.screens
 	import flash.utils.Timer;
 	import interfaces.iScreen;
 	import ManagerClasses.AssetsManager;
-	import ManagerClasses.ObjectPools.ObjPool_BloodPuddle;
-	import ManagerClasses.ObjectPools.ObjPool_BloodSplat;
-	import ManagerClasses.ObjectPools.ObjPool_Coin;
-	import ManagerClasses.ObjectPools.ObjPool_effects;
-	import ManagerClasses.ObjectPools.ObjPool_enemy;
-	import ManagerClasses.ObjectPools.ObjPool_MeatSplat;
+
 	import org.gestouch.events.GestureEvent;
 	import org.gestouch.gestures.SwipeGesture;
 	import org.osflash.signals.Signal;
@@ -53,9 +48,6 @@ package view.components.screens
 	import staticData.Data;
 	import staticData.SpriteSheets;
 
-	import view.components.ui.DevConsole;
-
-
 	import starling.utils.deg2rad;
 	import starling.utils.rad2deg;
 	import ManagerClasses.StateMachine;
@@ -66,13 +58,14 @@ package view.components.screens
 	import staticData.Constants;
 
 
-	
+	//=========================================o
 	/**
-	 * ...
 	 * @author john stejskal
 	 * "Why walk when you can ride"
 	 */
-	public class PlayScreen extends Sprite implements iScreen
+	//=========================================o
+	
+	public class PlayScreen extends Screen implements iScreen
 	{
 		
 		private var _core:Core;
@@ -96,71 +89,44 @@ package view.components.screens
 		private var veloX:Number = 0;
         private var veloY:Number = 0;		
 
-		//----------------------------------------o
+		//=========================================o
 		//------ Constructor
-		//----------------------------------------o
+		//=========================================o
 		public function PlayScreen():void 
 		{
 			trace(this + " PlayScreen()");
 
 			_core = Core.getInstance();
 			_nativeStage = Starling.current.nativeStage;
-			
-			StateMachine._oPlayScreen = this;
 
 		}
 		
-		//------------------------------------------------------------------------------o
-		//------ Public API 
-		//------------------------------------------------------------------------------o		
-		public function init(levelToLoad:String = "level1"):void
+		//=========================================o
+		//------ Init
+		//=========================================o
+		public override function init():void
 		{
-			trace("levelToLoad :" + levelToLoad)
 			
-			AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_ACTION_ASSETS, SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS,  this.loaded);
-			//------------Load State Assets ---------------//
-			switch(levelToLoad)
-			{
-				case "level1":
-					_currBGName = SpriteSheets.SPRITE_ATLAS_GAME_BG;
-					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.SPRITE_ATLAS_GAME_BG,  this.loaded);
-				break;
-				
-				case "level2":
-					_currBGName = SpriteSheets.SPRITE_ATLAS_GAME_BG;
-				break;
-								
-				case "level3":
-					_currBGName = SpriteSheets.SPRITE_ATLAS_GAME_BG;
-				break;
-				
-			}
 
 		}
 		
-		//----------------------------------------o
+		//=========================================o
 		//------ AssetLoad Callback
-		//----------------------------------------o
-		public function loaded():void
+		//=========================================o
+		public override function loaded():void
 		{
 			trace(this + "loaded()");
 			createWorld();
 		}
 		
-		//------------------------------------------------------------------------------o
-		//------ Private  API 
-		//------------------------------------------------------------------------------o	
-		//------------------------------------------o
+
+		//=========================================o
 		//-- Setup and position all the components
-		//------------------------------------------o
+		//=========================================o
 		private function createWorld():void 
 		{
-			
 			trace(this + "createLevel()");	
 			this.alpha = 0.99;
-			
-			_imgBG = new Image(AssetsManager.getAtlas(_currBGName).getTexture("TA_bg_30000"));
-			this.addChild(_imgBG);
 			
 			//setup layers for indexed asset management
 			_layerUnderlay = new Sprite();
@@ -176,16 +142,9 @@ package view.components.screens
 			_oPlayer.x = Data.deviceResX/2
 			_oPlayer.y = Data.deviceResY / 2
 			
-			
 			_layerAction.addChild(_oPlayer);
 			
 			
-			if (Accelerometer.isSupported && DeviceSettings.ENABLE_ACCELEROMETER)
-			{
-			_accelerometer = new Accelerometer();
-			_accelerometer.setRequestedUpdateInterval(10);
-			_accelerometer.addEventListener(AccelerometerEvent.UPDATE, onAccUpdate);
-			}
 			
 			/* 
 			 * optional Tile Based grid
@@ -194,23 +153,19 @@ package view.components.screens
 			tileGrid.generateGrid(0, 0, 80, 80, TileGrid.LEVEL_MAP)
 			this.addChild(tileGrid);*/
 			
-
-			
 			//------------------------------------------o
 			//--------  AddEventListeners --------------o
 			//------------------------------------------o
 			if(DeviceSettings.ENABLE_TOUCH)
 			this.addEventListener(TouchEvent.TOUCH, onTouch)
 			
-			
 			startGameplay();
-			
 			
 		}	
 		
-		//------------------------------------------o
+		//=========================================o
 		//-- Start Game Play
-		//------------------------------------------o
+		//=========================================o
 		private function startGameplay():void 
 		{
 			trace(this + " startGameplay()");
@@ -220,12 +175,9 @@ package view.components.screens
 		}
 		
 
-		//------------------------------------------------------------------------------o
-		//------ Event Handlers 
-		//------------------------------------------------------------------------------o	
-		//------------------------------------o
+		//=========================================o
 		//-- Screen Touch events
-		//------------------------------------o
+		//=========================================o
 		private function onTouch(e:TouchEvent):void
 		{
 			var touch:Touch = e.getTouch(stage);
@@ -250,48 +202,11 @@ package view.components.screens
 			}
  
 		}
-		//------------------------------------o
-		//-- Accelerometer event
-		//------------------------------------o
-		private	function onAccUpdate(e:AccelerometerEvent):void
-		{
-			//trace(e.accelerationY)
+		
 			
-			if (e.accelerationX < .02 && e.accelerationX > -0.02)
-			return;
-			
-			//if (e.accelerationX > .2 || e.accelerationX < -0.2)
-			//return;	
-			
-			var perc:Number; 
-			var accX:Number = e.accelerationX;
-			
-			perc = Maths.fastAbs(accX) * 0.2
-			
-			//if (accX < 0)
-			
-			
-			
-			_oPlayer.x -= (e.accelerationX*40);
-			//_oPlayer.y += (e.accelerationY * 10);
-			
-			//trace("perc:"+perc)
-			
-			if (_oPlayer.x < 0)
-			_oPlayer.x = 0;
-			if (_oPlayer.x > Data.deviceResX)
-			_oPlayer.x = Data.deviceResX;
-			
-
-			_core.oDebugPanel.setTrace(String(perc))
-			
-			
-
-		} 	
-			
-		//------------------------------------o
+		//=========================================o
 		//-- Enter Frame - Main Game Loop
-		//------------------------------------o
+		//=========================================o
 		private function update_gameLoop(e:Event):void 
 		{
 			if (_isGameInPlay)
@@ -304,21 +219,21 @@ package view.components.screens
 			}
 		}
 
-		
-		
 
-		//------------------------------------o
+		//=========================================o
 		//-- Trash/Dispose/Kill/Anihliate
-		//------------------------------------o		
-		public function trash():void
+		//=========================================o	
+		public override function trash():void
 		{
+		trace(this + "trash()");
 		  this.removeEventListeners();
+		  this.removeFromParent();
 			
 		}
 
-		//-------------------------------------------------------------------------o
+		//=========================================o
 		//------ Getters and Setters 
-		//-------------------------------------------------------------------------o		
+		//=========================================o		
 		
 
 		

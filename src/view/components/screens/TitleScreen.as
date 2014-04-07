@@ -2,7 +2,6 @@ package view.components.screens
 {
 
 
-	import com.bumpslide.util.Delegate;
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Linear;
 	import com.greensock.TweenLite;
@@ -39,7 +38,7 @@ package view.components.screens
 	 */
 	//===============================================o
 	
-	public class TitleScreen extends Sprite implements iScreen
+	public class TitleScreen extends Screen implements iScreen
 	{
 		private var _core:Core;
 		private var _imgBG:Image;
@@ -47,22 +46,19 @@ package view.components.screens
 		private var _imgButton:Image;
 
 
-		//----------------------------------------o
+		//===============================================o
 		//------ Constructor 
-		//----------------------------------------o
+		//===============================================o
 		public function TitleScreen():void 
 		{
 			_core = Core.getInstance();
 
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-
 		}
 
-		//----------------------------------------o
+		//===============================================o
 		//------ Assets loaded callback 
-		//----------------------------------------o
-		private function loaded():void 
+		//===============================================o
+		public override function loaded():void 
 		{
 			trace(this + "loaded()");
 			
@@ -91,9 +87,9 @@ package view.components.screens
 		}
 		
 		
-		//----------------------------------------------------------------------o
+		//===============================================o
 		//------ Touch Handlers 
-		//----------------------------------------------------------------------o	
+		//===============================================o	
 		private function onTouch(e:TouchEvent):void 
 		{
 			var touch:Touch = e.getTouch(stage);
@@ -124,35 +120,32 @@ package view.components.screens
 		
 		
 		
-		
-		//----------------------------------------o
+		//===============================================o
 		//------ Enter frame loop
-		//----------------------------------------o		
+		//===============================================o	
 		private function onUpdate(e:Event):void 
 		{
 			_core.animationJuggler.advanceTime(.02);
 			
 		}
 
-		//----------------------------------------o
-		//------ Public functions 
-		//----------------------------------------o	
-		
-		//----------------------------------------o
+
+		//===============================================o
 		//------ dispose/kill/terminate/
-		//----------------------------------------o	
-		public function trash():void
+		//===============================================o
+		public override function trash():void
 		{
 			trace(this + "trash()");
 			this.removeEventListeners();
+			
 			//dispose texture maps
-			//Assets.disposeTexture(Assets.SPRITE_ATLAS_TITLESCREEN);
+			
 			this.removeFromParent();
 		}
 		
-		//-------------------------------------------------------------------------o
+		//===============================================o
 		//------ Getters and Setters 
-		//-------------------------------------------------------------------------o			
+		//===============================================o			
 		
 	}
 	

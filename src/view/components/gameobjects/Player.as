@@ -1,6 +1,7 @@
 package view.components.gameobjects 
 {
 
+	import com.johnstejskal.Delegate;
 	import ManagerClasses.AssetsManager;
 	import singleton.Core;
 	import starling.core.Starling;
@@ -10,7 +11,8 @@ package view.components.gameobjects
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.utils.deg2rad;
-	import view.components.gameobjects.superClass.GameObject;
+	import staticData.settings.PublicSettings;
+	import view.components.gameobjects.GameObject;
 	import staticData.Data;
 	import staticData.SpriteSheets;
 	
@@ -22,6 +24,14 @@ package view.components.gameobjects
 	 */
 	public class Player extends GameObject
 	{
+		
+		//Player State types
+		static public const STATE_DEFAULT:String = "stateDefault";
+		static public const STATE_COLLISION:String = "stateCollision";
+
+		
+		
+		
 		private var _core:Core;
 		private var _scaleWithDevice:Boolean;
 		
@@ -31,13 +41,22 @@ package view.components.gameobjects
 		private var _imgPlayer:Image;
 		private var _quFill:Quad;
 		
-		//mc's
-		private var _smcSomeMoveClip:MovieClip;
+
+		private var _quCollisionArea:Quad;
+		
+		//player state objects
+		private var _smcDefault:MovieClip;
+		private var _smcCollision:MovieClip;
+		
+		private var _currState:String;
+		private var _currStateObject:MovieClip;
+		private var _isGod:Boolean;
+
 		
 
-		//-----------------------------o
+		//===========================================o
 		//-- Constructor
-		//-----------------------------o
+		//===========================================o
 		public function Player(scaleWithDevice:Boolean = true) 
 		{
 			trace(this + "Constructed");
@@ -49,48 +68,91 @@ package view.components.gameobjects
 			
 		}
 		
+		//===========================================o
+		//-- init
+		//===========================================o
 		private function init(e:Event):void 
 		{
 			trace(this + "inited");
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			this.scaleX = this.scaleY = Data.deviceScaleX; 
+			this.scaleX = this.scaleY = Data.deviceScaleX; 			
 			
-			/*_quFill = new Quad(DataVO.STAGE_WIDTH, _imgSkyL.height, 0xffffff);
-			_quFill.alpha = .5;
-			addChild(_quFill);
-			_quFill.visible = false;*/
+			//create collision box
+			_quCollisionArea = new Quad(30, 120, 0x00FF00);
+			_quCollisionArea.alpha = 1;
+			_quCollisionArea.pivotX = _quCollisionArea.width/2;
+			_quCollisionArea.pivotY = 0;
+			addChild(_quCollisionArea);
 			
-			_imgPlayer = new Image(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS).getTexture("TA_player0000"));
-			_imgPlayer.x = -_imgPlayer.width / 2;
-			_imgPlayer.y = -_imgPlayer.height / 2;
-			this.addChild(_imgPlayer);
-			_imgPlayer.visible = true;
+			if(PublicSettings.SHOW_COLLISION_BOX)
+			_quCollisionArea.visible = true;
+			else
+			_quCollisionArea.visible = false;
+
+			_isGod = PublicSettings.ENABLE_GOD_MODE;
+			
+			//create default player state
+			_smcDefault = new MovieClip(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS).getTextures("TA_playerDefault"), 20);
+			_smcDefault.pause();
+			_smcDefault.loop = true;
+			_smcDefault.pivotX = _smcDefault.width/2;
+			_smcDefault.pivotY = _smcDefault.height;
+			
+			//create collision player state
+			_smcCollision = new MovieClip(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS).getTextures("TA_playerCollision"), 20);
+			_smcCollision.pause();
+			_smcCollision.loop = true;
+			_smcCollision.pivotX = _smcCollision.width/2;
+			_smcCollision.pivotY = _smcCollision.height;
 			
 			
-			/*_smcSomeMoveClip = new MovieClip(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS).getTextures("TA_blinker"), 12);
-			_smcSomeMoveClip.pause();
-			_smcSomeMoveClip.loop = true;
-			_smcSomeMoveClip.x = -_smcSomeMoveClip.width / 2;
-			_smcSomeMoveClip.y = -_smcSomeMoveClip.height / 2;
-			_core.animationJuggler.add(_smcSomeMoveClip)
-			addChild(_smcSomeMoveClip);*/	
-			
-			this.addEventListener(Event.ENTER_FRAME, onUpdate)
-			
-			
-			
+			changeState(STATE_DEFAULT);
 			
 		}
 		
-		private function onUpdate(e:Event):void 
+		
+		//===========================================o
+		//-- Change player State
+		//===========================================o		
+		public function changeState(newState:String):void 
 		{
+			if (_currState == newState)
+			return;
 			
+			if (_currState != null)
+			{
+			this.removeChild(_currStateObject);
+			_core.animationJuggler.remove(_currStateObject);	
+			}
+			
+			switch(newState)
+			{
+				//-----------------------------o
+				case STATE_DEFAULT:
+				_currStateObject = _smcDefault
+				break;
+				//-----------------------------o
+				case STATE_COLLISION:
+				_currStateObject = _smcCollision
+				break;
+				//-----------------------------o
+			}
+			
+			this.addChild(_currStateObject);
+			_core.animationJuggler.add(_currStateObject);
+
+
 		}
 		
+		
+		//===========================================o
+		//-- kill/dispose/destroy
+		//===========================================o
 		public override function trash():void
 		{
-			trace(this+" trash()")
+			this.removeEventListeners();
+			this.removeFromParent();
 			
 		}
 		

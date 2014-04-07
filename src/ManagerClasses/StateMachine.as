@@ -2,18 +2,16 @@
 {
 
 	import adobe.utils.CustomActions;
-	import com.bumpslide.util.Delegate;
 	import com.johnstejskal.FaceBook;
 	import flash.display.Loader;
 	import flash.external.ExternalInterface;
 	import flash.security.SignatureStatus;
-	import ManagerClasses.CustomEvents.ScreenReadyEvent;
-	import ManagerClasses.CustomEvents.StateCleanUpEvent;
 	import org.osflash.signals.Signal;
 	import singleton.EventBus;
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import staticData.SpriteSheets;
+	import view.components.screens.Screen;
 	import view.StarlingStage;
 
 	import view.components.screens.SplashScreen;
@@ -39,11 +37,8 @@
 	
 	 //---------------------------o
 	 // This state machine is in charge of listeneing to events from the EventBus
-	 // and dispatching state changes, 
-	 // the only components it should be aware of are the core screen states, 
-	 //
-	 // TODO Add a param into the state changer which allows for substates, in the sens it does not 
-	 // dispose of the previous state, case scenario: a pop-up game over panel on a gameplay screen
+	 // and executing state changes, 
+
 	public class StateMachine 
 	{
 		
@@ -61,9 +56,9 @@
 		public static const STATE_DEACTIVATE:String = "deactivate"		
 
 		//
-		public static var currentState:String;
-		public static var prevState:String;
-		static private var currentStateObject:Sprite;
+		public static var currentScreenState:String;
+		public static var prevScreenState:String;
+		static private var currentScreenObject:Screen;
 		
 		public static var oStarlingStage:StarlingStage;
 		
@@ -75,6 +70,8 @@
 
 		static private var core:Core;
 		static private var _currStateAssets:Array;
+
+
 
 
 		public function StateMachine() 
@@ -131,7 +128,7 @@
 		//===============================================o		
 		static private function evtOnDeactivate():void 
 		{
-			changeState(STATE_DEACTIVATE);
+			//changeState(STATE_DEACTIVATE);
 		}
 		
 		//===============================================o
@@ -152,12 +149,13 @@
 		//===============================================o
 		protected static function changeScreenState(newState:String):void
 		{
+	
 			trace(StateMachine+" changeScreenState(" + newState + ")");
-			if (newState == currentState)
+			if (newState == currentScreenState)
 			return;
 			
-			if (currentState != null)
-			prevState = currentState;
+			if (currentScreenState != null)
+			prevScreenState = currentScreenState;
 			
 			
 			if (currentScreenObject != null)
@@ -166,56 +164,67 @@
 			currentScreenObject = null;
 			}
 			
-			while (_currStateAssets.length > 0)
-			{
-			AssetsManager.disposeTexture(_currStateAssets.pop())
-			}
-			
 
+			AssetsManager.disposeAll();
+			
+			
+			
 			switch(newState)
 			{
 				//------------------------------------------------------------------------------------o
 				case STATE_INTRO:
-					currentState = STATE_INTRO;
+					currentScreenState = STATE_INTRO;
 				break;	
 				
 				//------------------------------------------------------------------------------------o
-			    case STATE_TITLE:
+				case STATE_TITLE:
+				
 					_oTitleScreen = new TitleScreen();
-					currentState = STATE_TITLE;
-					currentStateObject = _oTitleScreen;
+					currentScreenState = STATE_TITLE;
+					currentScreenObject = _oTitleScreen;
 					
-					_currStateAssets.push(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.TA_PATH_TITLE_SCREEN);
-					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.SPRITE_ATLAS_GAME_BG,  this.loaded);
-					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_TITLE_SCREEN, SpriteSheets.SPRITE_ATLAS_TITLE_SCREEN, this.loaded );
+
+					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.SPRITE_ATLAS_GAME_BG,  stateLoaded);
+					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_TITLE_SCREEN, SpriteSheets.SPRITE_ATLAS_TITLE_SCREEN, stateLoaded );
+				
 				break;
 
 				//------------------------------------------------------------------------------------o
 				case STATE_PLAY:
-					_oPlayScreen = new TitleScreen();
-					currentState = STATE_PLAY;
-					currentStateObject = _oPlayScreen;
 					
+					_oPlayScreen = new PlayScreen();
+					currentScreenState = STATE_PLAY;
+					currentScreenObject = _oPlayScreen;
+					
+					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_ACTION_ASSETS, SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS,  stateLoaded);
 					AssetsManager.loadTextureFromFile(SpriteSheets.TA_PATH_GAME_BG, SpriteSheets.SPRITE_ATLAS_GAME_BG,  stateLoaded);
+				
 				break;
+				
 				//------------------------------------------------------------------------------------o
+				
 				case STATE_GAME_OVER:
 
 
-				break;						
+				break;	
+				
 				//------------------------------------------------------------------------------------o
+				
 				case STATE_WIN:
 
 
 				break;		
+				
 				//------------------------------------------------------------------------------------o					
+				
 				case STATE_SCORES:
 
 				break;	
+				//------------------------------------------------------------------------------------o					
 				
 				default:
 				//no state found, revert to default home
-				changeState(STATE_TITLE)
+				changeScreenState(STATE_TITLE)
 				break;					
 	
 				
@@ -228,7 +237,7 @@
 		//==========================================================o
 		static public function stateLoaded():void 
 		{
-			trace(StateMachine + "stateLoaded():" + currentAppState + " has loaded");
+			trace(StateMachine + "stateLoaded():" + currentScreenState + " has loaded");
 			
 			if (currentScreenObject)
 			{
@@ -236,7 +245,7 @@
 				oStarlingStage.addChildAt(currentScreenObject, 0);
 
 				if (!currentScreenObject.manualRemoveDim)
-				_core.controlBus.appUIController.removeFillOverlay();
+				core.controlBus.controller_appUI.removeFillOverlay();
 			}
 		}		
 

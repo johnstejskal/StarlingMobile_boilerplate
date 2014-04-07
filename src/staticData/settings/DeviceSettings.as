@@ -45,6 +45,7 @@ package staticData.settings
 	// I find that having a rect that accurately represents the screen size is useful, so I make one here for both main orientations.
 	public static const GameScreenLandscape:Rectangle = new Rectangle(CenterX, CenterY, GameWidth, GameHeight);
 	public static const GameScreenPortrait:Rectangle = new Rectangle(CenterY, CenterX, GameHeight, GameWidth); 
+	
  
 	public static function getDeviceDetails():Object 
 	{
