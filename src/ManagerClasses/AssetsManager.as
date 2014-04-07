@@ -73,6 +73,7 @@ package ManagerClasses
 			//-------------------------------o	
 			public static function disposeTexture(name:String) : void
 			{
+				trace(AssetsManager + "disposeTexture(" + name + ")");
 				if (_gametextures[name] == undefined || _gametextures[name] == null)
 				{
 					trace("Error: The Atlas you are attempting to dispose does not exist")
@@ -82,8 +83,6 @@ package ManagerClasses
 				Dictionary(_gametextures)[name].dispose();
 				delete _gametextures[name];
 				_gametextures[name] = null;
-				
-				trace("disposed :" + _gametextures[name]);
 				
 			}		
 			
