@@ -36,9 +36,9 @@ package ManagerClasses
 				
 			}
 
-			//-------------------------------o
+			//=========================================o
 			//-- Retrieve the sprite sheet
-			//-------------------------------o
+			//=========================================o
 			public static function getAtlas(textureAtlas:String):TextureAtlas
 			{
 				if (!SPRITE_SHEET_CLASS)
@@ -54,9 +54,10 @@ package ManagerClasses
 				}
 				return _gameTextureAtlas;
 			}	
-			//-------------------------------o
+			
+			//=========================================o
 			//-- Retrieve a specific texture
-			//-------------------------------o				
+			//=========================================o				
 			public static function getTexture(name:String):Texture
 			{
 				trace(AssetsManager + " getTexture(" + name + ")");
@@ -68,9 +69,9 @@ package ManagerClasses
 				return _gametextures[name];
 			}
 			
-			//-------------------------------o
+			//=========================================o
 			//-- Dispose a texture (not whole atlast)
-			//-------------------------------o	
+			//=========================================o
 			public static function disposeTexture(name:String) : void
 			{
 				trace(AssetsManager + "disposeTexture(" + name + ")");
@@ -87,9 +88,9 @@ package ManagerClasses
 			}		
 			
 			
-			//-------------------------------o
+			//=========================================o
 			//-- load a sprtiesheet from file
-			//-------------------------------o
+			//=========================================o
 			public static function loadTextureFromFile(path:String, name:String, callback:Function):void
 			{
 				loadQueCount++;
@@ -122,9 +123,9 @@ package ManagerClasses
 				}	
 			}
 			
-			//-------------------------------o
+			//=========================================o
 			//-- dispose all textures
-			//-------------------------------o
+			//=========================================o
 			public static function disposeAll():void
 			{
 				for (var key:* in _gametextures)
@@ -137,9 +138,9 @@ package ManagerClasses
 				trace(AssetsManager+"disposeAll() All Textures have been disposed");
 			}
 			
-			//----------------------------------------------o
+			//=========================================o
 			//--- count dictionary keys
-			//----------------------------------------------o	
+			//=========================================o
 			public static function countKeys(myDictionary:flash.utils.Dictionary):int 
 			{
 				var n:int = 0;

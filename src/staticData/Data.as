@@ -16,7 +16,7 @@ package staticData
 	static public var baseResX:int;
 	static public var baseResY:int;
 	
-	
+	public static var arrActionObjects:Array = [];
 	
 
 	
