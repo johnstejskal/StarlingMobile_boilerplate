@@ -26,15 +26,15 @@ package view.components.screens.mvcScreen
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import staticData.Data;
-	import staticData.settings.DeviceSettings;
-	import staticData.SpriteSheets;
+	import data.Data;
+	import data.settings.DeviceSettings;
+	import data.constants.SpriteSheets;
 	import view.components.screens.mvcScreen.controller.MvcScreenController;
 	import view.components.screens.mvcScreen.model.MvcScreenModel;
 	import view.components.screens.mvcScreen.view.MvcScreenView;
 
 
-	import staticData.Constants;
+	import data.constants.Constants;
 
 
 	

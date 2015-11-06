@@ -1,0 +1,124 @@
+[
+	{
+		"ID":"1",
+		"NAME":"Wheels & Tyres #1",
+		"TYPE":"car",
+		"DESCRIPTION":"Better handling, faster lane changes.",
+		"COST":500,
+		"FRAME_REF":"car1"
+	},
+	{
+		"ID":"2",
+		"NAME":"Window Tinting #1",
+		"TYPE":"car",		
+		"DESCRIPTION":"Don't like the attention? Ride in privacy.",
+		"COST":1000,
+		"FRAME_REF":"car2"
+	},
+	{
+		"ID":"3",
+		"NAME":"$20 Fuel Voucher",
+		"TYPE":"voucher",		
+		"DESCRIPTION":"Sign up for a lease and receive this bonus fuel voucher.",
+		"COST":1600,
+		"FRAME_REF":"car3"
+	},	
+	{
+		"ID":"4",
+		"NAME":"Engine Upgrade #1",
+		"TYPE":"car",		
+		"DESCRIPTION":"Drop in a V6. Go faster, sound better.",
+		"COST":2300,
+		"FRAME_REF":"car4"
+	},	
+	{
+		"ID":"5",
+		"NAME":"Sunroof Upgrade",
+		"TYPE":"car",		
+		"DESCRIPTION":"Feel the wind in your hair. Look out for birds.",
+		"COST":3100,
+		"FRAME_REF":"car5"
+	},	
+	{
+		"ID":"6",
+		"NAME":"$40 Fuel Voucher",
+		"TYPE":"voucher",		
+		"DESCRIPTION":"Sign up for a lease and receive this bonus fuel voucher.",
+		"COST":4000,
+		"FRAME_REF":"car6"
+	},	
+	{
+		"ID":"7",
+		"NAME":"Suspension Upgrade",
+		"TYPE":"car",		
+		"DESCRIPTION":"Unlock the jump control, save the echidnas.",
+		"COST":5000,
+		"FRAME_REF":"car7"
+	},	
+	{
+		"ID":"8",
+		"NAME":"Rear Wing",
+		"TYPE":"car",		
+		"DESCRIPTION":"For that downforce you need on gravel driveways.",
+		"COST":6100,
+		"FRAME_REF":"car8"
+	},	
+	{
+		"ID":"9",
+		"NAME":"$60 Fuel Voucher",
+		"TYPE":"voucher",		
+		"DESCRIPTION":"Sign up for a lease and receive this bonus fuel voucher.",
+		"COST":7200,
+		"FRAME_REF":"car9"
+	},	
+	{
+		"ID":"10",
+		"NAME":"Wheels & Tyres #2",
+		"TYPE":"car",		
+		"DESCRIPTION":"The ultimate in responsive handling.",
+		"COST":8300,
+		"FRAME_REF":"car10"
+	},
+	{
+		"ID":"11",
+		"NAME":"Decals #1",
+		"TYPE":"car",		
+		"DESCRIPTION":"They'll never see you coming.",
+		"COST":9500,
+		"FRAME_REF":"car11"
+	},
+	{
+		"ID":"12",
+		"NAME":"$80 Fuel Voucher",
+		"TYPE":"voucher",		
+		"DESCRIPTION":"Sign up for a lease and receive this bonus fuel voucher.",
+		"COST":10700,
+		"FRAME_REF":"car12"
+	},
+	{
+		"ID":"13",
+		"NAME":"Engine Upgrade #2",
+		"TYPE":"car",		
+		"DESCRIPTION":"It's a V8, mate.",
+		"COST":11900,
+		"FRAME_REF":"car13"
+	},
+	{
+		"ID":"14",
+		"NAME":"Decals #2",
+		"TYPE":"car",		
+		"DESCRIPTION":"Look as good as you feel.",
+		"COST":13100,
+		"FRAME_REF":"car14"
+	},
+	{
+		"ID":"15",
+		"NAME":"$100 Fuel Voucher",
+		"TYPE":"voucher",		
+		"DESCRIPTION":"Sign up for a lease and receive this bonus fuel voucher.",
+		"COST":15000,
+		"FRAME_REF":"car15"
+	}	
+	
+  
+]

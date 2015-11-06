@@ -1,10 +1,18 @@
 package com.johnstejskal 
 {
+	import com.greensock.TweenLite;
+	import flash.events.TimerEvent;
+	import flash.utils.clearInterval;
+	import flash.utils.getQualifiedClassName;
+	import flash.utils.setInterval;
+	import flash.utils.Timer;
 	import starling.core.Starling;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.QuadBatch;
-	import staticData.Data;
+	import starling.display.Sprite;
+	import staticData.AppData;
 	import view.components.screens.LoadingScreen;
 	
 	
@@ -20,8 +28,9 @@ package com.johnstejskal
 		static public const BOTTOM_RIGHT:String = "BOTTOM_RIGHT";
 		static public const TOP_LEFT:String = "TOP_LEFT";
 		static public const TOP_RIGHT:String = "TOP_RIGHT";
+		static public var flashInterval:uint;
 		
-		static private var loadingScreen:LoadingScreen;
+		
 		//static private var isLoadingActive:Boolean = false;
 		
 		public function StarlingUtil() 
@@ -57,22 +66,7 @@ package com.johnstejskal
 			return result;
 		}		
 		
-		static public function showLoadingScreen():void 
-		{
-			if (loadingScreen)
-			return;
-			
-			loadingScreen = new LoadingScreen();
-			Starling.current.nativeOverlay.addChild(loadingScreen);
-		}
-		
-		static public function removeLoadingScreen():void 
-		{
-			trace("loadingScreen.parent:" + loadingScreen.parent);
-			if (loadingScreen.parent)
-			loadingScreen.parent.removeChild(loadingScreen);
-			//Starling.current.nativeOverlay.removeChild(loadingScreen);
-		}
+
 		
 		static public function centerRegPoint(obj:*):void 
 		{
@@ -126,8 +120,8 @@ package com.johnstejskal
 			switch(pos)
 			{
 				case CENTER:
-				obj.x = Data.deviceResX / 2;
-				obj.y = Data.deviceResY / 2;
+				obj.x = AppData.deviceResX / 2;
+				obj.y = AppData.deviceResY / 2;
 				break;
 				
 				case TOP_LEFT:
@@ -136,18 +130,18 @@ package com.johnstejskal
 				break;	
 				
 				case TOP_RIGHT:
-				obj.x = Data.deviceResX;
+				obj.x = AppData.deviceResX;
 				obj.y = 0;
 				break;	
 				
 				case BOTTOM_LEFT:
 				obj.x = 0;
-				obj.y = Data.deviceResY;
+				obj.y = AppData.deviceResY;
 				break;	
 				
 				case BOTTOM_RIGHT:
-				obj.x = Data.deviceResX;
-				obj.y = Data.deviceResY;
+				obj.x = AppData.deviceResX;
+				obj.y = AppData.deviceResY;
 				break;	
 				
 			}
@@ -174,7 +168,110 @@ package com.johnstejskal
 		static public function shakeScreen(degree:Number, time:Number):void 
 		{
 			//obj.scaleX = obj.scaleY = scale
+		}
+		public static function shake(shakeClip:*, duration:Number = 3000, frequency:Number = 30, distance:Number = 2):void
+		{
+			var shakes:int = duration / frequency;
+			var shakeTimer:Timer = new Timer(frequency, shakes);
+			var startX:Number = shakeClip.x;
+			var startY:Number = shakeClip.y;
+
+			var shakeUpdate:Function = function(e:TimerEvent):void
+				{
+					shakeClip.x = startX + ( -distance / 2 + Math.random() * distance);
+					shakeClip.y = startY + ( -distance / 2 + Math.random() * distance); 
+				}
+
+			var shakeComplete:Function = function(e:TimerEvent):void
+				{
+					shakeClip.x = startX;
+					shakeClip.y = startY;
+					e.target.removeEventListener(TimerEvent.TIMER, shakeUpdate);
+					e.target.removeEventListener(TimerEvent.TIMER_COMPLETE, shakeComplete);
+				}
+
+			shakeTimer.addEventListener(TimerEvent.TIMER, shakeUpdate);
+			shakeTimer.addEventListener(TimerEvent.TIMER_COMPLETE, shakeComplete);
+
+			shakeTimer.start();
 		}		
+		
+		
+		//-----------------------------------------------o
+		//-------- Make an object flash
+		//-----------------------------------------------o
+		public static function makeObjectFlash(object:*, time:Number = 1, interval:Number = 500, finishVisible:Boolean = true):void
+		{
+			flashInterval = setInterval(flash, interval);
+
+			TweenLite.delayedCall(time, function():void{  clearInterval(flashInterval);  object.visible = finishVisible; })
+			
+			function flash():void
+			{
+				if (object == null)
+				return;
+				
+				if (!object.visible)
+				object.visible = true;
+				else
+				object.visible = false;
+			}
+			
+		}
+		
+		public static function stopFlashing(object:*, visible:Boolean = true ):void
+		{
+			clearInterval(flashInterval);
+			object.visible = visible;
+		}
+		
+	    public static function getStageItems( container:DisplayObjectContainer = null ):void
+		{
+			if ( !container ) container = Starling.current.stage;
+				
+			for ( var i:int = 0; i < container.numChildren; i++ )
+			{
+				if ( container.getChildAt(i) is DisplayObjectContainer )
+				{
+					getStageItems( container.getChildAt(i) as DisplayObjectContainer );
+				}
+				else
+				{
+					trace( "Item name: " + container.getChildAt(i).name );
+					trace( "Item type: " + getQualifiedClassName( container.getChildAt(i) ) );
+					trace( "-------------------------------------" );
+				}
+			}
+		}	
+				
+	    public static function floorAllPositions( container:DisplayObjectContainer = null ):void
+		{
+			if ( !container ) container = Starling.current.stage;
+				
+			for ( var i:int = 0; i < container.numChildren; i++ )
+			{
+				if ( container.getChildAt(i) is DisplayObjectContainer )
+				{
+					   var newContainer:DisplayObjectContainer = container.getChildAt(i) as DisplayObjectContainer;
+						for (var j:int = 0; j < newContainer.numChildren; j++) 
+						{
+							newContainer.getChildAt(j).x = Math.floor(newContainer.getChildAt(j).x);
+							newContainer.getChildAt(j).y = Math.floor(newContainer.getChildAt(j).y);
+							
+						}
+				}
+				else
+				{
+						container.getChildAt(i).x = Math.floor(container.getChildAt(i).x);
+						container.getChildAt(i).y = Math.floor(container.getChildAt(i).y);
+
+				}
+			}
+		}	
+		
+		
+		
+		
 	}
 
 }

@@ -56,6 +56,12 @@
     <element path="lib\as3-signals-v0.8.swc" />
     <element path="lib\Project_Library.swc" />
     <element path="lib\starling.swc" />
+    <element path="lib\LaunchPad.swc" />
+    <element path="lib\GAnalyticsAPI.swc" />
+    <element path="lib\SoundAS.swc" />
+    <element path="lib\XTDCommon.swc" />
+    <element path="lib\CoreMobileAPI.swc" />
+    <element path="lib\ane\com.milkmangames.extensions.GAnalytics.ane" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

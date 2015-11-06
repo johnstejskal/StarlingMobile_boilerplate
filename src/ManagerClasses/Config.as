@@ -1,6 +1,8 @@
 package ManagerClasses 
 {
 	import air.net.URLMonitor;
+	import data.AppData;
+	import data.constants.BaseResolution;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Bitmap;
@@ -19,12 +21,9 @@ package ManagerClasses
 	import starling.animation.Juggler;
 	import starling.display.Image;
 	import starling.textures.Texture;
-	import staticData.Constants;
-	import staticData.Data;
-	import staticData.settings.DeviceSettings;
-	import staticData.settings.PublicSettings;
-	import staticData.SpriteSheets;
-	import view.components.ui.nativeDisplay.DebugPanel;
+	import data.settings.DeviceSettings;
+	import data.settings.PublicSettings;
+	import data.constants.SpriteSheets;
 
 
 	/**
@@ -74,34 +73,34 @@ package ManagerClasses
 			
 			if (PublicSettings.DEVICE_RELEASE)
 			{
-				//if(DeviceSettings.KEEP_DEVICE_AWAKE)
-				//NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
+				if(DeviceSettings.KEEP_DEVICE_AWAKE)
+				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
 				
 				Multitouch.inputMode = DeviceSettings.TOUCH_INPUT_MODE;
 				
-				Data.deviceResX = _stage.fullScreenWidth;
-				Data.deviceResY = _stage.fullScreenHeight;
+				AppData.deviceResX = _stage.fullScreenWidth;
+				AppData.deviceResY = _stage.fullScreenHeight;
 			}
 			else 
 			{
-				Data.deviceResX = _stage.stageWidth;
-				Data.deviceResY = _stage.stageHeight;
+				AppData.deviceResX = _stage.stageWidth;
+				AppData.deviceResY = _stage.stageHeight;
 			}
 			
 			if (PublicSettings.DEBUG_RELEASE)
 			{
-				Data.deviceResX = _stage.stageWidth;
-				Data.deviceResY = _stage.stageHeight;
+				AppData.deviceResX = _stage.stageWidth;
+				AppData.deviceResY = _stage.stageHeight;
 			}
 			
-			Data.baseResX = Constants.BASE_RES_X;
-			Data.baseResY = Constants.BASE_RES_Y;			
+			AppData.baseResX = BaseResolution.BASE_RES_X;
+			AppData.baseResY = BaseResolution.BASE_RES_Y;			
 
-			Data.deviceScaleX = Data.deviceResX / Data.baseResX;
-			Data.deviceScaleY = Data.deviceResY / Data.baseResY;
+			AppData.deviceScaleX = AppData.deviceResX / AppData.baseResX;
+			AppData.deviceScaleY = AppData.deviceResY / AppData.baseResY;
 			
 			
-			trace(Config+" device size established baseX:"+Constants.BASE_RES_X +" baseY:"+Constants.BASE_RES_Y +" DeviceResX:"+Data.deviceResX+" DeviceResY:"+Data.deviceResY)
+			trace(Config+" device size established baseX:"+BaseResolution.BASE_RES_X +" baseY:"+BaseResolution.BASE_RES_Y +" DeviceResX:"+AppData.deviceResX+" DeviceResY:"+AppData.deviceResY)
 
 		}	
 		

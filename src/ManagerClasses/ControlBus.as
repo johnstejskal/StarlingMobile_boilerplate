@@ -1,7 +1,6 @@
 package ManagerClasses 
 {
 
-	import globalControllers.ControllerAppUI;
 	import singleton.Core;
 	import view.StarlingStage;
 	/**
@@ -11,18 +10,14 @@ package ManagerClasses
 	public class ControlBus 
 	{
 
-		public var controller_appUI:ControllerAppUI;
+		//public var uiController:*;
 		
 		
 		public function ControlBus(starlingStage:StarlingStage) 
 		{
-			controller_appUI = new ControllerAppUI(starlingStage);
+			//controller_appUI = new ControllerAppUI(starlingStage);
 		}
 		
-		
-
-		
-
 		
 	}
 

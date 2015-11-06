@@ -10,8 +10,8 @@ package view.components.gameobjects
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.utils.deg2rad;
-	import staticData.Data;
-	import staticData.SpriteSheets;
+	import data.Data;
+	import data.constants.SpriteSheets;
 	
 	/**
 	 * ...
@@ -55,7 +55,7 @@ package view.components.gameobjects
 		//======================================o
 		public function onUpdate(e:Event = null):void 
 		{
-			//trace(this + "onUpdate()");
+		
 		}
 		
 		//-----------------------------o
@@ -63,7 +63,7 @@ package view.components.gameobjects
 		//-----------------------------o
 		public function initialize():void 
 		{
-			//trace(this + "onUpdate()");
+		
 		}
 		
 		//======================================o
@@ -72,7 +72,6 @@ package view.components.gameobjects
 		public function activate():void
 		{
 			isActive = true;
-			
 		}
 		
 		//======================================o
@@ -81,7 +80,6 @@ package view.components.gameobjects
 		public function deactivate():void
 		{
 			isActive = false;
-			
 		}
 		
 		//======================================o

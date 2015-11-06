@@ -14,7 +14,7 @@ package ManagerClasses
 	import starling.textures.ConcreteTexture;
 	import starling.textures.Texture
 	import starling.textures.TextureAtlas;
-	import view.components.screens.LoadingScreen;
+	//import view.components.screens.LoadingScreen;
 	
 	/**
 	 * @author John Stejskal
@@ -94,7 +94,7 @@ package ManagerClasses
 			public static function loadTextureFromFile(path:String, name:String, callback:Function):void
 			{
 				loadQueCount++;
-				StarlingUtil.showLoadingScreen();
+				//StarlingUtil.showLoadingScreen();
 				
 				trace("loadTextureFromFile path:" + path + " | name:" + name);
 				
@@ -116,7 +116,7 @@ package ManagerClasses
 					loadQueCount --;
 					//when all assets in file stream are loaded, remove the loading screen
 					if (loadQueCount <= 0) {
-					StarlingUtil.removeLoadingScreen();
+					//StarlingUtil.removeLoadingScreen();
 					callback();
 					}
 	

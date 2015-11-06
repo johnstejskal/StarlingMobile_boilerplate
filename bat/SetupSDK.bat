@@ -1,7 +1,7 @@
 :user_configuration
 
 :: Path to Flex SDK
-set AIR_SDK=C:\SDK\AIR\air3.4
+set AIR_SDK=C:\Users\John\AppData\Local\FlashDevelop\Apps\flexairsdk\4.6.0+17.0.0
 
 
 :validation

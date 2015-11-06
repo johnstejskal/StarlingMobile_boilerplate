@@ -1,6 +1,6 @@
 package com.johnstejskal 
 {
-	import flash.utils.Dictionary;
+	import starling.display.Sprite;
 
 	/**
 	 * ...
@@ -34,7 +34,20 @@ package com.johnstejskal
 				}
 			}
 			return NaN;
-		}		
+		}	
+		
+		//----------------------------------------------o
+		//--- Return Length of object
+		//----------------------------------------------o	
+		public static function getObjectLength(o:Object):uint
+		{
+			var length:uint = 0;
+
+			for (var s:* in o)
+			length++;
+
+			return length;
+		}	
 		
 		//----------------------------------------------o
 		//--- Remove an item from array
@@ -106,8 +119,7 @@ package com.johnstejskal
 		//----------------------------------------------o
 		//--- Search array item by name
 		//----------------------------------------------o		
-		public static function getIndexByName(array:Array, search:String):int
-		{
+		public static function getIndexByName(array:Array, search:String):int {
 		
 		for (var i:int = 0; i < array.length; i++) {
 			if (array[i].name == search) {
@@ -118,15 +130,100 @@ package com.johnstejskal
 		}
 		
 		//----------------------------------------------o
-		//--- count dictionary keys
+		//---  Flatten 2 Dimentional Array
 		//----------------------------------------------o	
-		public static function countKeys(myDictionary:flash.utils.Dictionary):int 
-		{
-			var n:int = 0;
-			for (var key:* in myDictionary) {
-				n++;
+		public static function flatten2D(arrays:Array):Array {
+			var result:Array = [];
+			for(var i:int=0;i<arrays.length;i++){
+				result = result.concat(arrays[i]);
 			}
-			return n;
+			return result;
+		}
+
+		
+		//----------------------------------------------o
+		//--- Split an array into a chunks of a specific number 
+		//-- returns multidimentional array 
+		//----------------------------------------------o	
+		public static function chunk (arr:Array, chunkSize:int):Array {
+
+			  var chunks:Array = new Array()
+			  var i:int = 0;
+			  var n:int = arr.length;
+  
+			  while (i < n) {
+				chunks.push(arr.slice(i, i += chunkSize));
+			  }
+
+			  return chunks;
+		}
+			
+			
+		//----------------------------------------------o
+		//--- Split an array evenly into a group of arrays 
+		//-- returns multidimentional array
+		//----------------------------------------------o	
+		public static function splitTo(a1:Array, parts:uint):Array 
+		{
+			if (parts > 1) {
+				
+				var aCount:Number = a1.length / parts;
+				var limit:int = int(aCount);
+				var res:Array = new Array();
+				
+				// if aCount <= 1
+				if (aCount <= 1) 
+				{
+					
+					// put every element in new array
+					for (var i:uint = 0; i<a1.length; i++) 
+					{
+						
+						// make new array and resulting array
+						var newarray:Array = new Array();
+						newarray.push(a1[i]);
+						res.push(newarray);
+					}
+				} else {
+					for (var k:uint = 0; k<parts; k++) 
+					{
+						var newarray2:Array = new Array();
+						
+						if (a1.length > 0) 
+						{ 
+						
+							// if a1 is not empty
+							for (var j:uint = 0; j<limit; j++) 
+							{
+								newarray2.push(a1.splice(0, 1));
+							}
+							res.push(newarray2);
+						}
+					}
+					
+					// put rest of the elements inside last array
+					while (a1.length > 0) 
+					{
+						res[res.length-1].push(a1.splice(0, 1));
+					}
+				}
+				
+				// return resulting Array of Array[s]
+				return res; 
+			} else {
+				return a1;
+			}
+		}
+		
+		
+		
+		
+		
+		static public function emptySpriteArray(arr:Array):void 
+		{
+			
+
+
 		}
 		
 	}

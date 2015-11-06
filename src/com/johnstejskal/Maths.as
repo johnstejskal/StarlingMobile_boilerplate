@@ -142,6 +142,68 @@ package com.johnstejskal
 				return false;
 		}	
 		
+		//----------------------------------------------o
+		//--- check if an number is odd or even
+		//----------------------------------------------o	
+		static public function getParity(num:int):Boolean 
+		{
+			if (num % 2 == 0)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}		
+		}
+		
+		
+		//----------------------------------------------o
+		//--- Uses "haversine" formula to calculate and return
+		//--- the distance between two latitudes and longditudes
+		//----------------------------------------------o			
+		public static function distanceBetweenCoordinates(lat1:Number,lon1:Number,lat2:Number,lon2:Number,units:String="miles"):Number{
+
+			var RADIUS_OF_EARTH_IN_MILES:int = 3963;
+			var RADIUS_OF_EARTH_IN_FEET:int =20925525;
+			var RADIUS_OF_EARTH_IN_KM:int =6378;
+			var RADIUS_OF_EARTH_IN_M:int =6378000;
+
+
+			var R:int = RADIUS_OF_EARTH_IN_MILES;
+			if (units == "km"){
+				R = RADIUS_OF_EARTH_IN_KM;
+			}
+			if (units == "meters"){
+				R = RADIUS_OF_EARTH_IN_M;
+			}
+			if (units =="feet"){
+				R= RADIUS_OF_EARTH_IN_FEET;
+			}
+
+			var dLat:Number = (lat2-lat1) * Math.PI/180;
+			var dLon:Number = (lon2-lon1) * Math.PI/180;
+
+			var lat1inRadians:Number = lat1 * Math.PI/180;
+			var lat2inRadians:Number = lat2 * Math.PI/180;
+
+			var a:Number = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+							   Math.sin(dLon/2) * Math.sin(dLon/2) * 
+							   Math.cos(lat1inRadians) * Math.cos(lat2inRadians);
+				var c:Number = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+				var d:Number = R * c;
+
+			return d;
+		}
+		
+
+		public static function getAngle (x1:Number, y1:Number, x2:Number, y2:Number):Number
+		{
+			var dx:Number = x2 - x1;
+			var dy:Number = y2 - y1;
+			return Math.atan2(dy,dx);
+		}
+		
 	}
 
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	
+	<value name="debug" value="false" />
+	<value name="shoe_colour" value="red" />
+	<!--<value name="gateway" value="http://private-09e187-sgfleetsupernovaapi.apiary-mock.com/api/"/> -->
+	<!--<value name="gateway" value="http://staging-sgfleet-api.3rdsense.com/api/"/> -->
+	<value name="gateway" value="https://production-sgfleet-api.3rdsense.com/api/"/> 
+	
+	<asset url="lib/swf/swfLibrary_UI_AU.swf" label="Loading Asset" id="swfLibrary_UI" postload="false" />
+	
+	<!-- AU TRACKING FOR IOS AND ANDROID -->
+	<analytics tracking_id="UA-64363801-1" />
+	
+	<application name="My Application" version="0.1.0" force_mobile_profile="true" />
+	
+	<facebook appId="1470550589851887" redirect_url="http://www.3rdsense.com/" wallpic_url="https://fbcdn-photos-c-a.akamaihd.net/hphotos-ak-xpa1/t39.2081-0/p128x128/10173498_1470942046479408_1287914429_n.png">
+		<permission>email</permission>
+		<permission>user_friends</permission>
+		<permission>publish_actions</permission>
+	</facebook>
+	
+	<policy url="https://fbcdn-profile-a.akamaihd.net/crossdomain.xml" />
+	
+</data>

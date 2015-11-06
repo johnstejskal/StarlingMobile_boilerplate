@@ -13,10 +13,10 @@ package view.components.examples
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.utils.deg2rad;
-	import staticData.settings.DeviceSettings;
+	import data.settings.DeviceSettings;
 	import view.components.gameobjects.superClass.GameObject;
-	import staticData.Data;
-	import staticData.SpriteSheets;
+	import data.Data;
+	import data.constants.SpriteSheets;
 	
 	/**
 	 * ...

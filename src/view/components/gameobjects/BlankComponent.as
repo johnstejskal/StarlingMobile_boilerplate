@@ -1,6 +1,12 @@
 package view.components.gameobjects 
 {
 
+	import com.thirdsense.animation.SpriteSequence;
+	import com.thirdsense.animation.TexturePack;
+	import com.thirdsense.LaunchPad;
+	import data.AppData;
+	import data.constants.LaunchPadLibrary;
+	import flash.utils.getQualifiedClassName;
 	import ManagerClasses.AssetsManager;
 	import singleton.Core;
 	import starling.core.Starling;
@@ -11,17 +17,19 @@ package view.components.gameobjects
 	import starling.events.Event;
 	import starling.utils.deg2rad;
 	import view.components.gameobjects.superClass.GameObject;
-	import staticData.Data;
-	import staticData.SpriteSheets;
+	import data.Data;
+	import data.constants.SpriteSheets;
 	
 	/**
-	 * ...
 	 * @author John Stejskal
-	 * johnstejskal@gmail.com
 	 * "Why walk when you can ride"
 	 */
+	
 	public class BlankComponent extends GameObject
 	{
+		//Launch Pad TA reference
+		static public const DYNAMIC_TA_REF:String = this.getQualifiedClassName();
+		
 		private var _core:Core;
 		
 		private var _collisionArea:Image;
@@ -32,6 +40,7 @@ package view.components.gameobjects
 		
 		//mc's
 		private var _smcSomeMoveClip:MovieClip;
+		private var _arrSpriteSequenc:Array;
 		
 
 		//-----------------------------o
@@ -52,26 +61,36 @@ package view.components.gameobjects
 			trace(this + "inited");
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			/*_quFill = new Quad(DataVO.STAGE_WIDTH, _imgSkyL.height, 0xffffff);
-			_quFill.alpha = .5;
-			addChild(_quFill);
-			_quFill.visible = false;*/
+			var mc:*;
 			
-			/*_imgSomeImage = new Image(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS).getTexture("TA_carRed0000"));
-			_imgSomeImage.x = -_imgSomeImage.width / 2;
-			_imgSomeImage.y = -_imgSomeImage.height / 2;
-			this.addChild(_imgSomeImage);
-			_imgSomeImage.visible = true;*/
+			//------------------------------- create a launch pad sprite sequence
+			mc = LaunchPad.getAsset(LaunchPadLibrary.GAME ,  "TA_linked1")
+			var ss:SpriteSequence = SpriteSequence.create(mc, null, 1, 1, null, _pad);
+			ss.sequence = "TA_linked1";
+			_arrSpriteSequenc.push(ss);
+			
+			mc = LaunchPad.getAsset(LaunchPadLibrary.GAME ,  "TA_linked2")
+			var ss:SpriteSequence = SpriteSequence.create(mc, null, 1, 1, null, _pad);
+			ss = SpriteSequence.create(mc, null, 1, 1, null, 0);
+			ss.sequence = "TA_linked2";
+			_arrSpriteSequenc.push(ss);
+
+			mc = LaunchPad.getAsset(LaunchPadLibrary.GAME ,  "TA_linked3")
+			ss = SpriteSequence.create(mc, null, 1, 1, null, 0);
+			ss.sequence = "TA_linked3";
+			_arrSpriteSequenc.push(ss);
+			//------------------------------------------------------------o
+
+			
+			var tp:TexturePack = TexturePack.createFromHelper(_arrSpriteSequenc, "CustomNameOfPool", "CustomNameOfSequence");
+			_sim1 = tp.getImage(false, 0, "TA_btnJump");
+			_sim1.x = AppData.usedScale * 10;
+			_sim1.scaleX = _sim1.scaleY = AppData.usedScale;
+			_buttonHudHolder.addChild(_simBtnJump);
 			
 			
-			/*_smcSomeMoveClip = new MovieClip(AssetsManager.getAtlas(SpriteSheets.SPRITE_ATLAS_ACTION_ASSETS).getTextures("TA_blinker"), 12);
-			_smcSomeMoveClip.pause();
-			_smcSomeMoveClip.loop = true;
-			_smcSomeMoveClip.x = -_smcSomeMoveClip.width / 2;
-			_smcSomeMoveClip.y = -_smcSomeMoveClip.height / 2;
-			_core.animationJuggler.add(_smcSomeMoveClip)
-			addChild(_smcSomeMoveClip);*/	
-			
+
+			mc = null;
 			this.addEventListener(Event.ENTER_FRAME, onUpdate)
 			
 		}

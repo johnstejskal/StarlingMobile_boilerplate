@@ -1,44 +1,66 @@
 package view.components.screens
 {
-
+	import com.greensock.easing.Elastic;
 	import com.greensock.TweenLite;
-	import flash.display.MovieClip;
+	import com.johnstejskal.TrueTouch;
+	import com.LaunchPadUtil;
+	import com.thirdsense.animation.BTween;
+	import com.thirdsense.animation.SpriteSequence;
+	import com.thirdsense.animation.SpriteSheetHelper;
+	import com.thirdsense.animation.TexturePack;
+	import com.thirdsense.LaunchPad;
+	import com.thirdsense.settings.Profiles;
+	import com.thirdsense.utils.NativeApplicationUtils;
+	import com.thirdsense.utils.Trig;
+	import data.AppData;
+	import data.constants.HexColours;
+	import data.constants.LaunchPadLibrary;
+	import data.settings.PublicSettings;
+	import flash.system.Capabilities;
+	import flash.text.AntiAliasType;
+	import flash.text.Font;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
+	import flash.utils.getQualifiedClassName;
 	import interfaces.iScreen;
+	import ManagerClasses.StateMachine;
 	import singleton.Core;
+	import starling.core.Starling;
+	import starling.display.BlendMode;
+	import starling.display.DisplayObject;
+	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
+	import flash.display.MovieClip;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-	import starling.events.Event;
-	import starling.text.TextField;
-	import starling.utils.HAlign;
-	import starling.utils.VAlign;
-	import staticData.AppFonts;
-	import staticData.Constants;
-	import staticData.Data;
-	import staticData.HexColours;
-	import staticData.settings.PublicSettings;
+	import data.settings.PublicSettings;
 
-
-
-	
+	//===============================================o
 	/**
-	 * @author John Stejskal
-	 * "Why walk when you can ride"
+
 	 */
-	
+	//===============================================o
 	public class Screen extends Sprite implements iScreen
 	{
-		public var core:Core = Core.getInstance();
+		public var btnArray:Array;
+		public var statArray:Array;
+		public var manualRemoveDim:Boolean = false;
+		public var requiresAssetLoad:Boolean = false;
+		public var valueObject:*;
+		
+		protected var _core:Core = Core.getInstance();
+		protected var _tt:TrueTouch;
 
 		private var _quBGFill:Quad;
-		private var _bgHexColour:uint = HexColours.NAVY_BLUE;
-		
-		public var manualRemoveDim:Boolean = false;
+		private var _bgHexColour:uint = HexColours.BLACK;
+		private var _img:Image;
+		private var _mc:*;
 
-
-		//----------------------------------------o
+		//===============================================o
 		//------ Constructor 
-		//----------------------------------------o
+		//===============================================o
 		public function Screen():void 
 		{
 			
@@ -46,78 +68,103 @@ package view.components.screens
 			// Init is called after the loaded method executes
 		}
 		
-		//-----------------------------------------------------------------------o
+		//===============================================o
 		//------ Assets loaded callback 
-		//-----------------------------------------------------------------------o
+		//===============================================o
 		public function loaded():void 
 		{
-			init()
-			
-			
-			
+			init();
 		}
 		
-		//----------------------------------------------------------------------o
+
+		
+		//===============================================o
 		//------ init 
-		//----------------------------------------------------------------------o		
+		//===============================================o		
 		public function init():void 
 		{
+			trace("dd");
 			//core.controlBus.appUIController.removeLoadingScreen();
 			
 		}
 		
+		//===============================================o
+		//
+		//===============================================o
 		public function initComplete():void 
 		{
 			//this is used to handle optionally handle the
 			// delays that are created with intensive GPU load
 			// based on large object creation ie objectPool polulation
 
-			
-			core.controlBus.controller_appUI.removeFillOverlay();
+			//_core.controlBus.controller_appUI.removeFillOverlay();
 		}
 
-		//----------------------------------------o
+		//===============================================o
 		//------ dispose/kill/terminate/
-		//----------------------------------------o	
+		//===============================================o	
 		public function trash():void
 		{
 
 		}
 		
-		//----------------------------------------o
+		//===============================================o
+		//------ animate In
+		//===============================================o	
+		public function animateIn(onComplete:Function = null):void
+		{
+			if ( onComplete != null )
+			{
+				BTween.callOnNextFrame( onComplete );
+			}
+		}	
+				
+		//===============================================o
+		//------ animate Out
+		//===============================================o	
+		public function animateOut(onComplete:Function = null):void
+		{
+			if ( onComplete != null )
+			{
+				BTween.callOnNextFrame( onComplete );
+			}
+		}	
+				
+		//===============================================o
 		//------ activate
-		//----------------------------------------o	
+		//===============================================o	
 		public function activate():void
 		{
-			
+			this.touchable = true;
 		}	
 		
-		//----------------------------------------o
+		//===============================================o
 		//------ de-activate
-		//----------------------------------------o	
+		//===============================================o	
 		public function deactivate():void
 		{
-			trace(this + "deactivate()");
+			//trace(this + "deactivate()");
 
 			this.touchable = false;
+			
 		}
 		
-		//========================================o
+		//===============================================o
 		//--- set a screen BG colour
-		//========================================o
+		//===============================================o
 		public function setBG(hexColour:uint):void 
 		{
 			if (_quBGFill)
 			return;
 			
-			_quBGFill = new Quad(Data.deviceResX, Data.deviceResY, hexColour);
+			_quBGFill = new Quad(AppData.deviceResX, AppData.deviceResY, hexColour);
 			this.addChild(_quBGFill);
 		}
 		
-		//========================================o
+		//===============================================o
 		//--- set bg size
 		// used for updating post init for clipped screens
-		//========================================o		
+		//===============================================o		
 		public function setBGSize(w:int, h:Number):void 
 		{
 			if (!_quBGFill)
@@ -127,18 +174,23 @@ package view.components.screens
 			_quBGFill.height = h;
 		}
 		
-		
+		//===============================================o
+		//
+		//===============================================o
 		public function get bgHexColour():uint 
 		{
 			return _bgHexColour;
 		}
 		
+		//===============================================o
+		//
+		//===============================================o
 		public function set bgHexColour(value:uint):void 
 		{
 			_bgHexColour = value;
 		}
 		
-		
+
 	}
 	
 }

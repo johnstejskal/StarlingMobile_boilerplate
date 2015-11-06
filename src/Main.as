@@ -7,10 +7,8 @@ package
 	import flash.display.StageScaleMode;
 	import flash.display3D.Context3D;
 	import flash.geom.Rectangle;
-	import staticData.Data;
-	import staticData.settings.DeviceSettings;
-	import staticData.settings.PublicSettings;
-	import view.components.ui.nativeDisplay.DebugPanel;
+	import data.settings.DeviceSettings;
+	import data.settings.PublicSettings;
 	
 	import org.gestouch.core.Gestouch;
 	import org.gestouch.extensions.starling.StarlingDisplayListAdapter;
@@ -22,8 +20,7 @@ package
 	import starling.events.ResizeEvent;
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
-	import view.components.screens.PlayScreen;
-	
+
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -32,8 +29,7 @@ package
 	import ManagerClasses.*;
 	
 	import view.*
-	
-	import staticData.Constants;
+
 	
 	/**
 	 * @author John Stejskal
@@ -93,7 +89,7 @@ package
 				_starling.showStatsAt(HAlign.RIGHT, VAlign.TOP);
 			}
 			
-			_starling.addEventListener(ResizeEvent.RESIZE, onResize);
+			
 			_core.starling = _starling;
 			
 			//set app configuration
@@ -101,25 +97,6 @@ package
 		
 		}
 		
-		private function onResize(e:ResizeEvent):void
-		{
-			trace(this + "onResize()");
-			return;
-			var viewPortRectangle:Rectangle = new Rectangle();
-			viewPortRectangle.width = stage.stageWidth;
-		    viewPortRectangle.height = stage.stageHeight;
-		
-		   _starling.stage.stageWidth = stage.stageWidth;
-		   _starling.stage.stageHeight = stage.stageHeight;
-		   //Starling.current.viewPort = viewPortRectangle;
-		   _starling.viewPort = viewPortRectangle;
-		   _starling.stage.stageWidth = stage.stageWidth;
-		  _starling.stage.stageHeight = stage.stageHeight;
-		  Data.deviceResX = stage.stageWidth;
-		  Data.deviceResY = stage.stageHeight;
-		  
-		  //currentScreen.resize();
-		}
 	
 	}
 
