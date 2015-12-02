@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="bin\main.swf" />
     <movie fps="60" />
-    <movie width="480" />
-    <movie height="800" />
+    <movie width="768" />
+    <movie height="1024" />
     <movie version="4" />
     <movie minorVersion="0" />
     <movie platform="AIR Mobile" />
@@ -62,6 +62,10 @@
     <element path="lib\XTDCommon.swc" />
     <element path="lib\CoreMobileAPI.swc" />
     <element path="lib\ane\com.milkmangames.extensions.GAnalytics.ane" />
+    <element path="lib\ane\com.milkmangames.extensions.GoogleServices.ane" />
+    <element path="bin\ane\com.milkmangames.extensions.GAnalytics.ane" />
+    <element path="bin\ane\com.milkmangames.extensions.GoogleServices.ane" />
+    <element path="lib\swfLibrary_UI.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

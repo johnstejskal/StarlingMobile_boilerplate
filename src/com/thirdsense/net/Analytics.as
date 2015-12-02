@@ -4,6 +4,7 @@ package com.thirdsense.net
 	import com.milkmangames.nativeextensions.GAnalytics;
 	import com.thirdsense.LaunchPad;
 	import com.thirdsense.settings.LPSettings;
+	import com.thirdsense.settings.Profiles;
 	import com.thirdsense.utils.NativeApplicationUtils;
 	import flash.events.EventDispatcher;
 	import flash.net.sendToURL;
@@ -193,11 +194,13 @@ package com.thirdsense.net
 		{
 			trace( "LaunchPad", Analytics, "Initializing Native Google Analytics with AppId: ", LPSettings.ANALYTICS_TRACKING_ID );
 			
-			if ( GAnalytics.isSupported() )
+			trace("Profiles.mobile "+Profiles.mobile )
+			if ( GAnalytics.isSupported() && Profiles.mobile )
 			{
 				_supported = true;
 				var analytics:GAnalytics = GAnalytics.create( LPSettings.ANALYTICS_TRACKING_ID );
 				analytics.defaultTracker.setTrackerField( GAFields.APP_VERSION, NativeApplicationUtils.getAppVersion() );
+				
 			}
 			else
 			{

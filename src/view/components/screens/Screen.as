@@ -1,196 +1,260 @@
 package view.components.screens
 {
-	import com.greensock.easing.Elastic;
+
 	import com.greensock.TweenLite;
+	import com.johnstejskal.StarlingUtil;
 	import com.johnstejskal.TrueTouch;
-	import com.LaunchPadUtil;
-	import com.thirdsense.animation.BTween;
-	import com.thirdsense.animation.SpriteSequence;
-	import com.thirdsense.animation.SpriteSheetHelper;
 	import com.thirdsense.animation.TexturePack;
 	import com.thirdsense.LaunchPad;
-	import com.thirdsense.settings.Profiles;
-	import com.thirdsense.utils.NativeApplicationUtils;
-	import com.thirdsense.utils.Trig;
 	import data.AppData;
-	import data.constants.HexColours;
 	import data.constants.LaunchPadLibrary;
-	import data.settings.PublicSettings;
-	import flash.system.Capabilities;
-	import flash.text.AntiAliasType;
-	import flash.text.Font;
-	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;
-	import flash.text.TextFormatAlign;
-	import flash.utils.getQualifiedClassName;
-	import interfaces.iScreen;
+	import data.constants.HexColours;
+	import data.valueObjects.ValueObject;
 	import ManagerClasses.StateMachine;
+	import starling.display.MovieClip;
+	import flash.text.StageText;
+	import interfaces.iScreen;
 	import singleton.Core;
 	import starling.core.Starling;
-	import starling.display.BlendMode;
 	import starling.display.DisplayObject;
-	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
-	import flash.display.MovieClip;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-	import data.settings.PublicSettings;
+	import starling.events.Event;
+	import starling.text.TextField;
+	import starling.text.TextFieldAutoSize;
+	import starling.utils.HAlign;
+	import starling.utils.VAlign;
 
-	//===============================================o
+	import view.components.EntityObject;
+	import view.components.ui.Background;
+
+	import view.components.ui.toolbar.MenuIcon;
+
+
+
+
+	
 	/**
-
+	 * @author John Stejskal
+	 * "Why walk when you can ride"
 	 */
-	//===============================================o
-	public class Screen extends Sprite implements iScreen
+	
+	public class Screen extends EntityObject implements iScreen
 	{
-		public var btnArray:Array;
-		public var statArray:Array;
-		public var manualRemoveDim:Boolean = false;
-		public var requiresAssetLoad:Boolean = false;
-		public var valueObject:*;
-		
-		protected var _core:Core = Core.getInstance();
-		protected var _tt:TrueTouch;
-
+		static public const TRANSITION_TYPE_RIGHT:String = "transitionRight";
+		static public const TRANSITION_TYPE_LEFT:String = "transitionLeft";
+		static public const TRANSITION_TYPE_NONE:String = "transitionNone";
+			
+		private var _imgBG:Image;
+		private var _imgTitleLogo:Image;
+		private var _imgButton:Image;
+		private var _quFill:Quad;
 		private var _quBGFill:Quad;
-		private var _bgHexColour:uint = HexColours.BLACK;
-		private var _img:Image;
-		private var _mc:*;
+		private var _bgHexColour:uint = HexColours.NAVY_BLUE;
+		private var _qtitleBarBacking:Quad;
+		public var oMenuIcon:MenuIcon;
+		public var valueObject:ValueObject;
+		
+		public var showMenuIcon:Boolean = true;
+		public var showTitleBar:Boolean = true;
+		public var showBackButton:Boolean = true;
+		public var showLoadingScreen:Boolean = false;
+		
+		public var isTransParentTitle:Boolean = false;
+		
+		public var subTitleBarState:Boolean;
+		private var _displayName:String = "";
+		private var _oBG:Background;
 
-		//===============================================o
+		public var spTitleText:Sprite;
+		
+		public var manualRemoveDim:Boolean = false;
+		public var isTransitioning:Boolean = false;
+		public var enableTimeOutPopup:Boolean = false;
+		
+		public var trueTouch:TrueTouch;
+		
+		public var currMenuLevel:int = 1;
+		public var prevSubScreenState:String;
+		public var currSubScreenState:String;
+		public var arrScreenStates:Array = [];
+		public var breadCrumbLevel:int = 1;
+		//public var oPanel:SuperPanel;
+
+		//----------------------------------------o
 		//------ Constructor 
-		//===============================================o
+		//----------------------------------------o
 		public function Screen():void 
 		{
-			
 			// No addedToStage Events are used here as there is a loading sequence 
 			// Init is called after the loaded method executes
 		}
 		
-		//===============================================o
+		//-----------------------------------------------------------------------o
 		//------ Assets loaded callback 
-		//===============================================o
+		//-----------------------------------------------------------------------o
 		public function loaded():void 
 		{
 			init();
-		}
-		
-
-		
-		//===============================================o
-		//------ init 
-		//===============================================o		
-		public function init():void 
-		{
-			trace("dd");
-			//core.controlBus.appUIController.removeLoadingScreen();
 			
 		}
 		
-		//===============================================o
-		//
-		//===============================================o
+		//----------------------------------------------------------------------o
+		//------ init 
+		//----------------------------------------------------------------------o		
+		public function init():void 
+		{
+			core.controlBus.appUIController.removeLoadingScreen();
+			
+		}
+		
 		public function initComplete():void 
 		{
 			//this is used to handle optionally handle the
 			// delays that are created with intensive GPU load
 			// based on large object creation ie objectPool polulation
-
-			//_core.controlBus.controller_appUI.removeFillOverlay();
+			StarlingUtil.floorAllPositions();	
+			StateMachine.stateReady();
+			//core.controlBus.appUIController.removeFillOverlay();
+			activate();
 		}
 
-		//===============================================o
+		//----------------------------------------o
 		//------ dispose/kill/terminate/
-		//===============================================o	
+		//----------------------------------------o	
 		public function trash():void
 		{
+			TexturePack.deleteTexturePack(LaunchPadLibrary.TITLE_BAR)
 
 		}
 		
-		//===============================================o
-		//------ animate In
-		//===============================================o	
-		public function animateIn(onComplete:Function = null):void
-		{
-			if ( onComplete != null )
-			{
-				BTween.callOnNextFrame( onComplete );
-			}
-		}	
-				
-		//===============================================o
-		//------ animate Out
-		//===============================================o	
-		public function animateOut(onComplete:Function = null):void
-		{
-			if ( onComplete != null )
-			{
-				BTween.callOnNextFrame( onComplete );
-			}
-		}	
-				
-		//===============================================o
+		//----------------------------------------o
 		//------ activate
-		//===============================================o	
+		//----------------------------------------o	
 		public function activate():void
 		{
 			this.touchable = true;
+
+			
 		}	
 		
-		//===============================================o
+		//----------------------------------------o
 		//------ de-activate
-		//===============================================o	
+		//----------------------------------------o	
 		public function deactivate():void
 		{
-			//trace(this + "deactivate()");
-
+			trace(this + "deactivate()");
+			
 			this.touchable = false;
-			
+			core.controlBus.appUIController.deactivateTitleBar();
 		}
 		
-		//===============================================o
-		//--- set a screen BG colour
-		//===============================================o
-		public function setBG(hexColour:uint):void 
+		//========================================o
+		//--- Animate Screen components in
+		//========================================o
+		public function animateIn(onComplete:Function = null):void 
 		{
-			if (_quBGFill)
-			return;
-			
-			_quBGFill = new Quad(AppData.deviceResX, AppData.deviceResY, hexColour);
-			this.addChild(_quBGFill);
+
 		}
 		
-		//===============================================o
+		//========================================o
+		//--- Animate Screen components Out
+		//========================================o	
+		public function animateOut(onComplete:Function = null):void 
+		{
+
+		}
+		
+		//========================================o
+		//--- set a header text
+		//========================================o
+		public function setHeaderText(title:String):void 
+		{
+			//text header
+/*			spTitleText = new Sprite();
+			var textFieldTitle:TextField = new TextField(AppData.deviceResX, AppData.deviceScale*100, title, AppFonts.AVERIN_OBLIQUE, Math.floor(AppData.deviceScale * 50), HexColours.WHITE);
+			textFieldTitle.hAlign = HAlign.CENTER; 
+			textFieldTitle.vAlign = VAlign.TOP;
+			textFieldTitle.border = false;
+			textFieldTitle.x = 0//Math.floor(Data.deviceScaleX *0);
+			textFieldTitle.autoSize = TextFieldAutoSize.VERTICAL;
+			textFieldTitle.y = 0;
+			spTitleText.addChild(textFieldTitle);
+			spTitleText.y = 5;// core.controlBus.appUIController.oTitleBar.height;
+
+			this.addChild(spTitleText);*/
+		}
+		
+		//========================================o
+		//--- remove  header text
+		//========================================o
+		public function removeHeaderText():void
+		{
+			if(spTitleText != null)
+			spTitleText.removeFromParent();
+		}
+		
+		
+		//========================================o
+		//--- set a screen BG colour
+		//========================================o
+		public function setBG():void 
+		{
+			core.controlBus.appUIController.setBG();
+
+		}
+		
+		
+		//========================================o
 		//--- set bg size
 		// used for updating post init for clipped screens
-		//===============================================o		
+		//========================================o		
 		public function setBGSize(w:int, h:Number):void 
 		{
-			if (!_quBGFill)
+/*			if (!_quBGFill)
 			return;
 			
 			_quBGFill.width = w;
 			_quBGFill.height = h;
+			*/
 		}
 		
-		//===============================================o
-		//
-		//===============================================o
+		public function getStartingYPos():int 
+		{
+			var pos:int = 0;
+			if(spTitleText != null)
+			pos = spTitleText.y + spTitleText.height + (AppData.deviceScale * 20);
+			else if (showTitleBar)
+			pos = core.controlBus.appUIController.oTitleBar.height + (AppData.deviceScale * 20);
+			else
+			pos = (AppData.deviceScale * 20);
+			
+			return pos;
+		}
+		
+		
+		public function get displayName():String 
+		{
+			return _displayName;
+		}
+		
+		public function set displayName(value:String):void 
+		{
+			_displayName = value;
+		}
+		
 		public function get bgHexColour():uint 
 		{
 			return _bgHexColour;
 		}
 		
-		//===============================================o
-		//
-		//===============================================o
 		public function set bgHexColour(value:uint):void 
 		{
 			_bgHexColour = value;
 		}
 		
-
+		
 	}
 	
 }

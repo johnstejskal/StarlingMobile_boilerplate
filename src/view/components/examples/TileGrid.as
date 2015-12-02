@@ -1,7 +1,7 @@
 package view.components.examples 
 {
 
-	import ManagerClasses.AssetsManager;
+	import ManagerClasses.utility.AssetsManager;
 	import singleton.Core;
 	import starling.core.Starling;
 	import starling.display.Image;

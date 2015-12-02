@@ -1,11 +1,13 @@
 package view.components.ui.buttons 
 {
+	import com.johnstejskal.Position;
 	import com.thirdsense.animation.TexturePack;
 	import com.thirdsense.LaunchPad;
 	import data.AppData;
 	import data.constants.LaunchPadLibrary;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.getQualifiedClassName;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -28,15 +30,22 @@ package view.components.ui.buttons
 		private var _callback:Function;
 		private var _label:String;
 		private var _param:String;
+		private var _skin:Class;
+		private var _pivotPos:String;
+		private var _w:Number;
+		private var _h:Number;
 		
-		public function SuperButton(label:String, callback:Function, ref:String = "", param:String = null)
+		public function SuperButton(skin:Class, label:String, callback:Function, ref:String = "", param:String = null, pivotPos:String = null)
 		{
-			
 			_callback = callback;
 			_ref = ref;
-		    _mcBtn.addEventListener(TouchEvent.TOUCH, onTouch)
-		    this.addEventListener(Event.REMOVED_FROM_STAGE, onRemoved)
+			_skin = skin;
+			_label = label;
+			_param = param;
+			_pivotPos = pivotPos;
+
 			this.addEventListener(Event.ADDED_TO_STAGE, init);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, onRemoved)
 		}
 		
 		//=======================================o
@@ -45,15 +54,56 @@ package view.components.ui.buttons
 		private function init(e:Event):void 
 		{
 		   trace(this + "inited");
-
-		   var mc:* = LaunchPad.getAsset(LaunchPadLibrary.UI, "TA_genericButton");
+		
+		   var mc:* = new _skin();
 		   mc.scaleX = mc.scaleY = AppData.deviceScaleY;
 		   mc.$txLabel.text = _label;
-		   TexturePack.createFromMovieClip(mc, _ref, "TA_genericButton", null, 1, 2, null, 0)
-		   _mcBtn = TexturePack.getTexturePack(_ref, "TA_genericButton").getMovieClip();
-
-		   this.addChild(_mcBtn);
+		   TexturePack.createFromMovieClip(mc, _ref, getQualifiedClassName(_skin), null, 1, 2, null, 0);
+		   _mcBtn = TexturePack.getTexturePack(_ref, getQualifiedClassName(_skin)).getMovieClip();
+    
+		   _mcBtn.addEventListener(TouchEvent.TOUCH, onTouch)
+		   _w = _mcBtn.width;
+		   _h = _mcBtn.height;
+			
+			this.addChild(_mcBtn);
 		   
+			//set buttons pivot pos
+			if (_pivotPos)
+			{
+				switch(_pivotPos)
+				{
+					case Position.CENTER:
+					_mcBtn.pivotX = _w / 2;  _mcBtn.pivotY = _h / 2;
+					break;
+					//--------------------o
+					case Position.TOP_LEFT:
+					_mcBtn.pivotX = _mcBtn.pivotY = 0;
+					break;
+					//--------------------o
+					case Position.TOP_CENTER:
+					_mcBtn.pivotX = _w/2; _mcBtn.pivotY = 0;
+					break;
+					//--------------------o
+					case Position.TOP_RIGHT:
+					_mcBtn.pivotX = _w; _mcBtn.pivotY = 0;
+					break;
+					//--------------------o
+					case Position.BOTTOM_LEFT:
+					_mcBtn.pivotX = 0; _mcBtn.pivotY = _h;
+					break;
+					//--------------------o
+					case Position.BOTTOM_CENTER:
+					_mcBtn.pivotX = _w/2; _mcBtn.pivotY = _h;
+					break;
+					//--------------------o
+					case Position.BOTTOM_RIGHT:
+					_mcBtn.pivotX = _w; _mcBtn.pivotY = _h;
+					break;
+					
+				}
+			}
+			
+			
 
 		}
 		

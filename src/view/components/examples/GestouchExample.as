@@ -1,7 +1,7 @@
 package view.components.examples 
 {
 
-	import ManagerClasses.AssetsManager;
+	import ManagerClasses.utility.AssetsManager;
 	import org.gestouch.core.Gestouch;
 	import org.gestouch.events.GestureEvent;
 	import org.gestouch.extensions.starling.StarlingDisplayListAdapter;

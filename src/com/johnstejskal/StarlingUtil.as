@@ -1,6 +1,7 @@
 package com.johnstejskal 
 {
 	import com.greensock.TweenLite;
+	import data.AppData;
 	import flash.events.TimerEvent;
 	import flash.utils.clearInterval;
 	import flash.utils.getQualifiedClassName;
@@ -12,7 +13,6 @@ package com.johnstejskal
 	import starling.display.Quad;
 	import starling.display.QuadBatch;
 	import starling.display.Sprite;
-	import staticData.AppData;
 	import view.components.screens.LoadingScreen;
 	
 	

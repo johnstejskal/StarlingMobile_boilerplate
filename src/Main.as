@@ -2,6 +2,8 @@ package
 {
 	
 	import com.Stats;
+	import com.thirdsense.LaunchPad;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -36,21 +38,30 @@ package
 	 * www.johnstejskal.com
 	 * johnstejskal@gmail.com
 	 */
-	public class Main extends Sprite
+	public class Main extends MovieClip
 	{
 		private var _core:Core;
 		private var context3D:Context3D;
 		private var _starling:Starling;
+		private var launchpad:LaunchPad;
 		[SWF(frameRate="60")]
 		
 		public function Main():void
 		{
 			if (stage)
-				init();
+				startLaunchPad();
 			else
-				addEventListener(Event.ADDED_TO_STAGE, init);
+				addEventListener(Event.ADDED_TO_STAGE, startLaunchPad);
 		}
 		
+
+		private function startLaunchPad():void 
+		{
+/*			init();
+			return;*/
+			this.launchpad = new LaunchPad( /*XML(new config_xml())*/ );
+			this.launchpad.init( this, this.init, new MovieClip() );
+		}
 		private function init(e:Event = null):void
 		{
 			trace(this + "init()");
@@ -60,8 +71,7 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 			stage.align = StageAlign.TOP_LEFT;
-			//stage.scaleMode = StageScaleMode.SHOW_ALL;
-			//stage.scaleMode = StageScaleMode.NO_BORDER;
+
 			stage.scaleMode = StageScaleMode.NO_SCALE; //this one tested and working on android
 			
 			Starling.multitouchEnabled = true;

@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'06/11/2015'</value>
+      <value>'02/12/2015'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -44,6 +44,10 @@
       <path-element>C:\Users\John\Documents\GitHub\StarlingMobile_boilerplate\lib\XTDCommon.swc</path-element>
       <path-element>C:\Users\John\Documents\GitHub\StarlingMobile_boilerplate\lib\CoreMobileAPI.swc</path-element>
       <path-element>C:\Users\John\Documents\GitHub\StarlingMobile_boilerplate\lib\ane\com.milkmangames.extensions.GAnalytics.ane</path-element>
+      <path-element>C:\Users\John\Documents\GitHub\StarlingMobile_boilerplate\lib\ane\com.milkmangames.extensions.GoogleServices.ane</path-element>
+      <path-element>C:\Users\John\Documents\GitHub\StarlingMobile_boilerplate\bin\ane\com.milkmangames.extensions.GAnalytics.ane</path-element>
+      <path-element>C:\Users\John\Documents\GitHub\StarlingMobile_boilerplate\bin\ane\com.milkmangames.extensions.GoogleServices.ane</path-element>
+      <path-element>C:\Users\John\Documents\GitHub\StarlingMobile_boilerplate\lib\swfLibrary_UI.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
@@ -52,7 +56,7 @@
   <default-background-color>#333333</default-background-color>
   <default-frame-rate>60</default-frame-rate>
   <default-size>
-    <width>480</width>
-    <height>800</height>
+    <width>768</width>
+    <height>1024</height>
   </default-size>
 </flex-config>

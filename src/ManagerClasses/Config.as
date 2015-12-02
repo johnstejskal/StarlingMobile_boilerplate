@@ -1,6 +1,8 @@
 package ManagerClasses 
 {
 	import air.net.URLMonitor;
+	import com.johnstejskal.SharedObjects;
+	import com.milkmangames.nativeextensions.CoreMobile;
 	import data.AppData;
 	import data.constants.BaseResolution;
 	import flash.desktop.NativeApplication;
@@ -17,6 +19,9 @@ package ManagerClasses
 	import flash.system.Capabilities;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
+	import ManagerClasses.utility.NativeDeviceSupport;
+	import ManagerClasses.utility.AssetsManager;
+	import ManagerClasses.utility.DeviceType;
 	import singleton.Core;
 	import starling.animation.Juggler;
 	import starling.display.Image;
@@ -92,16 +97,59 @@ package ManagerClasses
 				AppData.deviceResX = _stage.stageWidth;
 				AppData.deviceResY = _stage.stageHeight;
 			}
-			
-			AppData.baseResX = BaseResolution.BASE_RES_X;
-			AppData.baseResY = BaseResolution.BASE_RES_Y;			
+					
 
-			AppData.deviceScaleX = AppData.deviceResX / AppData.baseResX;
-			AppData.deviceScaleY = AppData.deviceResY / AppData.baseResY;
+			AppData.deviceScaleX = AppData.deviceResX / BaseResolution.BASE_RES_X;
+			AppData.deviceScaleY = AppData.deviceResY / BaseResolution.BASE_RES_Y;
+			AppData.deviceScale = AppData.deviceScaleX; 
+			AppData.offsetScaleX = AppData.deviceResX / BaseResolution.LAYOUT_RES_X;
+			AppData.offsetScaleY = AppData.deviceResY / BaseResolution.LAYOUT_RES_Y;
+			
+			AppData.deviceScaleX = AppData.deviceResX / BaseResolution.BASE_RES_X;
+			AppData.deviceScaleY = AppData.deviceResY / BaseResolution.BASE_RES_Y;
+			
+			DeviceType.setDeviceType(AppData.deviceResX, AppData.deviceResY);
 			
 			
-			trace(Config+" device size established baseX:"+BaseResolution.BASE_RES_X +" baseY:"+BaseResolution.BASE_RES_Y +" DeviceResX:"+AppData.deviceResX+" DeviceResY:"+AppData.deviceResY)
+			if(CoreMobile.isSupported())
+			{
+				// call this once at app start up, then CoreMobile will be available for use from then on.
+				AppData.isCoreMobileSupported = true;
+				CoreMobile.create();
+				//NativeApplicationRaterUtil.init();
+			}
+			else {
+				trace("Core Mobile only works on iOS or Android.");
+			}
+			trace(Config + " device size established baseX:" + BaseResolution.BASE_RES_X +" baseY:" + BaseResolution.BASE_RES_Y +" DeviceResX:" + AppData.deviceResX + " DeviceResY:" + AppData.deviceResY)
+			
+			
+			//======================================o
+			//--configure soft keys and native functionality
+			NativeDeviceSupport.init();
 
+			//======================================o
+			//-- start remote services for launchpad
+			//RemoteServices.init();
+			
+			//======================================o
+			//-- Retreive Local Saved Data	
+			//SharedObjects.init();
+			//if(!DeviceSettings.ENABLE_LOCAL_STORAGE)	
+			//SharedObjects.deleteAll();
+			
+			//SharedObjects.registerData();
+			
+			//======================================o
+			//-- Configure Dynamic Game / App Base Properties
+/*			PublicSettings.BASE_GAME_SPEED = AppData.deviceScale * PublicSettings.BASE_GAME_SPEED;
+			PublicSettings.MIN_LANE_CHANGE_SPEED = PublicSettings.BASE_GAME_SPEED;
+			PublicSettings.NITRO_SPEED = AppData.deviceScale * PublicSettings.NITRO_SPEED;
+			PublicSettings.SKID_SHOW_SPEED = AppData.deviceScale * PublicSettings.SKID_SHOW_SPEED;
+			PublicSettings.MAX_SPEED = AppData.deviceScale * PublicSettings.MAX_SPEED;*/
+			
+			
+			
 		}	
 		
 		

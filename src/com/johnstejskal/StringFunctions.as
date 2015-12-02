@@ -156,6 +156,7 @@ package com.johnstejskal
 			
 			return returnString;
 		}
+		
 		//----------------------------------------------o
 		//--- Make First Letter Uppercase
 		//----------------------------------------------o		
@@ -163,8 +164,7 @@ package com.johnstejskal
 		{
 		 var firstChar:String = str.substr(0, 1); 
 		 var restOfString:String = str.substr(1, str.length); 
-			trace("restOfString :" + restOfString);
-		 return firstChar.toUpperCase() + restOfString;//.toLowerCase(); 
+		 return firstChar.toUpperCase() + restOfString;
 		}
 		
 		//----------------------------------------------o
@@ -186,70 +186,8 @@ package com.johnstejskal
 			
 		}		
 		
-		//----------------------------------------------o
-		//--- Validate Email
-		//----------------------------------------------o	
-		static public function validateEmail(value:String):Boolean 
-		{
-			/*var address:String      = "([a-z0-9\.\'_\-]+)";
-			var domainName:String   = "([a-z0-9.-]+)";
-			var domainExt:String    = "([a-z]{2,6})";
-					 
-			var email:RegExp = new RegExp("^" + address + "@" + domainName + "\\." + domainExt + "$", "i");
-			 
-			return email.test(value);*/	
-			//return true;
-			
-			return StringTools.isValidEmailFormat( value );
-		}
-/*		
-		public static function validatePhoneNumber(phoneNumber:String):Boolean
-		{			
-			var phone:RegExp = /^\({0,1}((0|\+61)(2|4|3|7|8)){0,1}\){0,1}(\ |-){0,1}[0-9]{2}(\ |-){0,1}[0-9]{2}(\ |-){0,1}[0-9]{1}(\ |-){0,1}[0-9]{3}$/;
-			return phone.test(phoneNumber);
-		}
-*/
-		//----------------------------------------------o
-		//--- Validate Date
-		//----------------------------------------------o	
-		public static function validateDate(date:String):Boolean
-		{
-			var month:String        = "(0?[1-9]|1[012])";
-			var day:String          = "(0?[1-9]|[12][0-9]|3[01])";
-			var year:String         = "([1-9][0-9]{3})";
-			var separator:String    = "([.\/ -]{1})";
-			 
-			var usDate:RegExp = new RegExp("^" + month + separator + day + "\\2" + year + "$");
-			var ukDate:RegExp = new RegExp("^" + day + separator + month + "\\2" + year + "$");
-			 
-			return (usDate.test(date) || ukDate.test(date) ? true:false);       
-		}
-		
-		//----------------------------------------------o
-		//--- Validate Name
-		//----------------------------------------------o	
-		public static function validateName(value:String):Boolean
-		{
 
-			var nameEx:RegExp = /^([a-zA-Z])([ \u00c0-\u01ffa-zA-Z'.-]){1,20}+$/;
-			return nameEx.test(value);
-			
-		}			
-		
-		//----------------------------------------------o
-		//--- Validate Password
-		//----------------------------------------------o	
-/*		public static function validatePassword(value:String):Boolean
-		{
-			var answer:Boolean = true;
-			//var password:RegExp = new RegExp("^[a-zA-Z0-]*$");
-			var password:RegExp = new RegExp("^.*(?=.{6,10})(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9!@#$%]+$"); 
 
-			//if (value.length < 6 || !password.test(value))
-			//answer = false;
-
-			return password.test(value);
-		}*/		
 		
 		public static function validatePassword( input:String ):Boolean
 		{

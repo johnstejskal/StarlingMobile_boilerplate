@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<application xmlns="http://ns.adobe.com/air/application/19.0">
+	<id>au.gov.nsw.swslhd.bloodbattles</id>
+	<versionNumber>0.5.3</versionNumber>
+	<filename>main</filename>
+	<description>
+		<text xml:lang="en">SWSLHD Blood Battles</text>
+	</description>
+	<name>SWSLHD Blood Battles</name>
+	<copyright />
+	<initialWindow>
+		<content>main.swf</content>
+		<systemChrome>standard</systemChrome>
+		<transparent>false</transparent>
+		<visible>true</visible>
+		<fullScreen>false</fullScreen>
+		<aspectRatio>landscape</aspectRatio>
+		<renderMode>direct</renderMode>
+		<autoOrients>false</autoOrients>
+	</initialWindow>
+	<icon>
+		<image36x36>icons/36x36.png</image36x36>
+		<image48x48>icons/48x48.png</image48x48>
+		<image72x72>icons/72x72.png</image72x72>
+		<image96x96>icons/96x96.png</image96x96>
+		<image144x144>icons/144x144.png</image144x144>
+		<image192x192>icons/192x192.png</image192x192>
+	</icon>
+	<customUpdateUI>false</customUpdateUI>
+	<allowBrowserInvocation>false</allowBrowserInvocation>
+	<supportedLanguages>en</supportedLanguages>
+	<android>
+		<manifestAdditions>
+			<![CDATA[
+			<manifest android:installLocation="auto">
+				
+				<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+				<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+				<uses-permission android:name="android.permission.CAMERA"/>
+				<uses-permission android:name="android.permission.VIBRATE"/>
+				<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+				<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+				
+				<uses-permission android:name="android.permission.KEEP_AWAKE"/>
+				
+				<!-- Pushwoosh -->
+					
+					<uses-permission android:name="android.permission.INTERNET"/>
+					<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+					<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+					<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+					<uses-permission android:name="android.permission.WAKE_LOCK"/>
+					<permission android:name="au.gov.nsw.swslhd.bloodbattles.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+					<uses-permission android:name="au.gov.nsw.swslhd.bloodbattles.permission.C2D_MESSAGE"/>
+					<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+				
+				<!-- END: Pushwoosh -->
+				
+				<application>
+					<!-- Pushwoosh -->
+					
+					<meta-data android:name="PW_APPID" android:value="09348-4D637" />
+                    <meta-data android:name="PW_PROJECT_ID" android:value="A411826320693" />
+                    <meta-data android:name="PW_BROADCAST_PUSH" android:value="true" />
+                 
+                    <receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+                        <intent-filter>
+                            <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                            <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                            <category android:name="au.gov.nsw.swslhd.bloodbattles"/>
+                        </intent-filter>
+                    </receiver>
+                     
+                    <activity android:name="com.arellomobile.android.push.PushWebview"/>
+                    <activity android:name="com.arellomobile.android.push.MessageActivity"/>
+                    <activity android:name="com.arellomobile.android.push.PushHandlerActivity"/>
+                    <activity android:name="com.pushwoosh.nativeExtensions.PushActivity">
+                        <intent-filter>
+                            <action android:name="au.gov.nsw.swslhd.bloodbattles.MESSAGE"/>
+                            <category android:name="android.intent.category.DEFAULT"/>
+                        </intent-filter>
+                    </activity>
+                     
+                    <service android:name="com.arellomobile.android.push.PushGCMIntentService"/>
+                    <receiver android:name="com.arellomobile.android.push.AlarmReceiver"></receiver>
+					
+					<!-- END: Pushwoosh -->
+					
+					<!-- Milkman Games Analytics -->
+					
+						<meta-data android:name="com.google.android.gms.version" android:value="4452000"/>
+						
+						<!-- Used for Google Play Store Analytics Campaign Measurement -->
+						<service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
+						<receiver android:name="com.milkmangames.extensions.android.ganalytics.CampaignTrackingReceiver" android:exported="true">
+							<intent-filter>
+								<action android:name="com.android.vending.INSTALL_REFERRER" />
+							</intent-filter>
+						</receiver>
+					
+					<!-- END: Milkman Games Analytics -->
+					
+                </application>
+				<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
+			</manifest>]]>
+		</manifestAdditions>
+	</android>
+	<versionLabel>
+	</versionLabel>
+	
+	<extensions>
+		<extensionID>com.milkmangames.extensions.GAnalytics</extensionID>
+		<extensionID>com.milkmangames.extensions.GoogleServices</extensionID>
+		<extensionID>com.pushwoosh.PushNotification</extensionID>
+	</extensions>
+</application>

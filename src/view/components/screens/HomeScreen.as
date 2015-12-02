@@ -12,7 +12,9 @@ package view.components.screens
 	import com.thirdsense.sound.SoundShape;
 	import com.thirdsense.sound.SoundStream;
 	import data.AppData;
+	import data.constants.AppStates;
 	import data.constants.LaunchPadLibrary;
+	import data.valueObjects.ValueObject;
 	import flash.geom.Rectangle;
 	import flash.text.TextFieldAutoSize;
 	import flash.utils.getQualifiedClassName;
@@ -23,6 +25,7 @@ package view.components.screens
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import view.components.ui.buttons.ButtonType1;
 	import view.components.ui.buttons.SuperButton;
 
 
@@ -39,10 +42,11 @@ package view.components.screens
 		private const DYNAMIC_REF:String = getQualifiedClassName (this);
 
 		private var _bg:Image;
-		private var _continueButton:SuperButton;
-		private var _sim1:Image;
-		private var _vo:*;
-		private var _startButton:SuperButton;
+		
+		private var _vo:ValueObject;
+		
+		private var _button1:ButtonType1;
+		private var _button2:ButtonType1;
 		
 		//===============================================o
 		//------ Constructor 
@@ -51,68 +55,59 @@ package view.components.screens
 		{
 			
 		}
-
+		//==========================================o
+		//------ loaded 
+		//-- State is fully loaded
+		//==========================================o
+		public override function loaded():void 
+		{
+			_vo = super.valueObject;
+			TweenLite.delayedCall(.3, animateIn, [initComplete]);
+			
+		}
+		
 		//===============================================o
 		//------  init call from state machine 
 		//===============================================o
 		public override function init():void 
 		{		
 			trace(this + "inited...");
-			_vo = valueObject;
+			//Draw All Objects, load data
 			
 			//background
-			var mc:* = LaunchPad.getAsset(LaunchPadLibrary.UI, "TA_backgroundGeneric");
-			mc.scaleX = mc.scaleY = AppData.deviceScaleX;
-			_bg = LaunchPadUtil.convertToImage(mc, DYNAMIC_REF, "TA_backgroundGeneric");
-			_bg.x = AppData.deviceResX / 2;
-			_bg.y = AppData.deviceResY;
-			this.addChild(_bg);
+			//super.setBG();
 		
+			//start button
+			_button1 = new ButtonType1("Change State", onClick_button1, "1");
+			this.addChild(_button1);
+			_button1.x = AppData.deviceResX / 2;
+			_button1.y = AppData.deviceResY / 2;
 			
-			_startButton = new SuperButton("Start", onClick_startButton, "1");
-			this.addChild(_startButton);
-			_startButton.x = AppData.deviceResX / 2;
-			_startButton.y = AppData.deviceResY / 2;
+			_button2 = new ButtonType1("Show Popup", onClick_button2, "2");
+			this.addChild(_button2);
+			_button2.x = AppData.deviceResX / 2;
+			_button2.y = _button1.y + _button1.height + 20;
 			
-			var mc:*;
-			var arrSpriteSequence:Array;
-			//Example Sprite Sequence - 
-			//create a launch pad sprite sequence
-			mc = LaunchPad.getAsset(LaunchPadLibrary.UI ,  "TA_linked1");
-			var ss:SpriteSequence = SpriteSequence.create(mc, null, 1, 1, null);
-			ss.sequence = "TA_linked1";
-			arrSpriteSequence.push(ss);
+			//mc = null;
 			
-			mc = LaunchPad.getAsset(LaunchPadLibrary.UI ,  "TA_linked2");
-			var ss:SpriteSequence = SpriteSequence.create(mc, null, 1, 1, null);
-			ss = SpriteSequence.create(mc, null, 1, 1, null, 0);
-			ss.sequence = "TA_linked2";
-			arrSpriteSequence.push(ss);
-
-			mc = LaunchPad.getAsset(LaunchPadLibrary.UI ,  "TA_linked3");
-			ss = SpriteSequence.create(mc, null, 1, 1, null);
-			ss.sequence = "TA_linked3";
-			arrSpriteSequence.push(ss);
-			
-
-			//define texture pack from sequence
-			var tp:TexturePack = TexturePack.createFromHelper(arrSpriteSequence, DYNAMIC_REF, "CustomNameOfSequence");
-			
-			//create spites from texture pack
-			_sim1 = tp.getImage(false, 0, "TA_linked1");
-			_sim1.x = AppData.usedScale * 10;
-			_sim1.scaleX = _sim1.scaleY = AppData.deviceScaleX;
-			
-			mc = null;
-			
-			TweenLite.delayedCall(.3, animateIn, [activate]);
+			TweenLite.delayedCall(.1, loaded);
 			
 		}
 		
-		private function onClick_startButton():void 
+
+		
+		
+		//===============================================o
+		//------ Button handlers
+		//===============================================o
+	    private function onClick_button1():void 
+	    {
+			core.controlBus.appUIController.changeScreen(AppStates.STATE_SETTINGS)
+		}
+		
+		private function onClick_button2():void 
 		{
-			
-	
+			core.controlBus.appUIController.showNotification("Title", "sub title", "copy text", "YES", "NO", null, null);
 		}
 		
 		//===============================================o
@@ -121,20 +116,14 @@ package view.components.screens
 		public override function animateIn(onComplete:Function = null):void 
 		{
 			//transition in elements
-			TweenLite.to(_startButton, .2, { x:AppData.STAGE_WIDTH/2, ease:Power1.easeInOut })
-	
-			TweenLite.delayedCall(.5, function():void{
-						
-				activate();
+			
+			//set Callback for animation complete
+			TweenLite.delayedCall(.5, function():void
+			{
+				if (onComplete != null)
+				onComplete();
 			})
-				
-			if (onComplete != null)
-			onComplete();
-		}
-		
-		private function showUI():void 
-		{
-			TweenLite.to(_continueButton, .3, {y:_continueButton.y = AppData.deviceResY - (AppData.deviceScaleY * 100)})
+
 		}
 		
 		//===============================================o
@@ -148,7 +137,7 @@ package view.components.screens
 			onComplete();
 		}
 		
-	
+
 		//===============================================o
 		//------ dispose/kill/terminate/
 		//===============================================o

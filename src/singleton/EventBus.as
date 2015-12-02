@@ -26,11 +26,11 @@
 		//----------------------------------------o		
 		
 		public var sigOnDeactivate:Signal;
+		public var sigOnActivate:Signal;
 		public var sigStarlingStageReady:Signal;
 		public var sigScreenChangeRequested:Signal;
-		
-
-
+		public var sigSlideMenuAction:Signal;
+		public var sigBackButtonPressed:Signal;
 		
 		//----------------------------------------o
 		//------ public functions 
@@ -39,9 +39,7 @@
 			if(num !== _privateNumber){
 				throw new Error("An instance of Singleton already exists. Try EventBus.getInstance()");
 			}
-			
 			_arrSignals = new Array();
-			
 		}
 		
 		public static function getInstance() : EventBus {

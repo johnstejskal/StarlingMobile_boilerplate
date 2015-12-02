@@ -26,9 +26,10 @@ package data
 		public static var offsetScaleX:Number;
 		public static var offsetScaleY:Number;
 		
-		static public var baseResX:int;
-		static public var baseResY:int;
 		static public var usedScale:Number;
+		static public var deviceScale:Number;
+	
+		static public var isCoreMobileSupported:Boolean;
 
 
 	

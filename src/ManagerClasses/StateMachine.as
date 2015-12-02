@@ -5,6 +5,12 @@
 	import com.johnstejskal.FaceBook;
 	import com.johnstejskal.StringFunctions;
 	import com.thirdsense.animation.TexturePack;
+	import data.constants.AppStates;
+	import data.constants.HexColours;
+	import data.constants.Platform;
+	import data.PlayerData;
+	import data.settings.PublicSettings;
+	import flash.desktop.NativeApplication;
 	import flash.display.Loader;
 	import flash.external.ExternalInterface;
 	import flash.security.SignatureStatus;
@@ -18,6 +24,7 @@
 	import data.constants.SpriteSheets;
 	import view.components.screens.*;
 	import view.components.screens.Screen;
+	import view.components.ui.slideOutMenu.SlideOutMenu;
 	import view.StarlingStage;
 
 	
@@ -45,16 +52,7 @@
 		//list screen names here for workaround to getDefinitionByName 
 		HomeScreen; 
 
-		//Screen STATES
-		public static const STATE_TITLE:String = "title";
-		public static const STATE_HOME:String = "home";
-		public static const STATE_INTRO:String = "intro";		
-		public static const STATE_PLAY:String = "play";		
-		public static const STATE_GAME_OVER:String = "gameOver";
-		public static const STATE_WIN:String = "win";
-		public static const STATE_SCORES:String = "scores"
-		public static const STATE_SETUP:String = "setup"
-		
+
 		
 		//Device States
 		public static const STATE_DEACTIVATE:String = "deactivate"		
@@ -62,7 +60,7 @@
 		
 		public static var currentScreenState:String;
 		public static var prevScreenState:String;
-		static private var currentScreenObject:Screen;
+		static public var currentScreenObject:Screen;
 		
 		public static var oStarlingStage:StarlingStage;
 		
@@ -73,6 +71,7 @@
 		
 
 		static private var core:Core;
+		static private var _backButtonCrumbCount:int = 0;
 
 
 		public function StateMachine() 
@@ -92,21 +91,29 @@
 			core = Core.getInstance();
 			core.controlBus = new ControlBus(oStarlingStage);
 			
-			
 			//----------------------o
 			//-- Device And Core Signals
 			//----------------------o
-			EventBus.getInstance().sigOnDeactivate = new Signal();
-			EventBus.getInstance().sigOnDeactivate.add(evtOnDeactivate);
-			
 			EventBus.getInstance().sigStarlingStageReady = new Signal();
 			EventBus.getInstance().sigStarlingStageReady.addOnce(evtStarlingStageReady);
 			
+			EventBus.getInstance().sigOnDeactivate = new Signal();
+			EventBus.getInstance().sigOnDeactivate.add(evtOnDeactivate);
+						
+			EventBus.getInstance().sigOnActivate = new Signal();
+			EventBus.getInstance().sigOnActivate.add(evtOnDeactivate);
+			
+			EventBus.getInstance().sigSlideMenuAction = new Signal(String);
+			EventBus.getInstance().sigSlideMenuAction.add(evtSlideMenuAction);
+			
 			EventBus.getInstance().sigScreenChangeRequested = new Signal(String);
 			EventBus.getInstance().sigScreenChangeRequested.add(evtScreenChangeRequested);
+						
+			EventBus.getInstance().sigBackButtonPressed = new Signal(Boolean);
+			EventBus.getInstance().sigBackButtonPressed.add(evtBackButtonPressed);
 			
 			//setup is complete, set screenState
-			changeScreenState(STATE_HOME);
+			changeScreenState(AppStates.STATE_HOME);
 			
 		}
 		
@@ -115,15 +122,73 @@
 		//-- Custom Signal Event Callbacks
 		//=======================================================================================o
 		//=======================================================================================o
-		
+
 		//==========================================================o
 		//-- Custom Event :  Screen Change request
 		//==========================================================o
-		static public function evtScreenChangeRequested(newState:String):void
+		static public function evtScreenChangeRequested(newState:String, trashLastScreen:Boolean = true, transitionType:String = "standard", valueObject:* = null):void
 		{
-			trace(StateMachine + "evtStateChangeRequested()" + newState)
-			changeScreenState(newState);
-		}		
+			trace(StateMachine + "evtStateChangeRequested()" + newState+"valueObject:"+valueObject)
+			
+			if (newState == AppStates.STATE_LOG_OUT)
+			{
+				Core.getInstance().controlBus.appUIController.showNotification("LOG OUT","", "Are you sure want to log out?", "YES", null, onLogoutConfirm);
+				function onLogoutConfirm():void
+				{
+					//Services.logout.execute();
+					changeScreenState(AppStates.STATE_HOME);
+				}
+			}
+			else
+			{
+				changeScreenState(newState, trashLastScreen, transitionType, valueObject);
+			}
+		}
+		//==========================================================o
+		//-- Custom Event :  Back Button Pressed
+		//==========================================================o
+		static private function evtBackButtonPressed(softKey:Boolean = false):void 
+		{
+			 trace(StateMachine + "evtBackButtonClicked()")
+			
+			if (currentScreenObject != null)
+			{
+				if (!currentScreenObject.showBackButton)
+				return;
+			}
+			
+			if (core.controlBus.appUIController.isNotificationActive)
+			return;
+			
+			if (softKey && currentScreenState == AppStates.STATE_HOME && PublicSettings.DEPLOYMENT_PLATFORM == Platform.ANDROID)
+			{
+				NativeApplication.nativeApplication.exit();
+				return;
+			}
+			
+			//send player back to home screens when back button is pressed more than ones concecutively 	
+			if (_backButtonCrumbCount >= 1)
+			{
+				if (PlayerData.isLoggedIn)
+				{
+					changeScreenState(AppStates.STATE_HOME);
+				}
+				if (!PlayerData.isLoggedIn)
+				{
+					changeScreenState(AppStates.STATE_SPLASH);
+				}
+					
+				_backButtonCrumbCount = 0;
+			}
+			else
+			{
+				changeScreenState(prevScreenState);
+			}
+				
+			_backButtonCrumbCount++;
+
+		}
+		
 		//===============================================o
 		//-- Device has been deactivated
 		//===============================================o		
@@ -140,7 +205,27 @@
 			setup();
 			
 		}
-		
+
+		//==========================================================o
+		//-- Custom Event :  Menu Button Clicked
+		//==========================================================o
+		static private function evtSlideMenuAction(newState:String):void 
+		{
+
+			//if slide menu is closed
+			if (core.controlBus.appUIController.currSlideMenuState == SlideOutMenu.STATE_CLOSE)
+			{
+				currentScreenObject.deactivate();
+			}
+			//if slide menu is open
+			else
+			{
+
+			}
+			
+			core.controlBus.appUIController.changeSlideMenuStatus(newState);
+			
+		}
 		//=======================================================================================o
 		
 		
@@ -148,68 +233,114 @@
 		//===============================================o
 		//--- Change Screen State
 		//===============================================o
-		protected static function changeScreenState(newState:String):void
+		protected static function changeScreenState(newState:String, trashLastScreen:Boolean = true, transitionType:String = "standard", valueObject:* = null, force:Boolean = false):void
 		{
 	
 			trace(StateMachine+" changeScreenState(" + newState + ")");
-			if (newState == currentScreenState)
-			return;
-			
-			if (currentScreenState != null)
-			prevScreenState = currentScreenState;
-			
-			
-			if (currentScreenObject != null)
+			if (newState == currentScreenState && !force)
 			{
-				currentScreenObject.trash();
-				currentScreenObject = null;
+				trace(StateMachine+"New state is same as current state, ending...");
+				return;
 			}
 			
-			//AssetsManager.disposeAll();
+			_backButtonCrumbCount = 0;
+			if (trashLastScreen && currentScreenObject != null)
+			{
+				core.controlBus.appUIController.deactivateTitleBar();
+				
+				if (transitionType == "standard")
+				{
+					currentScreenObject.animateOut(function():void {
+				    trashCurrentScreen();
+					finaliseScreenChange(newState, valueObject);
+					});
+				}
+				else
+				{
+					trashCurrentScreen();
+					finaliseScreenChange(newState, valueObject);
+				}
+			}
+			else
+			{
+				finaliseScreenChange(newState, valueObject);
+			}
+		}
+		
+		
+		//===============================================o
+		//--- Trash Existing / Previous Screen 
+		//===============================================o
+		static private function trashCurrentScreen():void 
+		{
+			trace(StateMachine+"trashCurrentScreen()");
+			
+			currentScreenObject.trash();
+			currentScreenObject = null;
+
+			core.controlBus.appUIController.removeBG();
+		
+			Starling.juggler.purge();
+			core.animationJuggler.purge();
 			TexturePack.deleteAllTexturePacks();
 			System.gc();
+		}
+		
+		//===============================================o
+		//--- Change Screen State
+		//===============================================o
+		static private function finaliseScreenChange(newState:String, valueObject:* = null ):void 
+		{
+			trace(StateMachine + "finaliseScreenChange(" + newState + ")");
+		
+			if(currentScreenState != null)
+			prevScreenState = currentScreenState;
+			else
+			prevScreenState = newState;
+	
+            var ClassReference:Class = getDefinitionByName("view.components.screens."+StringFunctions.upperCaseFirst(newState) + "Screen") as Class;
+		    currentScreenObject = new ClassReference();
 			
-			currentScreenState = newState;
-			
-           var ClassReference:Class = getDefinitionByName("view.components.screens."+StringFunctions.upperCaseFirst(currentScreenState) + "Screen") as Class;
-
-			
+			if (valueObject != null)
+			currentScreenObject.valueObject = valueObject;
 			switch(newState)
 			{
 				
 				//------------------------------------------------------------------------------------o
-				case STATE_INTRO:
+				case AppStates.STATE_INTRO:
 					
 				break;	
 				//------------------------------------------------------------------------------------o
-				case STATE_HOME:
-					
+				case AppStates.STATE_HOME:
+				currentScreenObject.showTitleBar = true;
+				currentScreenObject.showBackButton = true;
+				currentScreenObject.showMenuIcon = true;
 				break;					
 				//------------------------------------------------------------------------------------o
-				case STATE_TITLE:
+				case AppStates.STATE_TITLE:
 				
 				break;
 
 				//------------------------------------------------------------------------------------o
-				case STATE_PLAY:
+				case AppStates.STATE_PLAY:
 					
 				break;
 				
 				//------------------------------------------------------------------------------------o
 				
-				case STATE_GAME_OVER:
+				case AppStates.STATE_GAME_OVER:
 
 				break;	
 				
 				//------------------------------------------------------------------------------------o
 				
-				case STATE_WIN:
+				case AppStates.STATE_WIN:
 
 				break;		
 				
 				//------------------------------------------------------------------------------------o					
 				
-				case STATE_SCORES:
+				case AppStates.STATE_SCORES:
 
 				break;	
 				//------------------------------------------------------------------------------------o					
@@ -218,32 +349,57 @@
 				//no state found, revert to default home
 				currentScreenState = null;
 				currentScreenObject = null;
-				changeScreenState(STATE_TITLE);
+				changeScreenState(AppStates.STATE_TITLE);
 				return;
 				break;					
-	
 				
 			}
 			
-			stateLoaded();
+			currentScreenState = newState;
+			initializeNewState();
 		}
 		
 		//==========================================================o
-		//- State Loaded Callback From AssetStateMachine
+		//- Asset Loaded Callback From AssetStateMachine
 		//==========================================================o
-		static public function stateLoaded():void 
+		static public function initializeNewState():void 
 		{
-			trace(StateMachine + "stateLoaded():" + currentScreenState + " has loaded:"+currentScreenObject);
+			if (currentScreenObject.showLoadingScreen)
+			core.controlBus.appUIController.showLoadingScreen("LOADING", true, HexColours.NAVY_BLUE);
+			
+			if (currentScreenObject.showTitleBar)
+			core.controlBus.appUIController.showTitleBar(currentScreenObject.displayName, currentScreenObject.showBackButton);
+
+			//always remove first
+			core.controlBus.appUIController.removeMenuButton()
+		
+			if (currentScreenObject.showMenuIcon)
+			core.controlBus.appUIController.showMenuButton(false);
+
 			
 			if (currentScreenObject)
 			{
 				oStarlingStage.addChildAt(currentScreenObject, 0);
 				currentScreenObject.init();
-
-				//if (!currentScreenObject.manualRemoveDim)
-				//core.controlBus.controller_appUI.removeFillOverlay();
 			}
-		}		
+		}
+		
+		//==========================================================o
+		//- State Loaded Callback From AssetStateMachine
+		//==========================================================o
+		static public function stateReady():void 
+		{
+			trace(StateMachine + "stateReady():" + currentScreenState + " is stateReady");
+		
+			if (currentScreenObject.showMenuIcon)
+			core.controlBus.appUIController.activateMenuButton();
+				
+			if (currentScreenObject.showBackButton)
+			core.controlBus.appUIController.activateBackButton(); 
+
+			
+			
+		}	
 
 		
 

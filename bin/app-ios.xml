@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+<application xmlns="http://ns.adobe.com/air/application/19.0">
+	<!--<id>com.thirdsense.SWSH-HepC</id> -->
+	<id>au.gov.nsw.swslhd.bloodbattles</id>
+	<versionNumber>0.5.3</versionNumber>
+	<filename>main</filename>
+	<description>
+		<text xml:lang="en">SWSLHD Blood Battles</text>
+	</description>
+	<name>Blood Battles</name>
+	<copyright />
+	<initialWindow>
+		<content>main.swf</content>
+		<systemChrome>standard</systemChrome>
+		<transparent>false</transparent>
+		<visible>true</visible>
+		<fullScreen>true</fullScreen>
+		<aspectRatio>landscape</aspectRatio>
+		<renderMode>direct</renderMode>
+		<autoOrients>false</autoOrients>
+		<depthAndStencil>true</depthAndStencil>
+	</initialWindow>
+	<icon>
+		<image29x29>icons/29x29.png</image29x29>
+		<image40x40>icons/40x40.png</image40x40>
+		<image48x48>icons/48x48.png</image48x48>
+		<image50x50>icons/50x50.png</image50x50>
+		<image57x57>icons/57x57.png</image57x57>
+		<image58x58>icons/58x58.png</image58x58>
+		<image72x72>icons/72x72.png</image72x72>
+		<image76x76>icons/76x76.png</image76x76>
+		<image80x80>icons/80x80.png</image80x80>
+		<image100x100>icons/100x100.png</image100x100>
+		<image114x114>icons/114x114.png</image114x114>
+		<image120x120>icons/120x120.png</image120x120>
+		<image144x144>icons/144x144.png</image144x144>
+		<image152x152>icons/152x152.png</image152x152>
+		<image512x512>icons/512x512.png</image512x512>
+		<image1024x1024>icons/1024x1024.png</image1024x1024>
+	</icon>
+	<customUpdateUI>false</customUpdateUI>
+	<allowBrowserInvocation>false</allowBrowserInvocation>
+	<supportedLanguages>en</supportedLanguages>
+	<iPhone>
+		<InfoAdditions>
+			<![CDATA[
+				<key>UIDeviceFamily</key>
+				<array>
+					<string>1</string>
+					<string>2</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<string>YES</string>
+				<key>MinimumOSVersion</key>
+				<string>6.1</string>
+				
+				<key>UIAppFonts</key>
+				<array>
+					<string>runtimeAssets/fonts/Kitchen.ttf</string>
+					<string>runtimeAssets/fonts/verdanai.ttf</string>
+				</array>
+				
+				<key>Pushwoosh_APPID</key>
+				<string>09348-4D637</string>
+			]]>
+		</InfoAdditions>
+		<Entitlements>
+			<![CDATA[
+				<key>aps-environment</key>
+				<string>production</string>
+			]]>
+		</Entitlements>
+		<requestedDisplayResolution>high</requestedDisplayResolution>
+	</iPhone>
+	<extensions>
+		<extensionID>com.milkmangames.extensions.GAnalytics</extensionID>
+		<extensionID>com.milkmangames.extensions.GoogleServices</extensionID>
+		<extensionID>com.pushwoosh.PushNotification</extensionID>
+	</extensions>
+</application>

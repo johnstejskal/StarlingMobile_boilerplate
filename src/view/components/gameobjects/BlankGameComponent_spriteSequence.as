@@ -7,7 +7,7 @@ package view.components.gameobjects
 	import data.AppData;
 	import data.constants.LaunchPadLibrary;
 	import flash.utils.getQualifiedClassName;
-	import ManagerClasses.AssetsManager;
+	import ManagerClasses.utility.AssetsManager;
 	import singleton.Core;
 	import starling.core.Starling;
 	import starling.display.Image;

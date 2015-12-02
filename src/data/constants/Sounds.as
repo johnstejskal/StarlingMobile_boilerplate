@@ -8,7 +8,8 @@ package data.constants
 	 */
 	public class Sounds 
 	{
-		
+		static public const SFX_MENU_OPEN:String = "sfxMenuOpen";
+		static public const SFX_MENU_CLOSE:String = "sfxMenuClose";
 
 		
 		

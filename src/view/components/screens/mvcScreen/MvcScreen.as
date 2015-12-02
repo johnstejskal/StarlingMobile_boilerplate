@@ -10,7 +10,7 @@ package view.components.screens.mvcScreen
 	import flash.sampler.NewObjectSample;
 	import flash.security.SignatureStatus;
 	import interfaces.iScreen;
-	import ManagerClasses.AssetsManager;
+	import ManagerClasses.utility.AssetsManager;
 	import ManagerClasses.StateMachine;
 	import org.gestouch.events.GestureEvent;
 	import org.gestouch.gestures.SwipeGesture;

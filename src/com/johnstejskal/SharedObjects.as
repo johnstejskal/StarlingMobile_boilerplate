@@ -1,18 +1,19 @@
 package com.johnstejskal
 {
+	import data.constants.SharedObjectKeys;
+	import data.controllerData.SoundData;
+	import data.LocalData;
+	import data.PlayerData;
+	import data.settings.DeviceSettings;
+	import data.settings.PublicSettings;
 	import flash.net.SharedObject;
-	import staticData.dataObjects.PlayerData;
-	import staticData.LocalData;
-	import staticData.LocalDataKeys;
-	import staticData.settings.DeviceSettings;
-	import staticData.settings.PublicSettings;
-	import staticData.SharedObjectKeys;
-	import staticData.SoundData;
+
+
 	
 	public class SharedObjects
 	{
 		
-		private static var APP:String = "Supernova";
+		private static var APP:String = PublicSettings.APP_NAME;
 		private static var so:SharedObject = null;
 		private static var soNotif:SharedObject = null;
 		
@@ -31,11 +32,11 @@ package com.johnstejskal
 			so.flush();
 			
 			var username:String = "guest";
-			if (PlayerData.firstName)
+/*			if (PlayerData.firstName)
 			username = PlayerData.firstName;
 			
 			soNotif = SharedObject.getLocal(username+PublicSettings.VERSION);
-			soNotif.flush();
+			soNotif.flush();*/
 			
 		}
 		
