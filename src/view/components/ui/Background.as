@@ -70,7 +70,6 @@ package view.components.ui
 		   }
 
 		}
-		
 
 		public  function trash():void
 		{

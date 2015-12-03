@@ -25,7 +25,7 @@ package view.components.screens
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
-	import view.components.ui.buttons.ButtonType1;
+	import view.components.ui.buttons.*;
 	import view.components.ui.buttons.SuperButton;
 
 
@@ -41,10 +41,10 @@ package view.components.screens
 	{
 		private const DYNAMIC_REF:String = getQualifiedClassName (this);
 
-		private var _bg:Image;
 		
 		private var _vo:ValueObject;
 		
+		//buttomns
 		private var _button1:ButtonType1;
 		private var _button2:ButtonType1;
 		
@@ -75,7 +75,7 @@ package view.components.screens
 			//Draw All Objects, load data
 			
 			//background
-			//super.setBG();
+			super.setBG();
 		
 			//start button
 			_button1 = new ButtonType1("Change State", onClick_button1, "1");
@@ -93,9 +93,6 @@ package view.components.screens
 			TweenLite.delayedCall(.1, loaded);
 			
 		}
-		
-
-		
 		
 		//===============================================o
 		//------ Button handlers

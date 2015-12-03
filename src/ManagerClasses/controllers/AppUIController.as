@@ -5,11 +5,13 @@ package ManagerClasses.controllers
 	import com.greensock.easing.Cubic;
 	import com.greensock.easing.Power1;
 	import com.greensock.TweenLite;
+	import com.johnstejskal.Position;
 	import data.AppData;
 	import data.constants.HexColours;
 	import data.constants.Sounds;
 	import data.controllerData.AppUIData;
 	import data.settings.PublicSettings;
+	import data.settings.UISettings;
 	import data.valueObjects.AchievementVO;
 	import flash.system.System;
 	import ManagerClasses.StateMachine;
@@ -163,9 +165,17 @@ package ManagerClasses.controllers
 		//==============================================o		
 		public function addSlideOutMenu():void
 		{
+			if (!UISettings.ENABLE_SLIDE_MENU)
+			return;
+			
 			_oSlideOutMenu = new SlideOutMenu();
 			_root.addChild(_oSlideOutMenu);
+			
+			if (UISettings.SLIDE_MENU_POSITION == Position.LEFT)
+			_oSlideOutMenu.x = -_oSlideOutMenu.width;
+			else
 			_oSlideOutMenu.x = AppData.deviceResX;
+			
 		}
 		
 		//==============================================o
@@ -401,7 +411,7 @@ package ManagerClasses.controllers
 		public function showMenuButton(active:Boolean = true, force:Boolean = false):void
 		{
 			
-			if(!StateMachine.currentScreenObject.showMenuIcon && !force)
+			if((!StateMachine.currentScreenObject.showMenuIcon && !force) || !UISettings.ENABLE_SLIDE_MENU)
 			return;
 			
 			trace(this + " showMenuButton()");
@@ -418,6 +428,7 @@ package ManagerClasses.controllers
 				_oMenuIcon.y = 0;
 				_root.addChild(_oMenuIcon);
 				_oMenuIcon.visible = true;
+				_oMenuIcon.setPosition();
 			
 			}
 			
@@ -551,7 +562,6 @@ package ManagerClasses.controllers
 			_oOptionListPanel = null;
 			}
 			
-			
 			_oOptionListPanel = new OptionListPanel(optionsList, targetField);
 			_oOptionListPanel.x = AppData.deviceResX / 2;
 			_root.addChild(_oOptionListPanel);
@@ -563,16 +573,16 @@ package ManagerClasses.controllers
 		//==============================================o
 		//------ Change Slide Out menu Open/Close Status
 		//==============================================o	
-		public function changeSlideMenuStatus(newState:String):void
+		public function changeSlideMenuState(newState:String):void
 		{
 			if (_isNavSliding)
 			return;
 			
-			trace(this + "changeSlideMenuStatus");
-			var speed:Number = PublicSettings.SLIDE_MENU_IN_SPEED;
+			trace(this + "changeSlideMenuState");
+			var speed:Number = UISettings.SLIDE_MENU_IN_SPEED;
 			
 			if (!_oSlideOutMenu)
-			core.controlBus.appUIController.addSlideOutMenu();
+			addSlideOutMenu();
 			
 			var menuIconPress:Boolean = false;
 			
@@ -582,13 +592,18 @@ package ManagerClasses.controllers
 			var xPos:int;
 			if (newState == SlideOutMenu.STATE_CLOSE)
 			{
+
 				xPos = 0;
-				speed = PublicSettings.SLIDE_MENU_OUT_SPEED;
+				
+				speed = UISettings.SLIDE_MENU_OUT_SPEED;
 			}
 			else if (newState == SlideOutMenu.STATE_OPEN)
 			{
-				xPos = -_oSlideOutMenu.componentWidth;
-				xPos = -_oSlideOutMenu.width;
+
+				if (UISettings.SLIDE_MENU_POSITION == Position.RIGHT)
+					xPos = -_oSlideOutMenu.width;
+				else
+					xPos = _oSlideOutMenu.width;
 				
 			}
 			else
@@ -597,8 +612,11 @@ package ManagerClasses.controllers
 				if (_currSlideMenuState == SlideOutMenu.STATE_CLOSE)
 				{
 					newState = SlideOutMenu.STATE_OPEN;
-					xPos = _oSlideOutMenu.componentWidth;
-					xPos = -_oSlideOutMenu.width;
+					
+					if (UISettings.SLIDE_MENU_POSITION == Position.RIGHT)
+						xPos = -_oSlideOutMenu.width;
+					else
+						xPos = _oSlideOutMenu.width;
 					
 					addFillOverlay(1, .5, null, true, HexColours.BLACK, touchCallback);
 					
@@ -610,17 +628,18 @@ package ManagerClasses.controllers
 				}
 				else if (_currSlideMenuState == SlideOutMenu.STATE_OPEN)
 				{
-					speed = PublicSettings.SLIDE_MENU_OUT_SPEED;
+					speed = UISettings.SLIDE_MENU_OUT_SPEED;
 					newState = SlideOutMenu.STATE_CLOSE;
+					
 					xPos = 0;
-					//SoundAS.play(Sounds.SFX_MENU_CLOSE);
+
 				}
 
 			}
 			
 			_isNavSliding = true;
 			
-			TweenLite.to(_root, speed, {x: xPos, ease: Cubic.easeInOut, onComplete: function():void
+			TweenLite.to(_root, speed, {x:xPos, ease: Cubic.easeInOut, onComplete: function():void
 			{
 				_currSlideMenuState = newState;
 					
@@ -634,7 +653,8 @@ package ManagerClasses.controllers
 					
 					showStageText();
 					StateMachine.stateReady();
-				}else
+				}
+				else
 				{
 					activateMenuButton()
 				}
@@ -654,8 +674,8 @@ package ManagerClasses.controllers
 		{
 			if (_oMenuIcon != null)
 			{
-			_oMenuIcon.touchable = true;
-			_oMenuIcon.alpha = 1;
+				_oMenuIcon.touchable = true;
+				_oMenuIcon.alpha = 1;
 			}
 			
 		}

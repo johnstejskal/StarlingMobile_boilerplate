@@ -4,10 +4,12 @@ package view.components.ui.toolbar
 	import com.greensock.easing.Cubic;
 	import com.greensock.TweenLite;
 	import com.johnstejskal.Delegate;
+	import com.johnstejskal.Position;
 	import com.thirdsense.animation.TexturePack;
 	import com.thirdsense.LaunchPad;
 	import data.AppData;
 	import data.constants.LaunchPadLibrary;
+	import data.settings.UISettings;
 	import ManagerClasses.utility.DeviceType;
 	import singleton.Core;
 	import singleton.EventBus;
@@ -154,6 +156,15 @@ package view.components.ui.toolbar
 			TexturePack.deleteTexturePack(DYNAMIC_TA_REF);
 			this.removeFromParent();
 			this.removeEventListeners();
+		}
+		
+		public function setPosition():void 
+		{
+			if (UISettings.SLIDE_MENU_POSITION ==  Position.LEFT)
+			{
+				
+				this.x = this.width;
+			}
 		}
 
 		

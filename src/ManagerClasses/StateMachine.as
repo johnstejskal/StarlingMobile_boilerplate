@@ -223,7 +223,7 @@
 
 			}
 			
-			core.controlBus.appUIController.changeSlideMenuStatus(newState);
+			core.controlBus.appUIController.changeSlideMenuState(newState);
 			
 		}
 		//=======================================================================================o
@@ -311,7 +311,8 @@
 					
 				break;	
 				//------------------------------------------------------------------------------------o
-				case AppStates.STATE_HOME:
+		    	case AppStates.STATE_HOME:
+				currentScreenObject.displayName = "HOME";
 				currentScreenObject.showTitleBar = true;
 				currentScreenObject.showBackButton = true;
 				currentScreenObject.showMenuIcon = true;

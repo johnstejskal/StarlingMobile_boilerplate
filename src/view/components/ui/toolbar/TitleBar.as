@@ -11,6 +11,7 @@ package view.components.ui.toolbar
 	import data.constants.AppFonts;
 	import data.constants.LaunchPadLibrary;
 	import data.constants.HexColours;
+	import data.settings.UISettings;
 	import flash.geom.Rectangle;
 	import ManagerClasses.utility.AssetsManager;
 	import ManagerClasses.utility.DeviceType;
@@ -44,7 +45,7 @@ package view.components.ui.toolbar
 
 		private var _core:Core;
 		private var _qBacking:Quad;
-		private var _hexColour:uint = 0xf6534e;
+		private var _hexColour:uint;// = UISettings.ENABLE_TITLE_BAR_COLOUR;
 		private var _label:String = "test";
 		private var _enableMenuIcon:Boolean;
 		private var _enableBackButton:Boolean;
@@ -56,6 +57,7 @@ package view.components.ui.toolbar
 		private var _simLogo:Image;
 		private var _simDivider:Image;
 		private var _imgBG:Image;
+		private var _h:int;
 		
 		
 
@@ -82,43 +84,29 @@ package view.components.ui.toolbar
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
 		   var mc:MovieClip;
-		   mc = new TA_titleBarBG();
-		   Starling.current.nativeStage.addChild(mc);
-			   
-		   mc.scaleX = mc.scaleY = AppData.offsetScaleX;
-		   TexturePack.createFromMovieClip(mc, DYNAMIC_TA_REF, "TA_titleBarBG", null, 1, 1, null, 0)
-		   _imgBG = TexturePack.getTexturePack(DYNAMIC_TA_REF, "TA_titleBarBG").getImage();
-		   this.addChild(_imgBG);
-		   
-			if(DeviceType.current == DeviceType.IPAD)
-				_qBacking = new Quad(AppData.deviceResX, 100, _hexColour);
-			else if (DeviceType.current == DeviceType.IPHONE_5)
-				_qBacking = new Quad(AppData.deviceResX, 100, _hexColour);
-			else if (DeviceType.current == DeviceType.IPHONE_4)
-				_qBacking = new Quad(AppData.deviceResX, 100, _hexColour);
-			else
-			{
-				_qBacking = new Quad(AppData.deviceResX, AppData.deviceScale*100, _hexColour);	
-			}
-			_qBacking.visible = false;
-			this.addChild(_qBacking);
+		  
+		   if (UISettings.ENABLE_TITLE_BAR_IMAGE)
+		   {
+			   mc = new TA_titleBarBG();
+			   mc.scaleX = mc.scaleY = AppData.offsetScaleX;
+			   TexturePack.createFromMovieClip(mc, DYNAMIC_TA_REF, "TA_titleBarBG", null, 1, 1, null, 0)
+			   _imgBG = TexturePack.getTexturePack(DYNAMIC_TA_REF, "TA_titleBarBG").getImage();
+			   this.addChild(_imgBG);
+			   _h = _imgBG.height;
+		   }
+		   else
+		   {
+				_qBacking = new Quad(AppData.deviceResX, AppData.offsetScaleX*100, UISettings.TITLE_BAR_COLOUR);	
+				
+				this.addChild(_qBacking);
+				_h = _qBacking.height;
 			
+		   }
 
 			//Add optional menu icon
 			if (this.enableBackButton)
 			{
-				mc = new TA_titleBar_backButton();
-				mc.scaleX = mc.scaleY = AppData.deviceScale;
-			
-				TexturePack.createFromMovieClip(mc, DYNAMIC_TA_REF, "TA_titleBar_backButton", null, 1, 1, null, 0);
-				_simBackButton = TexturePack.getTexturePack(DYNAMIC_TA_REF, "TA_titleBar_backButton").getImage();
-				_simBackButton.x = 0;
-				_simBackButton.y = 0;
-				this.addChild(_simBackButton);
-				_simBackButton.addEventListener(TouchEvent.TOUCH, onTouch);
-				_simBackButton.touchable = false;
-				_simBackButton.alpha = .3;
-				
+				showBackButton();
 			}
 			
 			var fs:int;
@@ -133,41 +121,37 @@ package view.components.ui.toolbar
 				fs = AppData.deviceScaleX * 44;
 				}
 			
-			_tfLabel = new TextField(_qBacking.width, _qBacking.height, _label, AppFonts.FONT_ARIAL, fs, HexColours.WHITE);
-			
-			
-			_tfLabel.hAlign = HAlign.CENTER; 
-			_tfLabel.vAlign = VAlign.CENTER;
-			_tfLabel.border = false;
-			
-			_tfLabel.autoSize = TextFieldAutoSize.NONE;
-			_tfLabel.touchable = false
-			addChild(_tfLabel);
-			
-			if (_isTransparent)
+			if (UISettings.ENABLE_TITLE_HEADING)
 			{
-			_qBacking.visible = false;
-			_tfLabel.visible = false;
+				_tfLabel = new TextField(AppData.deviceResX, _h, _label, AppFonts.FONT_ARIAL, fs, HexColours.WHITE);
+				_tfLabel.hAlign = HAlign.CENTER; 
+				_tfLabel.vAlign = VAlign.CENTER;
+				_tfLabel.border = false;
+				_tfLabel.autoSize = TextFieldAutoSize.NONE;
+				_tfLabel.touchable = false
+				addChild(_tfLabel);
 			}
-			 
 			
-			mc = new TA_titleBarLogo();
-			mc.scaleX = mc.scaleY = 1;
-			TexturePack.createFromMovieClip(mc, DYNAMIC_TA_REF, "TA_titleBarLogo", null, 1, 1, null, 0);
-			_simLogo = TexturePack.getTexturePack(DYNAMIC_TA_REF, "TA_titleBarLogo").getImage();
-			_simLogo.x = AppData.deviceResX/2;
-			_simLogo.y = _qBacking.height/2 + 3;
-			this.addChild(_simLogo);
+			if (UISettings.ENABLE_TITLE_BAR_TRANSPARENCY)
+			{
+				if(_qBacking)
+				_qBacking.visible = false;
+				
+				if (_imgBG)
+				_imgBG.visible = false;
+			}
+			
+			if (UISettings.ENABLE_TITLE_BAR_LOGO)
+			{
+				mc = new TA_titleBarLogo();
+				mc.scaleX = mc.scaleY = 1;
+				TexturePack.createFromMovieClip(mc, DYNAMIC_TA_REF, "TA_titleBarLogo", null, 1, 1, null, 0);
+				_simLogo = TexturePack.getTexturePack(DYNAMIC_TA_REF, "TA_titleBarLogo").getImage();
+				_simLogo.x = AppData.deviceResX/2;
+				_simLogo.y = _qBacking.height/2 + 3;
+				this.addChild(_simLogo);
+			}
 		
-			
-/*			mc = LaunchPad.getAsset(LaunchPadLibrary.UI, "MC_dividerHorizontal");
-			TexturePack.createFromMovieClip(mc, DYNAMIC_TA_REF, "MC_dividerHorizontal", null, 1, 1, null, 0);
-			_simDivider = TexturePack.getTexturePack(DYNAMIC_TA_REF, "MC_dividerHorizontal").getImage();
-			_simDivider.width = AppData.deviceResX;
-			_simDivider.x = AppData.deviceResX/2;
-			_simDivider.y = _qBacking.height;
-			this.addChild(_simDivider);*/
-			
 			
 			//=================================
 			//-- 
@@ -194,6 +178,10 @@ package view.components.ui.toolbar
 		
 		public function showBackButton():void 
 		{
+			
+			if (!UISettings.ENABLE_BACK_BUTTON)
+			return;
+			
 			var mc:* = new TA_titleBar_backButton();
 			mc.scaleX = mc.scaleY = AppData.deviceScale;
 			
