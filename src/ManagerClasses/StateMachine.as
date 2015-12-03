@@ -50,7 +50,7 @@
 	public class StateMachine 
 	{
 		//list screen names here for workaround to getDefinitionByName 
-		HomeScreen; 
+		HomeScreen; RegisterScreen;
 
 
 		
@@ -317,6 +317,10 @@
 				currentScreenObject.showBackButton = true;
 				currentScreenObject.showMenuIcon = true;
 				break;					
+				//------------------------------------------------------------------------------------o
+				case AppStates.STATE_REGISTER:
+				
+				break;				
 				//------------------------------------------------------------------------------------o
 				case AppStates.STATE_TITLE:
 				

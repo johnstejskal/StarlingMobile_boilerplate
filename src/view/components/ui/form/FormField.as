@@ -146,8 +146,9 @@ package view.components.ui.form
 		//=======================================o
 		private function init(e:Event):void 
 		{
+			
 			trace(this + "inited");
-		
+			
 			_stageText = new StageText();
 			_tt = new TrueTouch();
 			
@@ -161,13 +162,9 @@ package view.components.ui.form
 			
 			if (dataClass != null)
 			{
-				
 				if (dataClass[dataProperty] != null && dataProperty != "password")
 				_label = dataClass[dataProperty];
-				
-			
 			}
-			
 			
 			changeState(_defaultState, _label)
 			addStageText();
@@ -180,10 +177,10 @@ package view.components.ui.form
 			trace(this + "changeState(" + newState + "," + label + ")");
 			TexturePack.deleteTexturePack(DYNAMIC_TA_REF, taRef);
 			
-			var mcField:MovieClip = LaunchPad.getAsset(LaunchPadLibrary.UI, "TA_formField") as MovieClip;
+			var mcField:MovieClip = new TA_formField();
 	
 			
-			var statusBar:MovieClip = LaunchPad.getAsset(LaunchPadLibrary.UI, "TA_fieldStatusBar") as MovieClip;
+			var statusBar:MovieClip = new TA_fieldStatusBar();
 			mcField.addChild(statusBar);
 			
 			if (newState == STATE_OFF)
@@ -357,14 +354,14 @@ package view.components.ui.form
 		//===========================================o
 		//-- Confirmation event of Modal UI or Option List
 		//===========================================o
-		public function callBack_confirm(text:String = null):void
+		public function validate():Boolean
 		{
-			
+			var text:String = _value;
 			isValid = false;
 			var errorMsg:String;
 			
 			if (text == "null" || text == null)
-			return;
+			return false;
 			
 			
 			trace("_defaulLabel :" + _defaulLabel);
@@ -372,7 +369,7 @@ package view.components.ui.form
 			{
 				isValid = true;
 				changeState(STATE_OFF, defaulLabel);
-				return;
+				return true;
 			}
 			
 				errorMsg = errorMsgOverride;
@@ -481,9 +478,9 @@ package view.components.ui.form
 					if (Validation.isValidPhoneNumber(text) && text != _defaulLabel)	
 					isValid = true;
 					else if(_defaulLabel == text)
-					errorMsg = "*Add your ph. number dude"; //errorMsg = "*Please enter a phone number";
+					errorMsg = "*Please enter a phone number";
 					else
-					errorMsg = "*Add your ph. number dude"; //errorMsg = "*Please enter a valid phone number"
+					errorMsg = "*Please enter a valid phone number"
 					
 
 					break;
@@ -492,13 +489,12 @@ package view.components.ui.form
 					
 					case TYPE_POSTCODE:
 
-						if (StringFunctions.validateAusPostcode(text) && text != _defaulLabel)	
+						if (Validation.isValidPostCode(text) && text != _defaulLabel)	
 						isValid = true;
 						else if(_defaulLabel == text)
-						errorMsg = "*What’s your hood’s postcode?";//errorMsg = "*Please enter a postcode";
+						errorMsg = "*Please enter a postcode";
 						else
-						errorMsg = "*What’s your hood’s postcode?" //errorMsg = "Please enter a valid postcode"
-					
+						errorMsg = "Please enter a valid postcode";
 					
 					break;
 					
@@ -518,15 +514,11 @@ package view.components.ui.form
 						}
 						else
 						{
-						errorMsg = "Passwords do not match."; //errorMsg = "Passwords do not match";
+						errorMsg = "Passwords do not match.";
 						}
 					}
 					else
 					{
-/*						if (text != _defaulLabel)	
-						isValid = true;	
-						else 
-						errorMsg = _defaulLabel;	*/
 					
 						trace("password errorMsg :"+errorMsg)
 						if (StringFunctions.validatePassword(text) && text != _defaulLabel)		
@@ -534,8 +526,7 @@ package view.components.ui.form
 						else if(_defaulLabel == text)
 						errorMsg = "*Please enter a password.";
 						else
-						errorMsg = "*6 chars incl. 1 numb required.";
-						//errorMsg = "*Use letters and numbers only";
+						errorMsg = "*Use letters and numbers only";
 						
 						trace("password isValid :"+isValid)
 					}
@@ -561,25 +552,18 @@ package view.components.ui.form
 	
 					}
 			
-			//if (errorMsg != null)
-			//{
+
 				if (errorMsgOverride != null)
 				errorMsg = errorMsgOverride;
-			//}
-				
+			
+			trace("=================FORM VALIDATION COMPLETE on:"+_type)
 			trace("-----------------_defaulLabel :"+_defaulLabel)
 			trace("-----------------text :"+text)
-			trace("-----------------errorMsg :"+errorMsg)
+			trace("-----------------errorMsg :" + errorMsg)
+			trace("=========================================");
+			
 			if (text == errorMsg)
 			isValid = false
-				
-			  //TODO Field Error handling here, add a _type value to this field
-			  //if email
-			  //if name
-			  //if password
-			  
-			  
-			
 			
 			_lastErrorMsg = errorMsg;
 			
@@ -590,7 +574,7 @@ package view.components.ui.form
 			else
 			changeState(STATE_ERROR, errorMsg);
 			
-			
+			return isValid;
 			
 		}
 		
@@ -623,10 +607,15 @@ package view.components.ui.form
 			this.removeFromParent();
 		}
 		
-		public function hide(time:Number = .1, delay:Number = 0):void 
+		public function hide(time:Number = 0, delay:Number = 0):void 
 		{
 			_stageText.visible = false;
-			TweenLite.to(this, time, {delay:delay, alpha:0 } )
+		
+			if(delay > 0)
+			TweenLite.to(this, time, { delay:delay, alpha:0 } )
+			else
+			this.alpha = 0;
+			
 		}
 				
 		public function show(time:Number = .1, delay:Number = 0):void 

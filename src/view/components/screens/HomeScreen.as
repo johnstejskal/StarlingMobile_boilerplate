@@ -99,7 +99,7 @@ package view.components.screens
 		//===============================================o
 	    private function onClick_button1():void 
 	    {
-			core.controlBus.appUIController.changeScreen(AppStates.STATE_SETTINGS)
+			core.controlBus.appUIController.changeScreen(AppStates.STATE_REGISTER);
 		}
 		
 		private function onClick_button2():void 

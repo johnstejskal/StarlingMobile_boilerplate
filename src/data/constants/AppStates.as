@@ -20,6 +20,7 @@ package data.constants
 		static public const STATE_ACTIVATE_ACCOUNT:String = "activateAccount";
 		static public const STATE_LOG_OUT:String = "logOut";
 		static public const STATE_SETTINGS:String = "settings";
+		static public const STATE_REGISTER:String = "register";
 		
 		public function AppStates() 
 		{
